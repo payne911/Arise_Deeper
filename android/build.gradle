@@ -8,7 +8,7 @@ android {
             aidl.srcDirs = ['src']
             renderscript.srcDirs = ['src']
             res.srcDirs = ['res']
-            assets.srcDirs = ['assets']
+            assets.srcDirs = ['../core/assets'] // this used to be pointing to "assets" inside "android" folder
             jniLibs.srcDirs = ['libs']
         }
 
