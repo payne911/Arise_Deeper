@@ -1,11 +1,9 @@
 package com.payne.games.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.MathUtils;
 import com.payne.games.AriseDeeper;
 import com.payne.games.logic.GameLogic;
 import com.payne.games.map.tilesets.BasicTileset;
@@ -39,7 +37,7 @@ public class GameScreen implements Screen {
         camera.translate(0,0);
 
         // generate and set up a map to be rendered
-        currentLevel = mapGenerator.createMap(16,16);
+        currentLevel = mapGenerator.createMap(64,64);
         mapRenderer.setUpLevel(currentLevel, new BasicTileset(gLogic));
 
         // input processor

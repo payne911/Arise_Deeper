@@ -1,6 +1,5 @@
 package com.payne.games.map;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.payne.games.logic.GameLogic;
@@ -83,13 +82,14 @@ public class MapRenderer {
      * @param level the Level to be rendered.
      */
     public void renderLevel(SpriteBatch batch, LevelMap level) {
+        final int AESTHETIC_OFFSET = 16; // todo: not necessary
 
         /* Drawing the static map (base layer). Disabling blending improves performance. */
         batch.disableBlending();
         for (int i = 0; i < level.getMapHeight(); i++) {
             for (int j = 0; j < level.getMapWidth(); j++) {
                 TextureRegion tile = level.getGraphical_map()[i][j].getTexture();
-                batch.draw(tile, 50 + j*gLogic.TILE_WIDTH, 50 + i*gLogic.TILE_HEIGHT);
+                batch.draw(tile, AESTHETIC_OFFSET + j*gLogic.TILE_WIDTH, AESTHETIC_OFFSET + i*gLogic.TILE_HEIGHT);
             }
         }
         batch.enableBlending();
@@ -100,9 +100,9 @@ public class MapRenderer {
 
 
 
-        /* Tests. */
-        Texture tiles = tileset.getTiles();
-        batch.draw(tiles, gLogic.GAME_WIDTH-350, gLogic.GAME_HEIGHT-120, tiles.getWidth(), tiles.getHeight());
+//        /* Tests. */
+//        Texture tiles = tileset.getTiles();
+//        batch.draw(tiles, gLogic.GAME_WIDTH-350, gLogic.GAME_HEIGHT-120, tiles.getWidth(), tiles.getHeight());
 //        batch.draw(splitTiles[0][0], 200, 200); // drawing a single tile
     }
 }

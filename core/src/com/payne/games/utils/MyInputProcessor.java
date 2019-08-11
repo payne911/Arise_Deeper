@@ -46,7 +46,7 @@ public class MyInputProcessor extends InputAdapter {
         down_X = screenX;
         int dY = screenY - down_Y;
         down_Y = screenY;
-        camera.translate(dX, dY);
+        camera.translate(dX, dY); // todo: adjust according to Zoom !
         return true;
     }
 
@@ -59,6 +59,7 @@ public class MyInputProcessor extends InputAdapter {
     @Override
     public boolean scrolled(int amount) {
         camera.zoom += ((double)amount)/4;
+        if (camera.zoom <= 0) camera.zoom -= ((double)amount)/4; // deny zooming too much
         return true;
     }
 }

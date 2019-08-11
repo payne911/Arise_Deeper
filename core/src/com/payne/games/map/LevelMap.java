@@ -60,4 +60,20 @@ public class LevelMap {
     public void setGraphical_map(Tile[][] graphical_map) {
         this.graphical_map = graphical_map;
     }
+
+
+    /**
+     * Calculates the percentage of tiles that are floors.
+     *
+     * @return percentage from 0 to 1, in range.
+     */
+    public float floorPercentage() {
+        int total_floors = 0;
+        for (int i = 0; i < mapHeight; i++) {
+            for (int j = 0; j < mapWidth; j++) {
+                if (this.logical_map[i][j] == 1) total_floors++; // a floor was encountered
+            }
+        }
+        return ((float)total_floors)/(mapHeight*mapWidth);
+    }
 }
