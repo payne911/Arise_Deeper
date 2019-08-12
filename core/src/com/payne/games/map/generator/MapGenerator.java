@@ -3,8 +3,6 @@ package com.payne.games.map.generator;
 import com.payne.games.logic.GameLogic;
 import com.payne.games.map.LevelMap;
 import com.payne.games.map.generator.algos.drunkard.MapCarver;
-import com.payne.games.map.tiles.Door;
-import com.payne.games.map.tiles.*;
 
 import java.util.Random;
 
@@ -26,36 +24,13 @@ public class MapGenerator {
         // todo: generator's algorithm
 //        randomStuff(level);
 //        genericSingleRoomLevel(level);
-        drunkardWalk(level, 25, 60, 0.4f);
+        drunkardWalk(level,
+                rand.nextInt(level.getMapWidth()),
+                rand.nextInt(level.getMapHeight()),
+                0.28f + rand.nextFloat()/15);
 
 
-        setUpGraphicalGrid(level);
         return level;
-    }
-
-    private void setUpGraphicalGrid(LevelMap level) {
-        int[][] logicalMap    = level.getLogical_map();
-        Tile[][] graphicalMap = level.getGraphical_map();
-
-        for (int i = 0; i < level.getMapHeight(); i++) {
-            for (int j = 0; j < level.getMapWidth(); j++) {
-
-                switch (logicalMap[i][j]) {
-                    case 0:
-                        graphicalMap[i][j] = new Wall(j, i);
-                        break;
-                    case 1:
-                        graphicalMap[i][j] = new Floor(j, i);
-                        break;
-                    case 2:
-                        graphicalMap[i][j] = new Door(j, i);
-                        break;
-                    default:
-                        graphicalMap[i][j] = new Empty(j, i);
-                        break;
-                }
-            }
-        }
     }
 
 
@@ -73,10 +48,24 @@ public class MapGenerator {
     }
 
 
+
+
+
+
+
+
+
+
+
+    /*
+                    BELOW: TESTING FUNCTIONS (not actual proc-gen levels).
+     */
+
+
     // the world is one big room.
     private void genericSingleRoomLevel(LevelMap level) {
         int mapHeight = level.getMapHeight();
-        int mapWidth = level.getMapWidth();
+        int mapWidth  = level.getMapWidth();
 
         for (int i = 0; i < mapHeight; i++) {
             for (int j = 0; j < mapWidth; j++) {

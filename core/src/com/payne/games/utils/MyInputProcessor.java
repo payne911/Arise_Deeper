@@ -19,7 +19,7 @@ public class MyInputProcessor extends InputAdapter {
 
     @Override
     public boolean keyDown(int keycode) {
-        System.out.println("keyDown keyCode: " + keycode);
+        System.out.println("keyDown_keyCode: " + keycode);
         return false;
     }
 

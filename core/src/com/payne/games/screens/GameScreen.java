@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.payne.games.AriseDeeper;
 import com.payne.games.logic.GameLogic;
+import com.payne.games.map.MapController;
 import com.payne.games.map.tilesets.BasicTileset;
 import com.payne.games.map.LevelMap;
 import com.payne.games.map.MapRenderer;
@@ -18,6 +19,7 @@ public class GameScreen implements Screen {
     private OrthographicCamera camera;
 
     private GameLogic gLogic;
+    private MapController mapController;
     private MapGenerator mapGenerator;
     private MapRenderer mapRenderer;
     private LevelMap currentLevel;
@@ -26,6 +28,8 @@ public class GameScreen implements Screen {
     public GameScreen(final AriseDeeper game) {
         this.game = game;
         this.gLogic = new GameLogic(game);
+        this.mapController = new MapController(gLogic);
+
         this.mapGenerator = new MapGenerator(gLogic);
         this.mapRenderer = new MapRenderer(gLogic);
 

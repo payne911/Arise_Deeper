@@ -5,6 +5,13 @@ import com.payne.games.map.LevelMap;
 import java.util.Random;
 
 
+/**
+ * Unless the grid is large, you should bias the direction chosen towards the centre of the grid as the
+ * drunkard walk may end up butting up against the edges unnaturally. You may also choose to bias the
+ * drunkard walk to choose the last direction it travelled to create longer corridors.
+ *
+ * see: http://pcg.wikidot.com/pcg-algorithm:drunkard-walk
+ */
 public class MapCarver {
     private LevelMap level;
     private Drunkard drunk;
@@ -61,6 +68,8 @@ public class MapCarver {
         int directionIndex = rand.nextInt(Direction4.values().length); // select a random Direction-index
         Direction4 dir = Direction4.values()[directionIndex]; // extract the Direction associated with the index
 
+        // todo: bias toward center?  walk 2 units (more linear)?
+
         move(dir); // act on the random walk (move + dig);
     }
 
@@ -72,8 +81,8 @@ public class MapCarver {
         int test_x = this.drunk.getX() + direction.getX();
         int test_y = this.drunk.getY() + direction.getY();
 
-        // Restrict movement to edges of the map.
-        if (test_x < 0 || test_y < 0 || test_x > level.getMapWidth()-1 || test_y > level.getMapHeight()-1)
+        // Restrict movement to edges of the map, preserving walls at the boundary.
+        if (test_x < 1 || test_y < 1 || test_x > level.getMapWidth()-2 || test_y > level.getMapHeight()-2)
             return;
 
         // Move the drunkard.
@@ -93,7 +102,6 @@ public class MapCarver {
      * @param y y position on the map.
      */
     private void dig(int x, int y) {
-        System.out.println("Digging: " + "(" + x + "," + y + ")");
         level.getLogical_map()[y][x] = 1; // 1 = Floor
     }
 }

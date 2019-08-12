@@ -6,8 +6,8 @@ import com.payne.games.map.tiles.*;
 public class LevelMap {
     private int mapWidth, mapHeight;
 
-    private int[][] logical_map;  // todo: use "byte[][]" instead for smaller memory usage?
-    private Tile[][] graphical_map;  // todo: remove from here? (LevelMap should be graphic-agnostic)
+    private int[][] logical_map; // todo: use "byte[][]" instead for smaller memory usage?
+    private Tile[][] graphical_map; // todo: remove from here? (LevelMap should be graphic-agnostic)
     // todo: integrate the "Layers"
 
 
@@ -61,11 +61,31 @@ public class LevelMap {
         this.graphical_map = graphical_map;
     }
 
+    /**
+     * To obtain a 1D array of the surrounding tiles of a certain position on the LevelMap.
+     * The (0,0) position is considered
+     *
+     * For example, with this logical_map array:
+     * [[1, 3, 1, 4, 5],
+     *  [1, 0, 2, 2, 4],
+     *  [2, 3, 3, 4, 1],
+     *  [4, 5, 0, 0, 1],
+     *  [3, 1, 1, 1, 5]]
+     *
+     *
+     *
+     * @param x
+     * @param y
+     * @return
+     */
+    public int[] pollSurrounding(int x, int y) {
+        return new int[]{};
+    }
 
     /**
      * Calculates the percentage of tiles that are floors.
      *
-     * @return percentage from 0 to 1, in range.
+     * @return The percentage, ranging from 0 to 1.
      */
     public float floorPercentage() {
         int total_floors = 0;
