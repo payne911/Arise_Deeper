@@ -3,7 +3,6 @@ package com.payne.games;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.payne.games.logic.GameLogic;
 import com.payne.games.screens.GameScreen;
 
 

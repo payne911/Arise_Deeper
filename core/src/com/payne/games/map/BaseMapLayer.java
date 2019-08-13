@@ -1,6 +1,7 @@
 package com.payne.games.map;
 
-import com.payne.games.map.tiles.*;
+import com.payne.games.map.tiles.Floor;
+import com.payne.games.map.tiles.Tile;
 
 
 /**
@@ -12,26 +13,19 @@ public class BaseMapLayer {
      * The representations of the 2D arrays are [rows][columns], aka [y][x].
      * (0,0) is at the bottom-left, when looking at a rendered map on the screen.
      */
-    private int[][] logicalMap; // todo: use "byte[][]" instead for smaller memory usage?
     private Tile[][] graphicalMap;
-    // todo: integrate the "Layers"
 
 
     public BaseMapLayer(int mapWidth, int mapHeight) {
-        logicalMap = new int[mapHeight][mapWidth];
         graphicalMap = new Tile[mapHeight][mapWidth];
     }
 
     public int getMapWidth() {
-        return logicalMap[0].length;
+        return graphicalMap[0].length;
     }
 
     public int getMapHeight() {
-        return logicalMap.length;
-    }
-
-    public int[][] getLogicalMap() {
-        return logicalMap;
+        return graphicalMap.length;
     }
 
     public Tile[][] getGraphicalMap() {
@@ -66,15 +60,15 @@ public class BaseMapLayer {
      */
     public int[] pollSurrounding(int x, int y) {
         return new int[]{
-                logicalMap[y-1][x-1],
-                logicalMap[y-1][x],
-                logicalMap[y-1][x+1],
-                logicalMap[y][x-1],
-                logicalMap[y][x],
-                logicalMap[y][x+1],
-                logicalMap[y+1][x-1],
-                logicalMap[y+1][x],
-                logicalMap[y+1][x+1]
+//                graphicalMap[y-1][x-1],
+//                graphicalMap[y-1][x],
+//                graphicalMap[y-1][x+1],
+//                graphicalMap[y][x-1],
+//                graphicalMap[y][x],
+//                graphicalMap[y][x+1],
+//                graphicalMap[y+1][x-1],
+//                graphicalMap[y+1][x],
+//                graphicalMap[y+1][x+1]
         };
     }
 
@@ -87,7 +81,8 @@ public class BaseMapLayer {
         int totalFloors = 0;
         for (int i = 0; i < getMapHeight(); i++) {
             for (int j = 0; j < getMapWidth(); j++) {
-                if (this.logicalMap[i][j] == 1) totalFloors++; // a floor was encountered
+                if (graphicalMap[i][j] instanceof Floor)
+                    totalFloors++; // a floor was encountered
             }
         }
         return ((float)totalFloors)/(getMapHeight()*getMapWidth());

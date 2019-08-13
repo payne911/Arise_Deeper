@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.payne.games.logic.GameLogic;
 import com.payne.games.map.BaseMapLayer;
-import com.payne.games.map.tiles.*;
 import com.payne.games.map.tilesets.Tileset;
 
 
@@ -54,41 +53,12 @@ public class MapRenderer {
     }
 
     /**
-     * Using the BaseMapLayer's logical_map attribute, this assigns a proper Texture, randomly selected from the assigned
-     * Tileset. The BaseMapLayer's graphical_map is then updated appropriately.
-     *
+     * Uses MapRenderer's currently assigned Tileset to assign a Texture to the Tile at the specified coordinate.
      * @param x
      * @param y
      */
     public void assignSingleTileTexture(int x, int y) {
-        Tile[][] graphicalMap = level.getGraphicalMap();
-        TextureRegion tileImg;
-
-        // todo: implement properly!
-        switch (level.getLogicalMap()[y][x]) { // tileType
-            case 0:
-                graphicalMap[y][x] = new Wall(x, y);
-                tileImg = tileset.getWallRandomTexture();
-                break;
-            case 1:
-                graphicalMap[y][x] = new Floor(x, y);
-                tileImg = tileset.getFloorRandomTexture();
-                break;
-            case 2:
-                graphicalMap[y][x] = new Floor(x, y);
-                ((Floor)graphicalMap[y][x]).setWater(true);
-                tileImg = tileset.getWaterRandomTexture();
-                break;
-            case 3:
-                graphicalMap[y][x] = new Door(x, y);
-                tileImg = tileset.getDoorRandomTexture();
-                break;
-            default:
-                graphicalMap[y][x] = new Empty(x, y);
-                tileImg = tileset.getEmptyRandomTexture();
-                break;
-        }
-        graphicalMap[y][x].setTexture(tileImg);
+        level.getGraphicalMap()[y][x].setTexture(tileset);
     }
 
     /**

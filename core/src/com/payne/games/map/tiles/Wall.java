@@ -1,12 +1,19 @@
 package com.payne.games.map.tiles;
 
 
+import com.payne.games.map.tilesets.Tileset;
+
 public class Wall extends Tile {
     private boolean southConnected, northConnected, eastConnected, westConnected;
 
 
     public Wall(int x, int y) {
         super(x, y);
+    }
+
+    @Override
+    public void setTexture(Tileset tileset) {
+        setTexture(tileset.getWallRandomTexture());
     }
 
 

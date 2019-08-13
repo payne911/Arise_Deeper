@@ -1,6 +1,7 @@
 package com.payne.games.map.tiles;
 
 import com.payne.games.gameObjects.GameObject;
+import com.payne.games.map.tilesets.Tileset;
 
 import java.util.ArrayList;
 
@@ -12,6 +13,14 @@ public class Floor extends Tile {
 
     public Floor(int x, int y) {
         super(x, y);
+    }
+
+    @Override
+    public void setTexture(Tileset tileset) {
+        if(isWater)
+            setTexture(tileset.getWaterRandomTexture());
+        else
+            setTexture(tileset.getFloorRandomTexture());
     }
 
 

@@ -3,6 +3,9 @@ package com.payne.games.map.generators;
 import com.payne.games.logic.GameLogic;
 import com.payne.games.map.BaseMapLayer;
 import com.payne.games.map.generators.algos.drunkard.MapCarver;
+import com.payne.games.map.tiles.Door;
+import com.payne.games.map.tiles.Floor;
+import com.payne.games.map.tiles.Wall;
 
 import java.util.Random;
 
@@ -22,7 +25,6 @@ public class MapGenerator {
 
 
         // todo: generator's algorithm (Messy BSP Tree and Broguelike too)
-//        randomStuff(level);
 //        genericSingleRoomLevel(level);
         drunkardWalkAlgo(level,
                 rand.nextInt(level.getMapWidth()),
@@ -77,26 +79,15 @@ public class MapGenerator {
 
                 if(j == 0 || j == mapWidth-1 || i == 0 || i == mapHeight-1) { // if EDGE
                     if(rand.nextDouble() < 0.15) { // slight chance of having a door
-                        level.getLogicalMap()[i][j] = 3;
+                        level.getGraphicalMap()[i][j] = new Door(j, i);
                     } else {
-                        level.getLogicalMap()[i][j] = 0;
+                        level.getGraphicalMap()[i][j] = new Wall(j, i);
                     }
 
                 } else {
-                    level.getLogicalMap()[i][j] = 1;
+                    level.getGraphicalMap()[i][j] = new Floor(j, i);
                 }
             }
         }
     }
-
-
-    // just a dumb 100% "random" world.
-    private void randomStuff(BaseMapLayer level) {
-        for (int i = 0; i < level.getMapHeight(); i++) {
-            for (int j = 0; j < level.getMapWidth(); j++) {
-                level.getLogicalMap()[i][j] = rand.nextInt(3);
-            }
-        }
-    }
-
 }

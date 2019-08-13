@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.payne.games.logic.GameLogic;
 import com.payne.games.map.generators.MapGenerator;
 import com.payne.games.map.renderers.MapRenderer;
+import com.payne.games.map.tiles.Tile;
 import com.payne.games.map.tilesets.Tileset;
 
 
@@ -28,15 +29,14 @@ public class MapController {
 
 
     /**
-     * Modifies both the logical AND graphical representation of the BaseMapLayer object.
+     * Modifies both the `graphicalMap` attribute of the `BaseMapLayer` class
+     * and the Texture used by the `MapRenderer` to display the Tile on the screen.
      *
-     * @param tileType
-     * @param x
-     * @param y
+     * @param newTile a new instance of the Tile to be displayed.
      */
-    public void setTile(int tileType, int x, int y) {
-        currentLevel.getLogicalMap()[y][x] = tileType;
-        mapRenderer.assignSingleTileTexture(x, y);
+    public void setTile(Tile newTile) {
+        currentLevel.getGraphicalMap()[newTile.getY()][newTile.getX()] = newTile;
+        mapRenderer.assignSingleTileTexture(newTile.getX(), newTile.getY());
     }
 
     /**

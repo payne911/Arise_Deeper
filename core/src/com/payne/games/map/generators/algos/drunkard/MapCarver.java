@@ -1,6 +1,8 @@
 package com.payne.games.map.generators.algos.drunkard;
 
 import com.payne.games.map.BaseMapLayer;
+import com.payne.games.map.tiles.Floor;
+import com.payne.games.map.tiles.Wall;
 
 import java.util.Random;
 
@@ -59,7 +61,7 @@ public class MapCarver {
     private void initMap(BaseMapLayer level) {
         for (int i = 0; i < level.getMapHeight(); i++) {
             for (int j = 0; j < level.getMapWidth(); j++) {
-                level.getLogicalMap()[i][j] = 0; // 0 = Wall
+                level.getGraphicalMap()[i][j] = new Wall(j, i);
             }
         }
     }
@@ -102,6 +104,6 @@ public class MapCarver {
      * @param y y position on the map.
      */
     private void dig(int x, int y) {
-        level.getLogicalMap()[y][x] = 1; // 1 = Floor
+        level.getGraphicalMap()[y][x] = new Floor(x, y);
     }
 }

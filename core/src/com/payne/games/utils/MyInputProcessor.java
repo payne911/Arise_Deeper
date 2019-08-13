@@ -3,8 +3,7 @@ package com.payne.games.utils;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.payne.games.map.MapController;
-
-import java.util.Arrays;
+import com.payne.games.map.tiles.Door;
 
 
 /**
@@ -28,7 +27,7 @@ public class MyInputProcessor extends InputAdapter {
 
         // todo: just here for testing purposes... remove eventually
         if(keycode == 62 && mapController.getCurrentLevel() != null) {
-            mapController.setTile(3, 0 ,0); // bottom-left tile becomes a random door
+            mapController.setTile(new Door(0,0)); // bottom-left tile becomes a random door
         }
 
         return true;
