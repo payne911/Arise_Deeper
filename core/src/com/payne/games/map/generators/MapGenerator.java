@@ -1,8 +1,8 @@
-package com.payne.games.map.generator;
+package com.payne.games.map.generators;
 
 import com.payne.games.logic.GameLogic;
-import com.payne.games.map.LevelMap;
-import com.payne.games.map.generator.algos.drunkard.MapCarver;
+import com.payne.games.map.BaseMapLayer;
+import com.payne.games.map.generators.algos.drunkard.MapCarver;
 
 import java.util.Random;
 
@@ -17,14 +17,14 @@ public class MapGenerator {
         this.rand = new Random(gLogic.getSeed());
     }
 
-    public LevelMap createMap(int mapWidth, int mapHeight) {
-        LevelMap level = new LevelMap(mapWidth, mapHeight);
+    public BaseMapLayer createMap(int mapWidth, int mapHeight) {
+        BaseMapLayer level = new BaseMapLayer(mapWidth, mapHeight);
 
 
-        // todo: generator's algorithm
+        // todo: generator's algorithm (Messy BSP Tree and Broguelike too)
 //        randomStuff(level);
 //        genericSingleRoomLevel(level);
-        drunkardWalk(level,
+        drunkardWalkAlgo(level,
                 rand.nextInt(level.getMapWidth()),
                 rand.nextInt(level.getMapHeight()),
                 0.28f + rand.nextFloat()/15);
@@ -42,13 +42,14 @@ public class MapGenerator {
      * @param init_y initial position in y for the drunkard.
      * @param targetFloorPercent percentage of the level that must be passable.
      */
-    private void drunkardWalk(LevelMap level, int init_x, int init_y, float targetFloorPercent) {
+    private void drunkardWalkAlgo(BaseMapLayer level, int init_x, int init_y, float targetFloorPercent) {
         MapCarver drunkardAlgo = new MapCarver(level, init_x, init_y, gLogic.getSeed(), targetFloorPercent);
         drunkardAlgo.walk();
     }
 
-    private void floodFill() {
 
+    private void floodFill() {
+        // todo
     }
 
 
@@ -67,7 +68,7 @@ public class MapGenerator {
 
 
     // the world is one big room.
-    private void genericSingleRoomLevel(LevelMap level) {
+    private void genericSingleRoomLevel(BaseMapLayer level) {
         int mapHeight = level.getMapHeight();
         int mapWidth  = level.getMapWidth();
 
@@ -76,13 +77,13 @@ public class MapGenerator {
 
                 if(j == 0 || j == mapWidth-1 || i == 0 || i == mapHeight-1) { // if EDGE
                     if(rand.nextDouble() < 0.15) { // slight chance of having a door
-                        level.getLogical_map()[i][j] = 3;
+                        level.getLogicalMap()[i][j] = 3;
                     } else {
-                        level.getLogical_map()[i][j] = 0;
+                        level.getLogicalMap()[i][j] = 0;
                     }
 
                 } else {
-                    level.getLogical_map()[i][j] = 1;
+                    level.getLogicalMap()[i][j] = 1;
                 }
             }
         }
@@ -90,10 +91,10 @@ public class MapGenerator {
 
 
     // just a dumb 100% "random" world.
-    private void randomStuff(LevelMap level) {
+    private void randomStuff(BaseMapLayer level) {
         for (int i = 0; i < level.getMapHeight(); i++) {
             for (int j = 0; j < level.getMapWidth(); j++) {
-                level.getLogical_map()[i][j] = rand.nextInt(3);
+                level.getLogicalMap()[i][j] = rand.nextInt(3);
             }
         }
     }

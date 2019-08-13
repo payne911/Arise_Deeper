@@ -3,7 +3,7 @@ package com.payne.games.map.renderers;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.payne.games.logic.GameLogic;
-import com.payne.games.map.LevelMap;
+import com.payne.games.map.BaseMapLayer;
 import com.payne.games.map.tiles.*;
 import com.payne.games.map.tilesets.Tileset;
 
@@ -14,7 +14,7 @@ public class MapRenderer {
     private GameLogic gLogic;
     private WallRenderer wallRenderer;
     private Tileset tileset;
-    private LevelMap level;
+    private BaseMapLayer level;
 
 
     public MapRenderer(GameLogic gameLogic) {
@@ -33,7 +33,7 @@ public class MapRenderer {
      * @param level A generated level (the output of the MapGenerator).
      * @param tileset String of the name of a SpriteSheet located in the "core/assets" folder.
      */
-    public void setUpLevel(LevelMap level, Tileset tileset) {
+    public void setUpLevel(BaseMapLayer level, Tileset tileset) {
         this.level = level;
         this.tileset = tileset;
         this.wallRenderer.setTileset(tileset);
@@ -54,18 +54,18 @@ public class MapRenderer {
     }
 
     /**
-     * Using the LevelMap's logical_map attribute, this assigns a proper Texture, randomly selected from the assigned
-     * Tileset. The LevelMap's graphical_map is then updated appropriately.
+     * Using the BaseMapLayer's logical_map attribute, this assigns a proper Texture, randomly selected from the assigned
+     * Tileset. The BaseMapLayer's graphical_map is then updated appropriately.
      *
      * @param x
      * @param y
      */
     public void assignSingleTileTexture(int x, int y) {
-        Tile[][] graphicalMap = level.getGraphical_map();
+        Tile[][] graphicalMap = level.getGraphicalMap();
         TextureRegion tileImg;
 
         // todo: implement properly!
-        switch (level.getLogical_map()[y][x]) { // tileType
+        switch (level.getLogicalMap()[y][x]) { // tileType
             case 0:
                 graphicalMap[y][x] = new Wall(x, y);
                 tileImg = tileset.getWallRandomTexture();
@@ -98,12 +98,12 @@ public class MapRenderer {
      * @param batch the instance of "game.batch" on which was called the ".begin()" beforehand
      * @param level the Level to be rendered.
      */
-    public void renderLevel(SpriteBatch batch, LevelMap level) {
+    public void renderLevel(SpriteBatch batch, BaseMapLayer level) {
         /* Drawing the static map (base layer). Disabling blending improves performance. */
         batch.disableBlending();
         for (int i = 0; i < level.getMapHeight(); i++) {
             for (int j = 0; j < level.getMapWidth(); j++) {
-                TextureRegion tile = level.getGraphical_map()[i][j].getTexture();
+                TextureRegion tile = level.getGraphicalMap()[i][j].getTexture();
                 batch.draw(tile, AESTHETIC_OFFSET + j*gLogic.TILE_WIDTH, AESTHETIC_OFFSET + i*gLogic.TILE_HEIGHT);
             }
         }

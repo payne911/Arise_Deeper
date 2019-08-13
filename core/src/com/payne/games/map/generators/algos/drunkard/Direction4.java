@@ -1,4 +1,4 @@
-package com.payne.games.map.generator.algos.drunkard;
+package com.payne.games.map.generators.algos.drunkard;
 
 
 /**

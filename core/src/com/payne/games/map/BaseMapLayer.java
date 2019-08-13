@@ -3,44 +3,43 @@ package com.payne.games.map;
 import com.payne.games.map.tiles.*;
 
 
-public class LevelMap {
-    private int mapWidth, mapHeight;
+/**
+ * The (mostly) immutable layer of the map. Things that don't
+ */
+public class BaseMapLayer {
 
     /**
      * The representations of the 2D arrays are [rows][columns], aka [y][x].
      * (0,0) is at the bottom-left, when looking at a rendered map on the screen.
      */
-    private int[][] logical_map; // todo: use "byte[][]" instead for smaller memory usage?
-    private Tile[][] graphical_map; // todo: remove from here? (LevelMap should be graphic-agnostic)
+    private int[][] logicalMap; // todo: use "byte[][]" instead for smaller memory usage?
+    private Tile[][] graphicalMap;
     // todo: integrate the "Layers"
 
 
-    public LevelMap(int mapWidth, int mapHeight) {
-        this.mapWidth = mapWidth;
-        this.mapHeight = mapHeight;
-
-        logical_map = new int[mapHeight][mapWidth];
-        graphical_map = new Tile[mapHeight][mapWidth];
+    public BaseMapLayer(int mapWidth, int mapHeight) {
+        logicalMap = new int[mapHeight][mapWidth];
+        graphicalMap = new Tile[mapHeight][mapWidth];
     }
 
     public int getMapWidth() {
-        return mapWidth;
+        return logicalMap[0].length;
     }
 
     public int getMapHeight() {
-        return mapHeight;
+        return logicalMap.length;
     }
 
-    public int[][] getLogical_map() {
-        return logical_map;
+    public int[][] getLogicalMap() {
+        return logicalMap;
     }
 
-    public Tile[][] getGraphical_map() {
-        return graphical_map;
+    public Tile[][] getGraphicalMap() {
+        return graphicalMap;
     }
 
     /**
-     * To obtain a 1D array of the surrounding tiles of a certain position on the LevelMap.
+     * To obtain a 1D array of the surrounding tiles of a certain position on the BaseMapLayer.
      *
      * For example, with this logical_map array:
      * [[1, 3, 1, 4, 5],
@@ -67,15 +66,15 @@ public class LevelMap {
      */
     public int[] pollSurrounding(int x, int y) {
         return new int[]{
-                logical_map[y-1][x-1],
-                logical_map[y-1][x],
-                logical_map[y-1][x+1],
-                logical_map[y][x-1],
-                logical_map[y][x],
-                logical_map[y][x+1],
-                logical_map[y+1][x-1],
-                logical_map[y+1][x],
-                logical_map[y+1][x+1]
+                logicalMap[y-1][x-1],
+                logicalMap[y-1][x],
+                logicalMap[y-1][x+1],
+                logicalMap[y][x-1],
+                logicalMap[y][x],
+                logicalMap[y][x+1],
+                logicalMap[y+1][x-1],
+                logicalMap[y+1][x],
+                logicalMap[y+1][x+1]
         };
     }
 
@@ -85,12 +84,12 @@ public class LevelMap {
      * @return The percentage, ranging from 0 to 1.
      */
     public float floorPercentage() {
-        int total_floors = 0;
-        for (int i = 0; i < mapHeight; i++) {
-            for (int j = 0; j < mapWidth; j++) {
-                if (this.logical_map[i][j] == 1) total_floors++; // a floor was encountered
+        int totalFloors = 0;
+        for (int i = 0; i < getMapHeight(); i++) {
+            for (int j = 0; j < getMapWidth(); j++) {
+                if (this.logicalMap[i][j] == 1) totalFloors++; // a floor was encountered
             }
         }
-        return ((float)total_floors)/(mapHeight*mapWidth);
+        return ((float)totalFloors)/(getMapHeight()*getMapWidth());
     }
 }

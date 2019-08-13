@@ -1,6 +1,6 @@
-package com.payne.games.map.generator.algos.drunkard;
+package com.payne.games.map.generators.algos.drunkard;
 
-import com.payne.games.map.LevelMap;
+import com.payne.games.map.BaseMapLayer;
 
 import java.util.Random;
 
@@ -13,25 +13,25 @@ import java.util.Random;
  * see: http://pcg.wikidot.com/pcg-algorithm:drunkard-walk
  */
 public class MapCarver {
-    private LevelMap level;
+    private BaseMapLayer level;
     private Drunkard drunk;
     private Random rand;
     private double targetFloorPercent;
 
-    /* Set to 'true' if the generator should actually try to be random. */
+    /* [DEBUG] Set to 'true' if the generator should actually try to be random. */
     private final boolean RANDOM_SEED = false;
 
 
     /**
      * Used to start up the Drunkard algo.
      *
-     * @param level a LevelMap object that will be populated properly.
+     * @param level a BaseMapLayer object that will be populated properly.
      * @param init_x initial X position of the drunkard.
      * @param init_y initial Y position of the drunkard.
      * @param seed seed for (reproducible) pseudo-random generation.
      * @param targetFloorPercent target percentage point for the amount of floors in the level.
      */
-    public MapCarver(LevelMap level, int init_x, int init_y, int seed, float targetFloorPercent) {
+    public MapCarver(BaseMapLayer level, int init_x, int init_y, int seed, float targetFloorPercent) {
         this.level = level;
         this.targetFloorPercent = targetFloorPercent;
 
@@ -54,12 +54,12 @@ public class MapCarver {
 
     /**
      * To make sure the whole level begins with 100% impassable terrain (Walls).
-     * @param level the LevelMap object that will be initialized properly.
+     * @param level the BaseMapLayer object that will be initialized properly.
      */
-    private void initMap(LevelMap level) {
+    private void initMap(BaseMapLayer level) {
         for (int i = 0; i < level.getMapHeight(); i++) {
             for (int j = 0; j < level.getMapWidth(); j++) {
-                level.getLogical_map()[i][j] = 0; // 0 = Wall
+                level.getLogicalMap()[i][j] = 0; // 0 = Wall
             }
         }
     }
@@ -68,7 +68,7 @@ public class MapCarver {
         int directionIndex = rand.nextInt(Direction4.values().length); // select a random Direction-index
         Direction4 dir = Direction4.values()[directionIndex]; // extract the Direction associated with the index
 
-        // todo: bias toward center?  walk 2 units (more linear)?
+        // todo: bias toward center?  walk 2 steps (more linear)?
 
         move(dir); // act on the random walk (move + dig);
     }
@@ -102,6 +102,6 @@ public class MapCarver {
      * @param y y position on the map.
      */
     private void dig(int x, int y) {
-        level.getLogical_map()[y][x] = 1; // 1 = Floor
+        level.getLogicalMap()[y][x] = 1; // 1 = Floor
     }
 }
