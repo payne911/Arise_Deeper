@@ -54,11 +54,12 @@ public class MapRenderer {
 
     /**
      * Uses MapRenderer's currently assigned Tileset to assign a Texture to the Tile at the specified coordinate.
-     * @param x
-     * @param y
+     *
+     * @param x x-coordinate input.
+     * @param y y-coordinate input.
      */
     public void assignSingleTileTexture(int x, int y) {
-        level.getGraphicalMap()[y][x].setTexture(tileset);
+        level.getTile(x, y).setTexture(tileset);
     }
 
     /**
@@ -73,7 +74,7 @@ public class MapRenderer {
         batch.disableBlending();
         for (int i = 0; i < level.getMapHeight(); i++) {
             for (int j = 0; j < level.getMapWidth(); j++) {
-                TextureRegion tile = level.getGraphicalMap()[i][j].getTexture();
+                TextureRegion tile = level.getTile(j, i).getTexture();
                 batch.draw(tile, AESTHETIC_OFFSET + j*gLogic.TILE_WIDTH, AESTHETIC_OFFSET + i*gLogic.TILE_HEIGHT);
             }
         }

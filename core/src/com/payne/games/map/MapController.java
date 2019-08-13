@@ -32,10 +32,10 @@ public class MapController {
      * Modifies both the `graphicalMap` attribute of the `BaseMapLayer` class
      * and the Texture used by the `MapRenderer` to display the Tile on the screen.
      *
-     * @param newTile a new instance of the Tile to be displayed.
+     * @param newTile A new instance of the Tile to be displayed.
      */
     public void setTile(Tile newTile) {
-        currentLevel.getGraphicalMap()[newTile.getY()][newTile.getX()] = newTile;
+        currentLevel.setTile(newTile.getX(), newTile.getY(), newTile);
         mapRenderer.assignSingleTileTexture(newTile.getX(), newTile.getY());
     }
 

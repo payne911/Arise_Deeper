@@ -79,13 +79,13 @@ public class MapGenerator {
 
                 if(j == 0 || j == mapWidth-1 || i == 0 || i == mapHeight-1) { // if EDGE
                     if(rand.nextDouble() < 0.15) { // slight chance of having a door
-                        level.getGraphicalMap()[i][j] = new Door(j, i);
+                        level.setTile(j, i, new Door(j, i));
                     } else {
-                        level.getGraphicalMap()[i][j] = new Wall(j, i);
+                        level.setTile(j, i, new Wall(j, i));
                     }
 
                 } else {
-                    level.getGraphicalMap()[i][j] = new Floor(j, i);
+                    level.setTile(j, i, new Floor(j, i));
                 }
             }
         }

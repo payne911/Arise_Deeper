@@ -20,6 +20,9 @@ public class MapCarver {
     private Random rand;
     private double targetFloorPercent;
 
+    private int floorTilesCreated = 0;
+    private int numberOfTiles;
+
     /* [DEBUG] Set to 'true' if the generator should actually try to be random. */
     private final boolean RANDOM_SEED = false;
 
@@ -36,6 +39,7 @@ public class MapCarver {
     public MapCarver(BaseMapLayer level, int init_x, int init_y, int seed, float targetFloorPercent) {
         this.level = level;
         this.targetFloorPercent = targetFloorPercent;
+        numberOfTiles = level.getMapHeight() * level.getMapWidth();
 
         this.drunk = new Drunkard(init_x, init_y);
         dig(init_x, init_y);
@@ -51,7 +55,7 @@ public class MapCarver {
 
         do {
             randomWalk();
-        } while(level.floorPercentage() < targetFloorPercent);
+        } while(((float)floorTilesCreated)/numberOfTiles < targetFloorPercent);
     }
 
     /**
@@ -61,11 +65,14 @@ public class MapCarver {
     private void initMap(BaseMapLayer level) {
         for (int i = 0; i < level.getMapHeight(); i++) {
             for (int j = 0; j < level.getMapWidth(); j++) {
-                level.getGraphicalMap()[i][j] = new Wall(j, i);
+                level.setTile(j, i, new Wall(j ,i));
             }
         }
     }
 
+    /**
+     * Gets the drunkard to walk in a random direction.
+     */
     private void randomWalk() {
         int directionIndex = rand.nextInt(Direction4.values().length); // select a random Direction-index
         Direction4 dir = Direction4.values()[directionIndex]; // extract the Direction associated with the index
@@ -104,6 +111,10 @@ public class MapCarver {
      * @param y y position on the map.
      */
     private void dig(int x, int y) {
-        level.getGraphicalMap()[y][x] = new Floor(x, y);
+        if(level.getTile(x, y) instanceof Floor) // Don't dig a Floor tile!
+            return;
+
+        level.setTile(x, y, new Floor(x, y));
+        floorTilesCreated++;
     }
 }

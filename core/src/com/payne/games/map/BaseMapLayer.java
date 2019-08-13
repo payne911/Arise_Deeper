@@ -1,6 +1,5 @@
 package com.payne.games.map;
 
-import com.payne.games.map.tiles.Floor;
 import com.payne.games.map.tiles.Tile;
 
 
@@ -30,6 +29,21 @@ public class BaseMapLayer {
 
     public Tile[][] getGraphicalMap() {
         return graphicalMap;
+    }
+
+    /**
+     * Basically just a Setter for the GraphicalMap to instanciate a new Tile at a certain coordinate.
+     *
+     * @param x x-coordinate input.
+     * @param y y-coordinate input.
+     * @param newTile the Tile instance that will replace the old one.
+     */
+    public void setTile(int x, int y, Tile newTile) {
+        graphicalMap[y][x] = newTile;
+    }
+
+    public Tile getTile(int x, int y) {
+        return graphicalMap[y][x];
     }
 
     /**
@@ -70,21 +84,5 @@ public class BaseMapLayer {
 //                graphicalMap[y+1][x],
 //                graphicalMap[y+1][x+1]
         };
-    }
-
-    /**
-     * Calculates the percentage of tiles that are floors.
-     *
-     * @return The percentage, ranging from 0 to 1.
-     */
-    public float floorPercentage() {
-        int totalFloors = 0;
-        for (int i = 0; i < getMapHeight(); i++) {
-            for (int j = 0; j < getMapWidth(); j++) {
-                if (graphicalMap[i][j] instanceof Floor)
-                    totalFloors++; // a floor was encountered
-            }
-        }
-        return ((float)totalFloors)/(getMapHeight()*getMapWidth());
     }
 }

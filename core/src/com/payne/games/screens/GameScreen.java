@@ -32,7 +32,7 @@ public class GameScreen implements Screen {
         camera.translate(0,0);
 
         // generate the initial level
-        mapController.createMap(64, 64, new BasicTileset(gLogic));
+        mapController.createMap(64, 32, new BasicTileset(gLogic));
 
         // input processor
         Gdx.input.setInputProcessor(new MyInputProcessor(camera, mapController));
