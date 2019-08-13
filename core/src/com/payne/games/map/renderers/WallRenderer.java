@@ -1,4 +1,4 @@
-package com.payne.games.map;
+package com.payne.games.map.renderers;
 
 import com.payne.games.map.tilesets.Tileset;
 

@@ -4,7 +4,6 @@ import com.payne.games.AriseDeeper;
 
 
 public class GameLogic {
-
     private final AriseDeeper game;
     private int currentLevel = 0;
 

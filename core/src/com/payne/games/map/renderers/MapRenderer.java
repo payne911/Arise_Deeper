@@ -1,8 +1,9 @@
-package com.payne.games.map;
+package com.payne.games.map.renderers;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.payne.games.logic.GameLogic;
+import com.payne.games.map.LevelMap;
 import com.payne.games.map.tiles.*;
 import com.payne.games.map.tilesets.Tileset;
 
@@ -45,35 +46,49 @@ public class MapRenderer {
      * Basically assigns a TextureRegion to a new instance of a Tile.
      */
     private void assignTilesTexture() {
+        for (int i = 0; i < level.getMapHeight(); i++) {
+            for (int j = 0; j < level.getMapWidth(); j++) {
+                assignSingleTileTexture(j, i);
+            }
+        }
+    }
+
+    /**
+     * Using the LevelMap's logical_map attribute, this assigns a proper Texture, randomly selected from the assigned
+     * Tileset. The LevelMap's graphical_map is then updated appropriately.
+     *
+     * @param x
+     * @param y
+     */
+    public void assignSingleTileTexture(int x, int y) {
         Tile[][] graphicalMap = level.getGraphical_map();
         TextureRegion tileImg;
 
-
-        for (int i = 0; i < level.getMapHeight(); i++) {
-            for (int j = 0; j < level.getMapWidth(); j++) {
-
-                // todo: implement properly!
-                switch (level.getLogical_map()[i][j]) { // tileType
-                    case 0:
-                        graphicalMap[i][j] = new Wall(j, i);
-                        tileImg = tileset.getWallRandomTexture();
-                        break;
-                    case 1:
-                        graphicalMap[i][j] = new Floor(j, i);
-                        tileImg = tileset.getFloorRandomTexture();
-                        break;
-                    case 2:
-                        graphicalMap[i][j] = new Door(j, i);
-                        tileImg = tileset.getDoorRandomTexture();
-                        break;
-                    default:
-                        graphicalMap[i][j] = new Empty(j, i);
-                        tileImg = tileset.getEmptyRandomTexture();
-                        break;
-                }
-                graphicalMap[i][j].setTexture(tileImg);
-            }
+        // todo: implement properly!
+        switch (level.getLogical_map()[y][x]) { // tileType
+            case 0:
+                graphicalMap[y][x] = new Wall(x, y);
+                tileImg = tileset.getWallRandomTexture();
+                break;
+            case 1:
+                graphicalMap[y][x] = new Floor(x, y);
+                tileImg = tileset.getFloorRandomTexture();
+                break;
+            case 2:
+                graphicalMap[y][x] = new Floor(x, y);
+                ((Floor)graphicalMap[y][x]).setWater(true);
+                tileImg = tileset.getWaterRandomTexture();
+                break;
+            case 3:
+                graphicalMap[y][x] = new Door(x, y);
+                tileImg = tileset.getDoorRandomTexture();
+                break;
+            default:
+                graphicalMap[y][x] = new Empty(x, y);
+                tileImg = tileset.getEmptyRandomTexture();
+                break;
         }
+        graphicalMap[y][x].setTexture(tileImg);
     }
 
     /**

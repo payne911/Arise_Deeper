@@ -6,6 +6,10 @@ import com.payne.games.map.tiles.*;
 public class LevelMap {
     private int mapWidth, mapHeight;
 
+    /**
+     * The representations of the 2D arrays are [rows][columns], aka [y][x].
+     * (0,0) is at the bottom-left, when looking at a rendered map on the screen.
+     */
     private int[][] logical_map; // todo: use "byte[][]" instead for smaller memory usage?
     private Tile[][] graphical_map; // todo: remove from here? (LevelMap should be graphic-agnostic)
     // todo: integrate the "Layers"
@@ -31,55 +35,48 @@ public class LevelMap {
         return logical_map;
     }
 
-    public void setLogical_map(int[][] logical_map) {
-        this.logical_map = logical_map;
-    }
-
-    public void setLogicalTile(int type, int x, int y) {
-        this.logical_map[y][x] = type;
-
-        Tile graphicalTile;
-        switch (type) {
-            case 0:
-                graphicalTile = new Floor(x,y);
-                break;
-            case 1:
-                graphicalTile = new Floor(x,y);
-                break;
-            default:
-                graphicalTile = new Empty(x,y);
-                break;
-        }
-        this.graphical_map[y][x] = graphicalTile;
-    }
-
     public Tile[][] getGraphical_map() {
         return graphical_map;
     }
 
-    public void setGraphical_map(Tile[][] graphical_map) {
-        this.graphical_map = graphical_map;
-    }
-
     /**
      * To obtain a 1D array of the surrounding tiles of a certain position on the LevelMap.
-     * The (0,0) position is considered
      *
      * For example, with this logical_map array:
      * [[1, 3, 1, 4, 5],
      *  [1, 0, 2, 2, 4],
-     *  [2, 3, 3, 4, 1],
+     *  [2, 5, 1, 1, 1],
      *  [4, 5, 0, 0, 1],
      *  [3, 1, 1, 1, 5]]
      *
+     *  Here, "1" is the tileType of the (0,0) coordinate.
      *
+     *  Polling the (2,1) coordinate returns the following result:
+     *  [3, 1, 4, 0, 2, 2, 5, 1, 1]
      *
-     * @param x
-     * @param y
-     * @return
+     *  Which came from extracting the following sub-array, and flattening it:
+     *  [[3, 1, 4],
+     *   [0, 2, 2],
+     *   [5, 1, 1]]
+     *
+     *   todo: edge-cases behavior (use "-1")
+     *
+     * @param x x-coordinate input.
+     * @param y y-coordinate input.
+     * @return A flattened array of the tileTypes surrounding the input position.
      */
     public int[] pollSurrounding(int x, int y) {
-        return new int[]{};
+        return new int[]{
+                logical_map[y-1][x-1],
+                logical_map[y-1][x],
+                logical_map[y-1][x+1],
+                logical_map[y][x-1],
+                logical_map[y][x],
+                logical_map[y][x+1],
+                logical_map[y+1][x-1],
+                logical_map[y+1][x],
+                logical_map[y+1][x+1]
+        };
     }
 
     /**

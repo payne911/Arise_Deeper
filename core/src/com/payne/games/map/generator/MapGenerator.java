@@ -47,6 +47,10 @@ public class MapGenerator {
         drunkardAlgo.walk();
     }
 
+    private void floodFill() {
+
+    }
+
 
 
 
@@ -72,7 +76,7 @@ public class MapGenerator {
 
                 if(j == 0 || j == mapWidth-1 || i == 0 || i == mapHeight-1) { // if EDGE
                     if(rand.nextDouble() < 0.15) { // slight chance of having a door
-                        level.getLogical_map()[i][j] = 2;
+                        level.getLogical_map()[i][j] = 3;
                     } else {
                         level.getLogical_map()[i][j] = 0;
                     }
@@ -89,7 +93,7 @@ public class MapGenerator {
     private void randomStuff(LevelMap level) {
         for (int i = 0; i < level.getMapHeight(); i++) {
             for (int j = 0; j < level.getMapWidth(); j++) {
-                level.getLogical_map()[i][j] = rand.nextInt(2);
+                level.getLogical_map()[i][j] = rand.nextInt(3);
             }
         }
     }

@@ -8,9 +8,6 @@ import com.payne.games.AriseDeeper;
 import com.payne.games.logic.GameLogic;
 import com.payne.games.map.MapController;
 import com.payne.games.map.tilesets.BasicTileset;
-import com.payne.games.map.LevelMap;
-import com.payne.games.map.MapRenderer;
-import com.payne.games.map.generator.MapGenerator;
 import com.payne.games.utils.MyInputProcessor;
 
 
@@ -20,18 +17,12 @@ public class GameScreen implements Screen {
 
     private GameLogic gLogic;
     private MapController mapController;
-    private MapGenerator mapGenerator;
-    private MapRenderer mapRenderer;
-    private LevelMap currentLevel;
 
 
     public GameScreen(final AriseDeeper game) {
         this.game = game;
         this.gLogic = new GameLogic(game);
         this.mapController = new MapController(gLogic);
-
-        this.mapGenerator = new MapGenerator(gLogic);
-        this.mapRenderer = new MapRenderer(gLogic);
 
         Gdx.gl.glClearColor(0, 0, 0, 1); // black background
 
@@ -40,12 +31,11 @@ public class GameScreen implements Screen {
         camera.setToOrtho(false, gLogic.GAME_WIDTH, gLogic.GAME_HEIGHT);
         camera.translate(0,0);
 
-        // generate and set up a map to be rendered
-        currentLevel = mapGenerator.createMap(64,64);
-        mapRenderer.setUpLevel(currentLevel, new BasicTileset(gLogic));
+        // generate the initial level
+        mapController.createMap(64, 64, new BasicTileset(gLogic));
 
         // input processor
-        Gdx.input.setInputProcessor(new MyInputProcessor(camera));
+        Gdx.input.setInputProcessor(new MyInputProcessor(camera, mapController));
     }
 
     @Override
@@ -60,7 +50,7 @@ public class GameScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined); // render in the coord system specified by camera
 
         game.batch.begin();
-        mapRenderer.renderLevel(game.batch, currentLevel);
+        mapController.renderLevel(game.batch);
 
         /*
         This indicates the highest number of sprites that were sent to the GPU at once over the lifetime
@@ -71,7 +61,7 @@ public class GameScreen implements Screen {
         game.font.draw(game.batch,
                 "MaxSpritesBatch: " + game.batch.maxSpritesInBatch
                 + " | seed: " + gLogic.getSeed()
-                + " | fps: " + Gdx.graphics.getFramesPerSecond(), 0, gLogic.GAME_HEIGHT - 10);
+                + " | fps: " + Gdx.graphics.getFramesPerSecond(), 4, 14); // at the bottom-left of the screen
 
         game.batch.end();
 

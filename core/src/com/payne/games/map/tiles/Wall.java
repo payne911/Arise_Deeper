@@ -2,7 +2,7 @@ package com.payne.games.map.tiles;
 
 
 public class Wall extends Tile {
-    boolean southConnected, northConnected, eastConnected, westConnected;
+    private boolean southConnected, northConnected, eastConnected, westConnected;
 
 
     public Wall(int x, int y) {

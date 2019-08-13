@@ -2,6 +2,9 @@ package com.payne.games.utils;
 
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.payne.games.map.MapController;
+
+import java.util.Arrays;
 
 
 /**
@@ -9,18 +12,26 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
  */
 public class MyInputProcessor extends InputAdapter {
     private OrthographicCamera camera;
+    private MapController mapController;
     private int down_X, down_Y; // used for dragging the map
 
 
-    public MyInputProcessor(OrthographicCamera camera) {
+    public MyInputProcessor(OrthographicCamera camera, MapController mapController) {
         this.camera = camera;
+        this.mapController = mapController;
     }
 
 
     @Override
     public boolean keyDown(int keycode) {
         System.out.println("keyDown_keyCode: " + keycode);
-        return false;
+
+        // todo: just here for testing purposes... remove eventually
+        if(keycode == 62 && mapController.getCurrentLevel() != null) {
+            mapController.setTile(3, 0 ,0); // bottom-left tile becomes a random door
+        }
+
+        return true;
     }
 
     /**
