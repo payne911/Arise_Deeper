@@ -3,9 +3,9 @@ package com.payne.games.map.tilesets;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.GridPoint2;
 import com.payne.games.logic.GameLogic;
 
-import java.awt.*;
 import java.util.Random;
 
 
@@ -16,12 +16,12 @@ public abstract class Tileset {
     protected Texture tiles;
     protected TextureRegion[][] splitTiles;
 
-    // collections of points within the split tileset's spritesheet where each type of tile is (for random picks).
-    protected Point[] floors;
-    protected Point[] walls;
-    protected Point[] doors;
-    protected Point[] water;
-    protected Point[] empty;
+    // collections of points within the split tileset's SpriteSheet where each type of tile is (for random picks).
+    protected GridPoint2[] floors;
+    protected GridPoint2[] walls;
+    protected GridPoint2[] doors;
+    protected GridPoint2[] water;
+    protected GridPoint2[] empty;
 
 
     public Tileset(GameLogic gameLogic) {
@@ -43,27 +43,27 @@ public abstract class Tileset {
         return tiles;
     }
 
-    private Point getRandomDoor() {
+    private GridPoint2 getRandomDoor() {
         return doors[rand.nextInt(doors.length)];
     }
 
-    private Point getRandomWall() {
+    private GridPoint2 getRandomWall() {
         return walls[rand.nextInt(walls.length)];
     }
 
-    private Point getRandomFloor() {
+    private GridPoint2 getRandomFloor() {
         return floors[rand.nextInt(floors.length)];
     }
 
-    private Point getRandomWater() {
+    private GridPoint2 getRandomWater() {
         return water[rand.nextInt(water.length)];
     }
 
-    private Point getRandomEmpty() {
+    private GridPoint2 getRandomEmpty() {
         return empty[rand.nextInt(empty.length)];
     }
 
-    private TextureRegion getTextureFromPoint(Point positionInTileset) {
+    private TextureRegion getTextureFromPoint(GridPoint2 positionInTileset) {
         return splitTiles[positionInTileset.y][positionInTileset.x];
     }
 

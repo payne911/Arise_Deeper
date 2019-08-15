@@ -1,23 +1,27 @@
 package com.payne.games.map.renderers;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.payne.games.logic.GameLogic;
 import com.payne.games.map.BaseMapLayer;
+import com.payne.games.map.SecondaryMapLayer;
 import com.payne.games.map.tilesets.Tileset;
 
 
 public class MapRenderer {
-    private final int AESTHETIC_OFFSET = 16; // todo: not necessary
-
     private GameLogic gLogic;
+
+    // Base layer
     private WallRenderer wallRenderer;
     private Tileset tileset;
     private BaseMapLayer level;
 
+    // Secondary layer
+    private SecondaryMapLayer secondaryMapLayer;
 
-    public MapRenderer(GameLogic gameLogic) {
+
+    public MapRenderer(GameLogic gameLogic, SecondaryMapLayer secondaryMapLayer) {
         this.gLogic = gameLogic;
+        this.secondaryMapLayer = secondaryMapLayer;
         this.wallRenderer = new WallRenderer();
     }
 
@@ -32,7 +36,7 @@ public class MapRenderer {
      * @param level A generated level (the output of the MapGenerator).
      * @param tileset String of the name of a SpriteSheet located in the "core/assets" folder.
      */
-    public void setUpLevel(BaseMapLayer level, Tileset tileset) {
+    public void setUpBaseLayer(BaseMapLayer level, Tileset tileset) {
         this.level = level;
         this.tileset = tileset;
         this.wallRenderer.setTileset(tileset);
@@ -74,21 +78,31 @@ public class MapRenderer {
         batch.disableBlending();
         for (int i = 0; i < level.getMapHeight(); i++) {
             for (int j = 0; j < level.getMapWidth(); j++) {
-                TextureRegion tile = level.getTile(j, i).getTexture();
-                batch.draw(tile, AESTHETIC_OFFSET + j*gLogic.TILE_WIDTH, AESTHETIC_OFFSET + i*gLogic.TILE_HEIGHT);
+                drawAtMapCoordinate(batch, level.getTile(j, i));
             }
         }
         batch.enableBlending();
 
 
+        /* Drawing the secondary layer (interactive GameObjects such as Hero, Keys and Chests). */
+        for (IRenderable gameObject : secondaryMapLayer.getSecondaryLayer()) {
+            drawAtMapCoordinate(batch, gameObject); // todo: other approach so that Hero is on top of all layers
+        }
 
-        // todo: draw other layers!
 
+        // todo: draw other layers (Overlays, HP bars, missiles, etc.)
 
+    }
 
-//        /* Tests. */
-//        Texture tiles = tileset.getTiles();
-//        batch.draw(tiles, gLogic.GAME_WIDTH-350, gLogic.GAME_HEIGHT-120, tiles.getWidth(), tiles.getHeight());
-//        batch.draw(splitTiles[0][0], 200, 200); // drawing a single tile
+    /**
+     * Draws the TextureRegion using the map's coordinate system (tile coordinates, not pixel coordinates).
+     *
+     * @param batch Used to draw.
+     * @param toRender A renderable object.
+     */
+    private void drawAtMapCoordinate(SpriteBatch batch, IRenderable toRender) {
+        batch.draw(toRender.getTexture(),
+                gLogic.AESTHETIC_OFFSET + toRender.getX()*gLogic.TILE_WIDTH,
+                gLogic.AESTHETIC_OFFSET + toRender.getY()*gLogic.TILE_HEIGHT);
     }
 }

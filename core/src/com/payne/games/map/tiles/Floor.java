@@ -13,6 +13,7 @@ public class Floor extends Tile {
 
     public Floor(int x, int y) {
         super(x, y);
+        setAllowingMove(true);
     }
 
     @Override
@@ -21,6 +22,16 @@ public class Floor extends Tile {
             setTexture(tileset.getWaterRandomTexture());
         else
             setTexture(tileset.getFloorRandomTexture());
+    }
+
+    @Override
+    public boolean canInteract(GameObject gameObject) {
+        return true;
+    }
+
+    @Override
+    public void interact(GameObject gameObject) {
+
     }
 
 

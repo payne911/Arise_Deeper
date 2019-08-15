@@ -22,20 +22,21 @@ public class GameScreen implements Screen {
     public GameScreen(final AriseDeeper game) {
         this.game = game;
         this.gLogic = new GameLogic(game);
-        this.mapController = new MapController(gLogic);
 
         Gdx.gl.glClearColor(0, 0, 0, 1); // black background
 
         // create the camera and the SpriteBatch
         camera = new OrthographicCamera();
         camera.setToOrtho(false, gLogic.GAME_WIDTH, gLogic.GAME_HEIGHT);
-        camera.translate(0,0);
+        camera.zoom = gLogic.CAM_ZOOM;
 
-        // generate the initial level
-        mapController.createMap(64, 32, new BasicTileset(gLogic));
+        this.mapController = new MapController(gLogic, camera);
+
+        // generate the initial level and place the GameObjects (hero, etc.)
+        mapController.generateLevel(64, 32, new BasicTileset(gLogic));
 
         // input processor
-        Gdx.input.setInputProcessor(new MyInputProcessor(camera, mapController));
+        Gdx.input.setInputProcessor(new MyInputProcessor(gLogic, camera, mapController));
     }
 
     @Override

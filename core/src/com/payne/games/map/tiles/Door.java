@@ -1,14 +1,16 @@
 package com.payne.games.map.tiles;
 
+import com.payne.games.gameObjects.GameObject;
 import com.payne.games.map.tilesets.Tileset;
 
-
+// todo: maybe should be a GameObject ?
 public class Door extends Tile {
 
-    private boolean isLocked, isExit;
+    private boolean isExit;
 
     public Door(int x, int y) {
         super(x, y);
+        setAllowingMove(false);
     }
 
     @Override
@@ -16,12 +18,14 @@ public class Door extends Tile {
         setTexture(tileset.getDoorRandomTexture());
     }
 
-    public boolean isLocked() {
-        return isLocked;
+    @Override
+    public boolean canInteract(GameObject gameObject) {
+        return false;
     }
 
-    public void setLocked(boolean locked) {
-        isLocked = locked;
+    @Override
+    public void interact(GameObject gameObject) {
+
     }
 
     public boolean isExit() {
