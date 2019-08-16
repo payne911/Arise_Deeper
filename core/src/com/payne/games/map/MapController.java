@@ -23,6 +23,7 @@ public class MapController {
     private Hero player;
     private SecondaryMapLayer secondaryMapLayer;
     private GameObjectFactory gameObjectFactory;
+
     private MovementSystem movementSystem;
 
 
@@ -48,20 +49,24 @@ public class MapController {
         return secondaryMapLayer;
     }
 
+    public void moveTo(int x, int y) {
+        movementSystem.moveTo(player, x, y);
+    }
+
     public void moveHeroLeft() {
-        movementSystem.moveLeft(player, currentLevel);
+        movementSystem.moveLeft(player);
     }
 
     public void moveHeroRight() {
-        movementSystem.moveRight(player, currentLevel);
+        movementSystem.moveRight(player);
     }
 
     public void moveHeroUp() {
-        movementSystem.moveUp(player, currentLevel);
+        movementSystem.moveUp(player);
     }
 
     public void moveHeroDown() {
-        movementSystem.moveDown(player, currentLevel);
+        movementSystem.moveDown(player);
     }
 
     /**
@@ -97,6 +102,7 @@ public class MapController {
         currentLevel = mapGenerator.createMap(mapWidth, mapHeight); // generate a base layer
         mapRenderer.setUpBaseLayer(currentLevel, tileset); // assign the graphical representations to base layer's Tiles
         secondaryMapLayer.setUpSecondaryLayer(player, currentLevel); // place secondary layer (Hero, Chests, Keys, etc.)
+        movementSystem.setUpIndexedGraph(currentLevel); // set up the graph for pathfinding
         centerOnHero();
     }
 

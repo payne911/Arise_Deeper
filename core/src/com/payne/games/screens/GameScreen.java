@@ -4,11 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.input.GestureDetector;
 import com.payne.games.AriseDeeper;
 import com.payne.games.logic.GameLogic;
 import com.payne.games.map.MapController;
 import com.payne.games.map.tilesets.BasicTileset;
-import com.payne.games.utils.MyInputProcessor;
+import com.payne.games.inputProcessors.MyGestureListener;
+import com.payne.games.inputProcessors.MyInputMultiplexer;
+import com.payne.games.inputProcessors.MyInputProcessor;
 
 
 public class GameScreen implements Screen {
@@ -17,6 +20,11 @@ public class GameScreen implements Screen {
 
     private GameLogic gLogic;
     private MapController mapController;
+
+    // turn system
+    private final boolean REAL_TIME = true;
+    private final float TURN_TIME = 3f;
+    private float currTime = 0f;
 
 
     public GameScreen(final AriseDeeper game) {
@@ -36,7 +44,11 @@ public class GameScreen implements Screen {
         mapController.generateLevel(64, 32, new BasicTileset(gLogic));
 
         // input processor
-        Gdx.input.setInputProcessor(new MyInputProcessor(gLogic, camera, mapController));
+        MyInputProcessor inputProcessor1  = new MyInputProcessor(gLogic, camera, mapController);
+        MyGestureListener inputProcessor2 = new MyGestureListener(gLogic, camera, mapController);
+        Gdx.input.setInputProcessor(new MyInputMultiplexer(
+                inputProcessor1,
+                new GestureDetector(inputProcessor2)));
     }
 
     @Override

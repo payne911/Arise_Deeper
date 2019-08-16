@@ -1,4 +1,4 @@
-package com.payne.games.utils;
+package com.payne.games.inputProcessors;
 
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -7,7 +7,8 @@ import com.payne.games.map.MapController;
 
 
 /**
- * The `keyTyped(char character)` method below will be called repeatedly if a key is KEPT DOWN.
+ * The `keyTyped(char character)` method will be called repeatedly if a key is KEPT DOWN.
+ *
  */
 public class MyInputProcessor extends InputAdapter {
     private GameLogic gLogic;
@@ -68,21 +69,12 @@ public class MyInputProcessor extends InputAdapter {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         down_relativePixelCoord_TL_X = screenX;
         down_relativePixelCoord_TL_Y = screenY;
-
-        final double OFFSET = gLogic.AESTHETIC_OFFSET;
-        final double ZOOM = camera.zoom;
-
-        // todo: "-1" ?
-        double coordX = (camera.position.x + screenX*ZOOM - OFFSET - 1 - ((double)camera.viewportWidth/2)*ZOOM)  / gLogic.TILE_WIDTH;
-        double coordY = (camera.position.y - screenY*ZOOM - OFFSET - 1 + ((double)camera.viewportHeight/2)*ZOOM) / gLogic.TILE_HEIGHT;
-
-        System.out.println("touchDown Tile coordinate: (" + (int)coordX + ", " + (int)coordY + ")");
-
-        return true;
+        return false;
     }
 
     /**
      * (0,0) is at the top-left.
+     * todo: necessary to implement in `MyGestureListener.pan()` for mobile compatibility?
      *
      * @param screenX relative pixel x-coordinate, where the mouse is currently.
      * @param screenY relative pixel y-coordinate, where the mouse is currently.
@@ -108,12 +100,11 @@ public class MyInputProcessor extends InputAdapter {
         down_relativePixelCoord_TL_Y = screenY;
 
         camera.translate(dX*camera.zoom, dY*camera.zoom);
-        return true;
+        return false;
     }
 
     /**
      * Mouse-wheel scroll.
-     * todo: For mobile device, use in conjunction with `InputMultiplexer` and `GestureDetector` to get the pinch.
      *
      * @param amount Either 1 or -1, based on the direction of the scroll.
      * @return If handled.

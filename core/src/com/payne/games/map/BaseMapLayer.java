@@ -1,5 +1,6 @@
 package com.payne.games.map;
 
+import com.badlogic.gdx.utils.Array;
 import com.payne.games.map.tiles.Tile;
 
 
@@ -47,42 +48,26 @@ public class BaseMapLayer {
     }
 
     /**
-     * To obtain a 1D array of the surrounding tiles of a certain position on the BaseMapLayer.
+     * Returns the list of tiles that ALLOW_MOVEMENT surrounding the input coordinate.
+     * Used to build a graph for the pathfinding system.
      *
-     * For example, with this logical_map array:
-     * [[1, 3, 1, 4, 5],
-     *  [1, 0, 2, 2, 4],
-     *  [2, 5, 1, 1, 1],
-     *  [4, 5, 0, 0, 1],
-     *  [3, 1, 1, 1, 5]]
-     *
-     *  Here, "1" is the tileType of the (0,0) coordinate.
-     *
-     *  Polling the (2,1) coordinate returns the following result:
-     *  [3, 1, 4, 0, 2, 2, 5, 1, 1]
-     *
-     *  Which came from extracting the following sub-array, and flattening it:
-     *  [[3, 1, 4],
-     *   [0, 2, 2],
-     *   [5, 1, 1]]
-     *
-     *   todo: edge-cases behavior (use "-1")
-     *
-     * @param x x-coordinate input.
-     * @param y y-coordinate input.
-     * @return A flattened array of the tileTypes surrounding the input position.
+     * @param x x-coordinate of the Tile for which we want to list the neighbors.
+     * @param y y-coordinate of the Tile for which we want to list the neighbors.
+     * @return an Array of Tile that are the Tiles that allow movement from the input Tile.
      */
-    public int[] pollSurrounding(int x, int y) {
-        return new int[]{
-//                graphicalMap[y-1][x-1],
-//                graphicalMap[y-1][x],
-//                graphicalMap[y-1][x+1],
-//                graphicalMap[y][x-1],
-//                graphicalMap[y][x],
-//                graphicalMap[y][x+1],
-//                graphicalMap[y+1][x-1],
-//                graphicalMap[y+1][x],
-//                graphicalMap[y+1][x+1]
-        };
+    public Array<Tile> getNeighbors(int x, int y) {
+        Array<Tile> neighbors = new Array<>();
+
+        Array<Tile> tmp = new Array<>();
+        tmp.addAll(graphicalMap[y][x-1],
+                graphicalMap[y][x+1],
+                graphicalMap[y+1][x],
+                graphicalMap[y-1][x]);
+        for(Tile t : tmp) {
+            if(t.isAllowingMove())
+                neighbors.add(t);
+        }
+
+        return neighbors;
     }
 }

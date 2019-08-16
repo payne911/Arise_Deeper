@@ -11,10 +11,32 @@ public abstract class Tile implements IRenderable {
     private TextureRegion texture;
     private boolean allowingMove;
 
+    // pathfinding
+    private int graphIndex = -1;
+    private boolean seen = true; // todo: this should be 'false' once FOV is implemented and MyHeuristic should be changed!
+
+
     // todo: figure out if the parameters are necessary (do the Tiles need to know their position?)
     public Tile(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+
+    public boolean isSeen() {
+        return seen;
+    }
+
+    public void setSeen(boolean seen) {
+        this.seen = seen;
+    }
+
+    public int getGraphIndex() {
+        return graphIndex;
+    }
+
+    public void setGraphIndex(int graphIndex) {
+        this.graphIndex = graphIndex;
     }
 
     public boolean isAllowingMove() {
@@ -41,8 +63,20 @@ public abstract class Tile implements IRenderable {
         this.texture = texture;
     }
 
+
     abstract public void setTexture(Tileset tileset);
     abstract public boolean canInteract(GameObject gameObject);
     abstract public void interact(GameObject gameObject);
 
+
+    @Override
+    public String toString() {
+        return "Tile{" +
+                "x=" + x +
+                ", y=" + y +
+                ", allowingMove=" + allowingMove +
+                ", graphIndex=" + graphIndex +
+                ", seen=" + seen +
+                '}';
+    }
 }
