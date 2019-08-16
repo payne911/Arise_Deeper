@@ -41,6 +41,12 @@ public class GameObjectFactory {
         return hero;
     }
 
+    public Hero createEnemy(int x, int y) {
+        Hero hero = new Hero(x, y);
+        hero.setTexture(split_20p[0][7]);
+        return hero;
+    }
+
     public Key createKey(int x, int y) {
         Key key = new Key(x, y);
         key.setTexture(split_16p[0][3]);

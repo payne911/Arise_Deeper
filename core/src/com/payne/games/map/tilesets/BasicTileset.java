@@ -20,7 +20,8 @@ public class BasicTileset extends Tileset {
                 new GridPoint2(2, 3),
                 new GridPoint2(3, 1),
                 new GridPoint2(3, 2),
-                new GridPoint2(3, 3)
+                new GridPoint2(3, 3),
+                new GridPoint2(19, 3)
         };
 
         walls = new GridPoint2[]{
