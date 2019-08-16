@@ -36,6 +36,9 @@ public class SecondaryMapLayer {
         createChest(28, 13);
         createChest(15, 3);
         createKey(14, 10);
+        createEnemy(15, 10);
+        createEnemy(56, 25);
+
     }
 
     private void placeHero(Hero player, int x, int y) {
@@ -43,12 +46,14 @@ public class SecondaryMapLayer {
         player.setY(y);
         actorLayer.add(player);
     }
+    private void createEnemy(int x, int y) {
+        actorLayer.add(objectFactory.createEnemy(x, y));
+    }
 
     // todo: add into Floor's list of objects?
     private void createChest(int x, int y) {
         inertLayer.add(objectFactory.createChest(x, y));
     }
-
     private void createKey(int x, int y) {
         inertLayer.add(objectFactory.createKey(x, y));
     }
