@@ -1,15 +1,16 @@
-package com.payne.games.map;
+package com.payne.games.logic;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.payne.games.gameObjects.GameObjectFactory;
 import com.payne.games.gameObjects.Hero;
-import com.payne.games.logic.GameLogic;
-import com.payne.games.logic.MovementSystem;
+import com.payne.games.map.BaseMapLayer;
+import com.payne.games.map.SecondaryMapLayer;
 import com.payne.games.map.generators.MapGenerator;
 import com.payne.games.map.renderers.MapRenderer;
 import com.payne.games.map.tiles.Tile;
 import com.payne.games.map.tilesets.Tileset;
+import com.payne.games.turns.TurnManager;
 
 
 public class MapController {
@@ -25,6 +26,7 @@ public class MapController {
     private GameObjectFactory gameObjectFactory;
 
     private MovementSystem movementSystem;
+    private TurnManager turnManager;
 
 
     public MapController(GameLogic gameLogic, OrthographicCamera camera) {
@@ -36,6 +38,7 @@ public class MapController {
         this.secondaryMapLayer = new SecondaryMapLayer(gLogic, gameObjectFactory);
         this.mapRenderer = new MapRenderer(gLogic, secondaryMapLayer);
         this.movementSystem = new MovementSystem(gLogic);
+        this.turnManager = new TurnManager(gLogic);
 
         this.player = gameObjectFactory.createHero(0, 0); // todo: this will eventually move somewhere else!
     }
@@ -49,24 +52,13 @@ public class MapController {
         return secondaryMapLayer;
     }
 
+    public void processTurn() {
+        turnManager.process(secondaryMapLayer.getActorLayer());
+        turnManager.execute();
+    }
+
     public void moveTo(int x, int y) {
         movementSystem.moveTo(player, x, y);
-    }
-
-    public void moveHeroLeft() {
-        movementSystem.moveLeft(player);
-    }
-
-    public void moveHeroRight() {
-        movementSystem.moveRight(player);
-    }
-
-    public void moveHeroUp() {
-        movementSystem.moveUp(player);
-    }
-
-    public void moveHeroDown() {
-        movementSystem.moveDown(player);
     }
 
     /**

@@ -94,7 +94,7 @@ public class MapCarver {
         if (test_x < 1 || test_y < 1 || test_x > level.getMapWidth()-2 || test_y > level.getMapHeight()-2)
             return;
 
-        // Move the drunkard.
+        // MoveAction the drunkard.
         this.drunk.setX(test_x);
         this.drunk.setY(test_y);
 

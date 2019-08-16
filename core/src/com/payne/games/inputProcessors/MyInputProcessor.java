@@ -3,7 +3,7 @@ package com.payne.games.inputProcessors;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.payne.games.logic.GameLogic;
-import com.payne.games.map.MapController;
+import com.payne.games.logic.MapController;
 
 
 /**
@@ -28,23 +28,7 @@ public class MyInputProcessor extends InputAdapter {
     public boolean keyDown(int keycode) {
 
         switch (keycode) {
-            case 19: // up
-                mapController.moveHeroUp();
-                mapController.centerOnHero();
-                break;
-            case 20: // down
-                mapController.moveHeroDown();
-                mapController.centerOnHero();
-                break;
-            case 21: // left
-                mapController.moveHeroLeft();
-                mapController.centerOnHero();
-                break;
-            case 22: // right
-                mapController.moveHeroRight();
-                mapController.centerOnHero();
-                break;
-            case 62: // space
+            case 62: // space    todo: should TOGGLE a centerView option
                 mapController.centerOnHero();
                 break;
             default:

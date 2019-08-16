@@ -26,6 +26,9 @@ public class GameLogic {
     public final int CAM_WIDTH  = 10;
     public final int CAM_HEIGHT = 10;
 
+    // turn
+    public final float TURN_TIME = 0.1f;
+
 
     public GameLogic(final AriseDeeper game) {
         this.game = game;

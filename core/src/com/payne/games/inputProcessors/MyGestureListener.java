@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.payne.games.logic.GameLogic;
-import com.payne.games.map.MapController;
+import com.payne.games.logic.MapController;
 
 
 /**
@@ -47,7 +47,9 @@ public class MyGestureListener implements GestureDetector.GestureListener {
 
         System.out.println("Tile coordinate: (" + (int)coordX + ", " + (int)coordY + ")");
 
+        // todo: be wiser! tap.location: if monster -> AttackAction, if Door -> DoorAction, if Item -> PickUpAction
         mapController.moveTo((int)coordX, (int)coordY);
+
         return true;
     }
 

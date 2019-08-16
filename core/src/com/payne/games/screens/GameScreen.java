@@ -7,7 +7,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.payne.games.AriseDeeper;
 import com.payne.games.logic.GameLogic;
-import com.payne.games.map.MapController;
+import com.payne.games.turns.TurnManager;
+import com.payne.games.logic.MapController;
 import com.payne.games.map.tilesets.BasicTileset;
 import com.payne.games.inputProcessors.MyGestureListener;
 import com.payne.games.inputProcessors.MyInputMultiplexer;
@@ -21,10 +22,7 @@ public class GameScreen implements Screen {
     private GameLogic gLogic;
     private MapController mapController;
 
-    // turn system
-    private final boolean REAL_TIME = true;
-    private final float TURN_TIME = 3f;
-    private float currTime = 0f;
+    private float currTime = 0f; // turn system
 
 
     public GameScreen(final AriseDeeper game) {
@@ -43,7 +41,7 @@ public class GameScreen implements Screen {
         // generate the initial level and place the GameObjects (hero, etc.)
         mapController.generateLevel(64, 32, new BasicTileset(gLogic));
 
-        // input processor
+        // input processors
         MyInputProcessor inputProcessor1  = new MyInputProcessor(gLogic, camera, mapController);
         MyGestureListener inputProcessor2 = new MyGestureListener(gLogic, camera, mapController);
         Gdx.input.setInputProcessor(new MyInputMultiplexer(
@@ -62,6 +60,15 @@ public class GameScreen implements Screen {
         camera.update(); // tell the camera to update its matrices
         game.batch.setProjectionMatrix(camera.combined); // render in the coord system specified by camera
 
+        // turn
+        if(currTime >= gLogic.TURN_TIME) {
+            currTime = 0f;
+            mapController.processTurn();
+        } else {
+            currTime += delta;
+        }
+
+
         game.batch.begin();
         mapController.renderLevel(game.batch);
 
@@ -77,7 +84,6 @@ public class GameScreen implements Screen {
                 + " | fps: " + Gdx.graphics.getFramesPerSecond(), 4, 14); // at the bottom-left of the screen
 
         game.batch.end();
-
     }
 
     @Override

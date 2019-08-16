@@ -38,4 +38,13 @@ public abstract class GameObject implements IRenderable {
     public void setTexture(TextureRegion texture) {
         this.texture = texture;
     }
+
+    @Override
+    public String toString() {
+        return "GameObject{" +
+                "x=" + x +
+                ", y=" + y +
+                ", texture=" + texture +
+                '}';
+    }
 }

@@ -2,10 +2,11 @@ package com.payne.games.logic;
 
 import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.math.GridPoint2;
-import com.payne.games.gameObjects.GameObject;
+import com.payne.games.gameObjects.Actor;
 import com.payne.games.map.BaseMapLayer;
 import com.payne.games.map.tiles.Tile;
 import com.payne.games.pathfinding.MyIndexedGraph;
+import com.payne.games.turns.actions.MoveAction;
 
 
 public class MovementSystem {
@@ -25,64 +26,38 @@ public class MovementSystem {
 
 
     /**
-     * Uses the PathFinding to find a path to the input point from the current location of the input object.
+     * Uses the PathFinding to find a path to the input point from the current location of the input actor.
      * If no path can be found (for example, trying to walk into a wall), nothing happens.
      *
-     * @param object The GameObject that wants to move.
+     * If the Actor already had Actions in Queue (such as already being moving), they are canceled.
+     *
+     * @param actor The GameObject that wants to move.
      * @param x destination's x-coordinate.
      * @param y destination's y-coordinate.
      */
-    public void moveTo(GameObject object, int x, int y) {
-        Tile from = level.getTile(object.getX(), object.getY());
+    public void moveTo(Actor actor, int x, int y) {
+        if(doingSomethingElse(actor)) {
+            actor.getActionsQueue().clear();
+            return;
+        }
+
+        Tile from = level.getTile(actor.getX(), actor.getY());
         Tile to   = level.getTile(x, y);
-        DefaultGraphPath<Tile> path = indexedGraph.getPathToMoveTo(from, to);
+        DefaultGraphPath<Tile> path = indexedGraph.getPathToMoveTo(from, to); // find path
 
-        for(Tile t: path.nodes) {
-            GridPoint2 delta = new GridPoint2(t.getX() - object.getX(), t.getY() - object.getY());
-            moveDelta(object, delta);
+        /* Assigning MoveActions accordingly. */
+        for(int i=0; i<path.getCount()-1; i++) { // takes care of not doing anything if `path` is empty
+            GridPoint2 delta = deltaOfTiles(path.nodes.get(i), path.nodes.get(i+1));
+            MoveAction moveAction = new MoveAction(actor, delta);
+            actor.addAction(moveAction); // todo: the last MoveAction should also trigger a `Tile.interact()`
         }
     }
 
-    public void moveDelta(GameObject object, GridPoint2 delta) {
-        tryMove(delta, object);
+    private GridPoint2 deltaOfTiles(Tile first, Tile second) {
+        return new GridPoint2(second.getX() - first.getX(), second.getY() - first.getY());
     }
 
-
-    public void moveLeft(GameObject object) {
-        GridPoint2 delta = new GridPoint2(-1, 0);
-        tryMove(delta, object);
-    }
-
-    public void moveRight(GameObject object) {
-        GridPoint2 delta = new GridPoint2(1, 0);
-        tryMove(delta, object);
-    }
-
-    public void moveUp(GameObject object) {
-        GridPoint2 delta = new GridPoint2(0, 1);
-        tryMove(delta, object);
-    }
-
-    public void moveDown(GameObject object) {
-        GridPoint2 delta = new GridPoint2(0, -1);
-        tryMove(delta, object);
-    }
-
-    private void tryMove(GridPoint2 delta, GameObject object) {
-        Tile movingTo = level.getTile(object.getX() + delta.x, object.getY() + delta.y);
-        interact(movingTo, object);
-        tryToMoveTo(movingTo, object, delta);
-    }
-
-    private void tryToMoveTo(Tile movingTo, GameObject object, GridPoint2 delta) {
-        if (movingTo.isAllowingMove()) {
-            object.setY(object.getY() + delta.y);
-            object.setX(object.getX() + delta.x);
-        }
-    }
-
-    private void interact(Tile movingTo, GameObject object) { // todo: should this be in this class?
-        if (movingTo.canInteract(object))
-            movingTo.interact(object);
+    private boolean doingSomethingElse(Actor actor) {
+        return actor.getActionsQueue().size > 0;
     }
 }

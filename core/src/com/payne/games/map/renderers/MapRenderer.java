@@ -1,6 +1,7 @@
 package com.payne.games.map.renderers;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.payne.games.gameObjects.Actor;
 import com.payne.games.logic.GameLogic;
 import com.payne.games.map.BaseMapLayer;
 import com.payne.games.map.SecondaryMapLayer;
@@ -84,9 +85,12 @@ public class MapRenderer {
         batch.enableBlending();
 
 
-        /* Drawing the secondary layer (interactive GameObjects such as Hero, Keys and Chests). */
-        for (IRenderable gameObject : secondaryMapLayer.getSecondaryLayer()) {
-            drawAtMapCoordinate(batch, gameObject); // todo: other approach so that Hero is on top of all layers
+        /* Drawing the secondary layer. */
+        for (IRenderable gameObject : secondaryMapLayer.getInertLayer()) {
+            drawAtMapCoordinate(batch, gameObject);
+        }
+        for (Actor gameObject : secondaryMapLayer.getActorLayer()) {
+            drawAtMapCoordinate(batch, gameObject);
         }
 
 
