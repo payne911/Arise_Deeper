@@ -7,6 +7,9 @@ import com.payne.games.map.tiles.Tile;
 import java.util.HashSet;
 
 
+/**
+ * todo:  see  https://www.redblobgames.com/articles/visibility/
+ */
 public class LightingSystem {
     private GameLogic gLogic;
     private BaseMapLayer level;

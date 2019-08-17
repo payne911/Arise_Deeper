@@ -9,6 +9,9 @@ import com.payne.games.logic.GameLogic;
 import java.util.Random;
 
 
+/**
+ * todo: see TexturePacker  https://github.com/crashinvaders/gdx-texture-packer-gui
+ */
 public abstract class Tileset {
     protected GameLogic gLogic;
     protected Random rand;
