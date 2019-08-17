@@ -15,6 +15,10 @@ public abstract class GameObject implements IRenderable {
     }
 
 
+    public boolean renderInFog() {
+        return false;
+    }
+
     public int getX() {
         return x;
     }

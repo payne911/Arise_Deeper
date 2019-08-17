@@ -48,7 +48,7 @@ public class MyGestureListener implements GestureDetector.GestureListener {
         System.out.println("Tile coordinate: (" + (int)coordX + ", " + (int)coordY + ")");
 
         // todo: be wiser! tap.location: if monster -> AttackAction, if Door -> DoorAction, if Item -> PickUpAction
-        mapController.moveTo((int)coordX, (int)coordY);
+        mapController.playerTryMoveTo((int)coordX, (int)coordY);
 
         return true;
     }

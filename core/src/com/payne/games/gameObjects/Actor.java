@@ -6,7 +6,7 @@ import com.payne.games.turns.actions.IAction;
 
 public abstract class Actor extends GameObject {
     private Queue<IAction> actions = new Queue<>(); // all the Actions the Actor wants to see executed
-    private int fieldOfView = 6; // how far the Actor can see in a straight line
+    private int rangeOfSight = 6; // how far the Actor can see in a straight line
     private int priority = 0; // used by the MinHeap of the TurnManager to determine who goes first
 
 
@@ -34,8 +34,8 @@ public abstract class Actor extends GameObject {
         return actions;
     }
 
-    public int getFieldOfView() {
-        return fieldOfView;
+    public int getRangeOfSight() {
+        return rangeOfSight;
     }
 
     public int getPriority() {

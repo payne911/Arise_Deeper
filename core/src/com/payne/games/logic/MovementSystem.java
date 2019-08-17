@@ -37,7 +37,7 @@ public class MovementSystem {
      */
     public void moveTo(Actor actor, int x, int y) {
         if(doingSomethingElse(actor)) {
-            actor.getActionsQueue().clear();
+            actor.getActionsQueue().clear(); // this means we interrupt current actions
             return;
         }
 

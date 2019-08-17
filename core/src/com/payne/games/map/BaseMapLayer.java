@@ -3,6 +3,8 @@ package com.payne.games.map;
 import com.badlogic.gdx.utils.Array;
 import com.payne.games.map.tiles.Tile;
 
+import java.util.HashSet;
+
 
 /**
  * The (mostly) immutable layer of the map. Things that don't
@@ -43,7 +45,19 @@ public class BaseMapLayer {
         graphicalMap[y][x] = newTile;
     }
 
+    /**
+     * Returns the Tile at the desired coordinate.
+     * If the coordinate falls outside of the map itself, one of the "edge-tiles" (always a Wall) will be returned.
+     *
+     * @param x x-coordinate.
+     * @param y y-coordinate.
+     * @return the Tile at the (x,y) coordinate.
+     */
     public Tile getTile(int x, int y) {
+        if(x < 0) x = 0;
+        if(y < 0) y = 0;
+        if(x >= getMapWidth()) x = getMapWidth()-1;
+        if(y >= getMapHeight()) y = getMapHeight()-1;
         return graphicalMap[y][x];
     }
 
@@ -55,17 +69,41 @@ public class BaseMapLayer {
      * @param y y-coordinate of the Tile for which we want to list the neighbors.
      * @return an Array of Tile that are the Tiles that allow movement from the input Tile.
      */
-    public Array<Tile> getNeighbors(int x, int y) {
+    public Array<Tile> getWalkableNeighbors(int x, int y) {
         Array<Tile> neighbors = new Array<>();
 
         Array<Tile> tmp = new Array<>();
-        tmp.addAll(graphicalMap[y][x-1],
-                graphicalMap[y][x+1],
-                graphicalMap[y+1][x],
-                graphicalMap[y-1][x]);
+        tmp.addAll(getTile(x-1, y),
+                getTile(x+1, y),
+                getTile(x, y+1),
+                getTile(x, y-1));
         for(Tile t : tmp) {
             if(t.isAllowingMove())
                 neighbors.add(t);
+        }
+
+        return neighbors;
+    }
+
+    /**
+     * Returns all the Tiles surrounding the (x,y) input coordinate, within the specified range.
+     * If the range goes outside of the map, those non-existent Tiles are not added (duh!).
+     *
+     * @param x x-coordinate of the Tile for which we want to list the neighbors.
+     * @param y y-coordinate of the Tile for which we want to list the neighbors.
+     * @param range Amount of tiles in a straight line, from the middle. "0" includes only the Tile at (x,y).
+     * @return all the neighbors, within a Squared range.
+     */
+    public HashSet<Tile> getNeighborsWithinSquareRange(int x, int y, int range) {
+        HashSet<Tile> neighbors = new HashSet<>();
+
+        for(int i=0; i<=range; i++) {        // height
+            for(int j=0; j<=range; j++) {    // width
+                neighbors.add(getTile(x-j, y+i));
+                neighbors.add(getTile(x+j, y+i));
+                neighbors.add(getTile(x-j, y-i));
+                neighbors.add(getTile(x+j, y-i));
+            }
         }
 
         return neighbors;

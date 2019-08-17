@@ -13,7 +13,8 @@ public abstract class Tile implements IRenderable {
 
     // pathfinding
     private int graphIndex = -1;
-    private boolean seen = true; // todo: this should be 'false' once FOV is implemented and MyHeuristic should be changed!
+    private boolean seen = false;
+    private boolean explored = false;
 
 
     // todo: figure out if the parameters are necessary (do the Tiles need to know their position?)
@@ -22,6 +23,17 @@ public abstract class Tile implements IRenderable {
         this.y = y;
     }
 
+    public boolean renderInFog() {
+        return true;
+    }
+
+    public boolean isExplored() {
+        return explored;
+    }
+
+    public void setExplored(boolean explored) {
+        this.explored = explored;
+    }
 
     public boolean isSeen() {
         return seen;

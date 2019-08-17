@@ -4,6 +4,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 
 public interface IRenderable {
+
+    /**
+     * @return 'false' only if the `MapRenderer` should not draw
+     */
+    boolean renderInFog();
+
     int getX();
     int getY();
     TextureRegion getTexture();

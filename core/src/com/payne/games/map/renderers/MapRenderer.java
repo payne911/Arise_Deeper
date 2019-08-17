@@ -3,8 +3,10 @@ package com.payne.games.map.renderers;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.payne.games.gameObjects.Actor;
 import com.payne.games.logic.GameLogic;
+import com.payne.games.logic.LightingSystem;
 import com.payne.games.map.BaseMapLayer;
 import com.payne.games.map.SecondaryMapLayer;
+import com.payne.games.map.tiles.Tile;
 import com.payne.games.map.tilesets.Tileset;
 
 
@@ -19,11 +21,16 @@ public class MapRenderer {
     // Secondary layer
     private SecondaryMapLayer secondaryMapLayer;
 
+    // Fog of War
+    private LightingSystem lightingSystem;
+    private final boolean DEBUG_NO_FOG = false;
 
-    public MapRenderer(GameLogic gameLogic, SecondaryMapLayer secondaryMapLayer) {
+
+    public MapRenderer(GameLogic gameLogic, SecondaryMapLayer secondaryMapLayer, LightingSystem lightingSystem) {
         this.gLogic = gameLogic;
         this.secondaryMapLayer = secondaryMapLayer;
         this.wallRenderer = new WallRenderer();
+        this.lightingSystem = lightingSystem;
     }
 
 
@@ -72,9 +79,11 @@ public class MapRenderer {
      * Each layer of the Level are to be rendered.
      *
      * @param batch the instance of "game.batch" on which was called the ".begin()" beforehand
-     * @param level the Level to be rendered.
      */
-    public void renderLevel(SpriteBatch batch, BaseMapLayer level) {
+    public void renderLevel(SpriteBatch batch) {
+
+        lightingSystem.updateLighting(); // updates the FogOfWar
+
         /* Drawing the static map (base layer). Disabling blending improves performance. */
         batch.disableBlending();
         for (int i = 0; i < level.getMapHeight(); i++) {
@@ -105,8 +114,38 @@ public class MapRenderer {
      * @param toRender A renderable object.
      */
     private void drawAtMapCoordinate(SpriteBatch batch, IRenderable toRender) {
-        batch.draw(toRender.getTexture(),
-                gLogic.AESTHETIC_OFFSET + toRender.getX()*gLogic.TILE_WIDTH,
-                gLogic.AESTHETIC_OFFSET + toRender.getY()*gLogic.TILE_HEIGHT);
+        boolean shouldDraw = determineFogOfWar(batch, toRender);
+
+        if(shouldDraw)
+            batch.draw(toRender.getTexture(),
+                    gLogic.AESTHETIC_OFFSET + toRender.getX()*gLogic.TILE_WIDTH,
+                    gLogic.AESTHETIC_OFFSET + toRender.getY()*gLogic.TILE_HEIGHT);
+    }
+
+
+    /**
+     * Determines how the rendering should be done, based on variables related to exploration and line of sight.
+     *
+     * @param batch instance of SpriteBatch.
+     * @param renderable a renderable class against which the Tile's variables below it will be checked.
+     * @return 'false' only if the SpriteBatch should not attempt to draw the IRenderable object.
+     */
+    private boolean determineFogOfWar(SpriteBatch batch, IRenderable renderable) {
+        if(DEBUG_NO_FOG) {
+            batch.setColor(1,1,1,1);
+            return true;
+        }
+
+        Tile tile = level.getTile(renderable.getX(), renderable.getY());
+        if (tile.isSeen())
+            batch.setColor(1,1,1,1); // in plain sight
+        else if (tile.isExplored() && renderable.renderInFog())
+            batch.setColor(0.65f,0.2f,0.65f,0.5f); // in the fog of war
+        else {
+            batch.setColor(0, 0, 0, 0); // in the darkness
+            return false; // do not draw!
+        }
+
+        return true;
     }
 }

@@ -2,6 +2,7 @@ package com.payne.games.logic;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Array;
 import com.payne.games.gameObjects.GameObjectFactory;
 import com.payne.games.gameObjects.Hero;
 import com.payne.games.map.BaseMapLayer;
@@ -18,13 +19,19 @@ public class MapController {
     private MapRenderer mapRenderer;
     private OrthographicCamera camera;
 
+    // map's primary layer
     private BaseMapLayer currentLevel;
     private MapGenerator mapGenerator;
 
+    // map's secondary layer
     private Hero player;
     private SecondaryMapLayer secondaryMapLayer;
     private GameObjectFactory gameObjectFactory;
 
+    // map's tertiary layer
+    private LightingSystem lightingSystem;
+
+    // movements and turns
     private MovementSystem movementSystem;
     private TurnManager turnManager;
 
@@ -35,12 +42,12 @@ public class MapController {
 
         this.mapGenerator = new MapGenerator(gLogic);
         this.gameObjectFactory = new GameObjectFactory(gLogic);
+        this.player = gameObjectFactory.createHero(0, 0); // todo: this will eventually move somewhere else!
         this.secondaryMapLayer = new SecondaryMapLayer(gLogic, gameObjectFactory);
-        this.mapRenderer = new MapRenderer(gLogic, secondaryMapLayer);
+        this.lightingSystem = new LightingSystem(gLogic, player);
+        this.mapRenderer = new MapRenderer(gLogic, secondaryMapLayer, lightingSystem);
         this.movementSystem = new MovementSystem(gLogic);
         this.turnManager = new TurnManager(gLogic);
-
-        this.player = gameObjectFactory.createHero(0, 0); // todo: this will eventually move somewhere else!
     }
 
 
@@ -57,7 +64,13 @@ public class MapController {
         turnManager.execute();
     }
 
-    public void moveTo(int x, int y) {
+    /**
+     * Uses pathfinding to try to find a path to the desired destination.
+     *
+     * @param x x-coordinate input from the player of the desired destination.
+     * @param y y-coordinate input from the player of the desired destination.
+     */
+    public void playerTryMoveTo(int x, int y) {
         movementSystem.moveTo(player, x, y);
     }
 
@@ -95,6 +108,7 @@ public class MapController {
         mapRenderer.setUpBaseLayer(currentLevel, tileset); // assign the graphical representations to base layer's Tiles
         secondaryMapLayer.setUpSecondaryLayer(player, currentLevel); // place secondary layer (Hero, Chests, Keys, etc.)
         movementSystem.setUpIndexedGraph(currentLevel); // set up the graph for pathfinding
+        lightingSystem.setUpLightingOverlay(currentLevel);
         centerOnHero();
     }
 
@@ -105,6 +119,6 @@ public class MapController {
      * @param batch the instance of "game.batch" on which was called the ".begin()" beforehand.
      */
     public void renderLevel(SpriteBatch batch) {
-        mapRenderer.renderLevel(batch, currentLevel);
+        mapRenderer.renderLevel(batch);
     }
 }

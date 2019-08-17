@@ -56,7 +56,7 @@ public class MyIndexedGraph implements IndexedGraph<Tile> {
     @Override
     public Array<Connection<Tile>> getConnections(Tile fromNode) {
         Array<Connection<Tile>> edges = new Array<>();
-        Array<Tile> neighbors = currLevel.getNeighbors(fromNode.getX(), fromNode.getY());
+        Array<Tile> neighbors = currLevel.getWalkableNeighbors(fromNode.getX(), fromNode.getY());
 
         for(Tile tile : neighbors) {
             DefaultConnection<Tile> edge = new DefaultConnection<>(fromNode, tile);
