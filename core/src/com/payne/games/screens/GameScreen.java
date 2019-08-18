@@ -56,10 +56,9 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // clear the screen
-        camera.update(); // tell the camera to update its matrices
-        game.batch.setProjectionMatrix(camera.combined); // render in the coord system specified by camera
 
-        // turn
+
+        /* Turn system. */
         if(currTime >= gLogic.TURN_TIME) {
             currTime = 0f;
             mapController.processTurn();
@@ -69,6 +68,12 @@ public class GameScreen implements Screen {
         }
 
 
+        /* Setting up the rendering. */
+        camera.update(); // tell the camera to update its matrices
+        game.batch.setProjectionMatrix(camera.combined); // render in the coord system specified by camera
+
+
+        /* Actual map rendering. */
         game.batch.begin();
         mapController.renderLevel(game.batch);
 

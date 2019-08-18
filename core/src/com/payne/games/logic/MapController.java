@@ -58,14 +58,18 @@ public class MapController {
         return secondaryMapLayer;
     }
 
+
+    /**
+     * Uses the Fatigue system in order to figure out who's turn it is.
+     * The AI determines the actions of the Enemies.
+     */
     public void processTurn() {
-        boolean somethingHappened = turnManager.executeTurn();
-        if (somethingHappened) {
+        boolean waitingOnPlayer = turnManager.executeTurn();
+        if (!waitingOnPlayer) {
             centerOnHero();
             secondaryMapLayer.removeDeadActors();
         }
     }
-
 
 
     /**

@@ -109,18 +109,4 @@ public class BaseMapLayer {
 
         return neighbors;
     }
-
-    /**
-     * Gives the straight-line distance, in tile units, between two points.
-     *
-     * @param from the From coordinate.
-     * @param to the To coordinate.
-     * @return straight-line distance.
-     */
-    public double distanceBetweenTiles(GridPoint2 from, GridPoint2 to) {
-        double deltaX = Math.pow(to.x - from.x, 2);
-        double deltaY = Math.pow(to.y - from.y, 2);
-
-        return Math.sqrt(deltaX + deltaY);
-    }
 }
