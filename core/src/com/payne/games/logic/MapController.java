@@ -2,7 +2,6 @@ package com.payne.games.logic;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.Array;
 import com.payne.games.gameObjects.GameObjectFactory;
 import com.payne.games.gameObjects.Hero;
 import com.payne.games.map.BaseMapLayer;
@@ -32,7 +31,7 @@ public class MapController {
     private LightingSystem lightingSystem;
 
     // movements and turns
-    private MovementSystem movementSystem;
+    private ActionSystem actionSystem;
     private TurnManager turnManager;
 
 
@@ -46,8 +45,8 @@ public class MapController {
         this.secondaryMapLayer = new SecondaryMapLayer(gLogic, gameObjectFactory);
         this.lightingSystem = new LightingSystem(gLogic, player);
         this.mapRenderer = new MapRenderer(gLogic, secondaryMapLayer, lightingSystem);
-        this.movementSystem = new MovementSystem(gLogic);
-        this.turnManager = new TurnManager(gLogic);
+        this.actionSystem = new ActionSystem(gLogic);
+        this.turnManager = new TurnManager(gLogic, secondaryMapLayer);
     }
 
 
@@ -60,18 +59,23 @@ public class MapController {
     }
 
     public void processTurn() {
-        turnManager.process(secondaryMapLayer.getActorLayer());
-        turnManager.execute();
+        boolean somethingHappened = turnManager.executeTurn();
+        if (somethingHappened) {
+            centerOnHero();
+            secondaryMapLayer.removeDeadActors();
+        }
     }
 
+
+
     /**
-     * Uses pathfinding to try to find a path to the desired destination.
+     * Assigns the proper Action that goes with the tap.
      *
-     * @param x x-coordinate input from the player of the desired destination.
-     * @param y y-coordinate input from the player of the desired destination.
+     * @param x x-coordinate input from the player.
+     * @param y y-coordinate input from the player.
      */
-    public void playerTryMoveTo(int x, int y) {
-        movementSystem.moveTo(player, x, y);
+    public void playerTapped(int x, int y) {
+        actionSystem.checkTap(player, x, y);
     }
 
     /**
@@ -107,7 +111,7 @@ public class MapController {
         currentLevel = mapGenerator.createMap(mapWidth, mapHeight); // generate a base layer
         mapRenderer.setUpBaseLayer(currentLevel, tileset); // assign the graphical representations to base layer's Tiles
         secondaryMapLayer.setUpSecondaryLayer(player, currentLevel); // place secondary layer (Hero, Chests, Keys, etc.)
-        movementSystem.setUpIndexedGraph(currentLevel); // set up the graph for pathfinding
+        actionSystem.setUpIndexedGraph(currentLevel, secondaryMapLayer); // set up the graph for pathfinding
         lightingSystem.setUpLightingOverlay(currentLevel);
         centerOnHero();
     }
@@ -120,5 +124,14 @@ public class MapController {
      */
     public void renderLevel(SpriteBatch batch) {
         mapRenderer.renderLevel(batch);
+    }
+
+    /**
+     * Used to update the Fog Of War surrounding the player.
+     * Only called after the player has taken an action since the situation doesn't change in between.
+     * todo: this might change to being called within `mapRenderer.renderLevel()` if some spells change the lighting.
+     */
+    public void updateLighting() {
+        lightingSystem.updateLighting();
     }
 }

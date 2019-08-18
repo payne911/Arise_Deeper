@@ -36,13 +36,13 @@ public class GameObjectFactory {
     }
 
     public Hero createHero(int x, int y) {
-        Hero hero = new Hero(x, y);
+        Hero hero = new Hero(x, y, 100, 3, 5);
         hero.setTexture(split_20p[0][0]);
         return hero;
     }
 
     public Enemy createEnemy(int x, int y) {
-        Enemy enemy = new Enemy(x, y);
+        Enemy enemy = new Enemy(x, y, 50, 2, 5, 50);
         enemy.setTexture(split_20p[0][7]);
         return enemy;
     }

@@ -19,11 +19,54 @@ public class SecondaryMapLayer {
     }
 
 
+    /**
+     * Removes all the dead Actors from the SecondaryLayer.
+     *
+     * @return the Collection of all the dead actors that were removed.
+     */
+    public Array<Actor> removeDeadActors() {
+        Array<Actor> deadActors = new Array<>();
+        for(Actor actor : actorLayer) {
+            if(actor.isDead()) {
+                removeFromActorLayer(actor);
+                deadActors.add(actor);
+            }
+        }
+        return deadActors;
+    }
+
+
+    /**
+     * Finds the Actor at the (x,y) position.
+     * @param x x-coord.
+     * @param y y-coord.
+     * @return could be 'null' if no Actor is at that position.
+     */
+    public Actor findActorAt(int x, int y) {
+        Actor ret = null;
+        for(Actor a : actorLayer) {
+            if (a.getX() == x && a.getY() == y) {
+                ret = a;
+            }
+        }
+        return ret;
+    }
+
+
     public Array<IRenderable> getInertLayer() {
         return inertLayer;
     }
     public Array<Actor> getActorLayer() {
         return actorLayer;
+    }
+
+    public void removeFromInertLayer(GameObject object) {
+        System.out.println("Removed object from InertLayer.");
+        inertLayer.removeValue(object, true);
+    }
+    public void removeFromActorLayer(Actor actor) {
+        System.out.println("Remove actor from ActorLayer.");
+        actorLayer.removeValue(actor, true);
     }
 
     public void setUpSecondaryLayer(Hero player, BaseMapLayer currentLevel) {
@@ -37,6 +80,7 @@ public class SecondaryMapLayer {
         createChest(15, 3);
         createKey(14, 10);
         createEnemy(15, 10);
+        createEnemy(27, 13);
         createEnemy(56, 25);
 
     }

@@ -82,8 +82,6 @@ public class MapRenderer {
      */
     public void renderLevel(SpriteBatch batch) {
 
-        lightingSystem.updateLighting(); // updates the FogOfWar
-
         /* Drawing the static map (base layer). Disabling blending improves performance. */
         batch.disableBlending();
         for (int i = 0; i < level.getMapHeight(); i++) {
@@ -114,7 +112,7 @@ public class MapRenderer {
      * @param toRender A renderable object.
      */
     private void drawAtMapCoordinate(SpriteBatch batch, IRenderable toRender) {
-        boolean shouldDraw = determineFogOfWar(batch, toRender);
+        boolean shouldDraw = determineFogOfWarOverlay(batch, toRender);
 
         if(shouldDraw)
             batch.draw(toRender.getTexture(),
@@ -130,7 +128,7 @@ public class MapRenderer {
      * @param renderable a renderable class against which the Tile's variables below it will be checked.
      * @return 'false' only if the SpriteBatch should not attempt to draw the IRenderable object.
      */
-    private boolean determineFogOfWar(SpriteBatch batch, IRenderable renderable) {
+    private boolean determineFogOfWarOverlay(SpriteBatch batch, IRenderable renderable) {
         if(DEBUG_NO_FOG) {
             batch.setColor(1,1,1,1);
             return true;

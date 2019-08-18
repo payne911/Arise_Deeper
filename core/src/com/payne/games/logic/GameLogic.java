@@ -23,11 +23,11 @@ public class GameLogic {
 
     // camera
     public final float CAM_ZOOM = 0.5f;
-    public final int CAM_WIDTH  = 10;
-    public final int CAM_HEIGHT = 10;
 
     // turn
-    public final float TURN_TIME = 0.1f;
+    public final float TURN_TIME = 0.07f;
+    public final int TURN_FULL_STAMINA = 120;
+    public final int TURN_STAMINA_REGEN = 5;
 
 
     public GameLogic(final AriseDeeper game) {

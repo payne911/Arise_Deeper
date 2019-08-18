@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.payne.games.AriseDeeper;
 import com.payne.games.logic.GameLogic;
-import com.payne.games.turns.TurnManager;
 import com.payne.games.logic.MapController;
 import com.payne.games.map.tilesets.BasicTileset;
 import com.payne.games.inputProcessors.MyGestureListener;
@@ -64,6 +63,7 @@ public class GameScreen implements Screen {
         if(currTime >= gLogic.TURN_TIME) {
             currTime = 0f;
             mapController.processTurn();
+            mapController.updateLighting();
         } else {
             currTime += delta;
         }
