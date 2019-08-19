@@ -81,7 +81,18 @@ public class MyGestureListener implements GestureDetector.GestureListener {
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
         if(DEBUG_PRINT) System.out.println("pan: " + x + "," + y + " | deltaX: " + deltaX + " | deltaY: " + deltaY);
-        return false;
+
+//        // todo: prevent drag outside of map regions
+//        if(camera.position.x + dX > camera.viewportWidth/2) { // prevent going further left
+//            System.out.println("YES");
+//            down_relativePixelCoord_TL_X = screenX;
+//        } else {
+//            System.out.println("NO");
+//            dX = 0;
+//        }
+
+        camera.translate((-deltaX)*camera.zoom, deltaY*camera.zoom);
+        return true;
     }
 
     @Override
@@ -98,7 +109,7 @@ public class MyGestureListener implements GestureDetector.GestureListener {
 
     @Override
     public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
-        // todo: implement "Zoom" for mobiles ?
+        // todo: implement "Zoom" for mobiles
         if(DEBUG_PRINT) System.out.println("pinch");
         return false;
     }

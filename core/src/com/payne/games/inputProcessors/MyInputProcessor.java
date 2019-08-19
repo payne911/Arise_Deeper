@@ -7,13 +7,13 @@ import com.payne.games.logic.MapController;
 
 
 /**
+ * This is more or less the "Desktop" input processor.
+ * <br>
  * The `keyTyped(char character)` method will be called repeatedly if a key is KEPT DOWN.
- *
  */
 public class MyInputProcessor extends InputAdapter {
     private OrthographicCamera camera;
     private MapController mapController;
-    private int down_relativePixelCoord_TL_X, down_relativePixelCoord_TL_Y; // used for dragging the map
 
 
     public MyInputProcessor(OrthographicCamera camera, MapController mapController) {
@@ -38,54 +38,6 @@ public class MyInputProcessor extends InputAdapter {
         }
 
         return true;
-    }
-
-    /**
-     * Mouse-click.
-     * (0,0) is at top-left of window.
-     *
-     * @param screenX Relative x position, in pixel. (range: [0, viewportWidth-1])
-     * @param screenY Relative y position, in pixel.
-     * @param pointer ?
-     * @param button left-click = 0, right-click = 1
-     * @return 'true' only if the event shouldn't be passed to the next InputProcessor.
-     */
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        down_relativePixelCoord_TL_X = screenX;
-        down_relativePixelCoord_TL_Y = screenY;
-        return false;
-    }
-
-    /**
-     * (0,0) is at the top-left.
-     * todo: necessary to implement in `MyGestureListener.pan()` for mobile compatibility?
-     *
-     * @param screenX relative pixel x-coordinate, where the mouse is currently.
-     * @param screenY relative pixel y-coordinate, where the mouse is currently.
-     * @param pointer ?
-     * @return 'true' only if the event shouldn't be passed to the next InputProcessor.
-     */
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-
-        int dX = down_relativePixelCoord_TL_X - screenX; // ends up being a difference of 1 pixel
-        down_relativePixelCoord_TL_X = screenX;
-
-//        // todo: prevent drag outside of map regions
-//        if(camera.position.x + dX > camera.viewportWidth/2) { // prevent going further left
-//            System.out.println("YES");
-//            down_relativePixelCoord_TL_X = screenX;
-//        } else {
-//            System.out.println("NO");
-//            dX = 0;
-//        }
-
-        int dY = screenY - down_relativePixelCoord_TL_Y; // ends up being a difference of 1 pixel
-        down_relativePixelCoord_TL_Y = screenY;
-
-        camera.translate(dX*camera.zoom, dY*camera.zoom);
-        return false;
     }
 
     /**
