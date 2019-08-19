@@ -83,7 +83,7 @@ public class GameScreen implements Screen {
          */
         game.font.draw(game.batch,
                 "MaxSpritesBatch: " + game.batch.maxSpritesInBatch
-                + " | seed: " + GameLogic.randSeed
+                + " | seed: " + GameLogic.RANDOM_SEED
                 + " | fps: " + Gdx.graphics.getFramesPerSecond(), 4, 14); // at the bottom-left of the screen
 
         game.batch.end();

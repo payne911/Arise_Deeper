@@ -13,10 +13,10 @@ import java.util.Random;
  * todo: see TexturePacker  https://github.com/crashinvaders/gdx-texture-packer-gui
  */
 public abstract class Tileset {
-    protected Random rand;
+    private Random rand;
 
-    protected Texture tiles;
-    protected TextureRegion[][] splitTiles;
+    private Texture tiles;
+    private TextureRegion[][] splitTiles;
 
     // collections of points within the split tileset's SpriteSheet where each type of tile is (for random picks).
     protected GridPoint2[] floors;
@@ -27,7 +27,7 @@ public abstract class Tileset {
 
 
     public Tileset() {
-        this.rand = new Random(GameLogic.randSeed);
+        this.rand = new Random(GameLogic.RANDOM_SEED);
     }
 
     /**

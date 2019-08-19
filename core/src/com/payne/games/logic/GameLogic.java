@@ -2,9 +2,10 @@ package com.payne.games.logic;
 
 
 public class GameLogic {
+    public static final String GAME_NAME = "Arise Deeper";
 
     // seeded "random" level generator
-    public static final int randSeed = 1337;
+    public static final int RANDOM_SEED = 1337;
 
     // game window
     public static final int AESTHETIC_OFFSET = 16;
