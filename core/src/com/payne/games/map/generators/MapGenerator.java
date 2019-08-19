@@ -1,5 +1,6 @@
 package com.payne.games.map.generators;
 
+import com.badlogic.gdx.math.RandomXS128;
 import com.payne.games.logic.GameLogic;
 import com.payne.games.map.BaseMapLayer;
 import com.payne.games.map.generators.algos.drunkard.MapCarver;
@@ -7,15 +8,14 @@ import com.payne.games.map.tiles.Door;
 import com.payne.games.map.tiles.Floor;
 import com.payne.games.map.tiles.Wall;
 
-import java.util.Random;
 
 
 public class MapGenerator {
-    private Random rand;
+    private RandomXS128 rand;
 
 
     public MapGenerator() {
-        this.rand = new Random(GameLogic.RANDOM_SEED);
+        this.rand = new RandomXS128(GameLogic.RANDOM_SEED);
     }
 
     public BaseMapLayer createMap(int mapWidth, int mapHeight) {

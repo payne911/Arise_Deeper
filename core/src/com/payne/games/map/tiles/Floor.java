@@ -1,14 +1,13 @@
 package com.payne.games.map.tiles;
 
+import com.badlogic.gdx.utils.Array;
 import com.payne.games.gameObjects.GameObject;
 import com.payne.games.map.tilesets.Tileset;
-
-import java.util.ArrayList;
 
 
 public class Floor extends Tile {
     private boolean isWater, hasBlood;
-    private ArrayList<GameObject> objectsOnThisTile = new ArrayList<>();
+    private Array<GameObject> objectsOnThisTile = new Array<>();
 
 
     public Floor(int x, int y) {
@@ -35,7 +34,7 @@ public class Floor extends Tile {
     }
 
 
-    public ArrayList<GameObject> getObjectsOnThisTile() {
+    public Array<GameObject> getObjectsOnThisTile() {
         return objectsOnThisTile;
     }
 
@@ -44,7 +43,7 @@ public class Floor extends Tile {
     }
 
     public void removeObject(GameObject gameObject) {
-        objectsOnThisTile.remove(gameObject);
+        objectsOnThisTile.removeValue(gameObject, true);
     }
 
 

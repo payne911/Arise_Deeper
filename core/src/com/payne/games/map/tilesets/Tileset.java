@@ -4,16 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.GridPoint2;
+import com.badlogic.gdx.math.RandomXS128;
 import com.payne.games.logic.GameLogic;
-
-import java.util.Random;
 
 
 /**
  * todo: see TexturePacker  https://github.com/crashinvaders/gdx-texture-packer-gui
  */
 public abstract class Tileset {
-    private Random rand;
+    private RandomXS128 rand;
 
     private Texture tiles;
     private TextureRegion[][] splitTiles;
@@ -27,7 +26,7 @@ public abstract class Tileset {
 
 
     public Tileset() {
-        this.rand = new Random(GameLogic.RANDOM_SEED);
+        this.rand = new RandomXS128(GameLogic.RANDOM_SEED);
     }
 
     /**

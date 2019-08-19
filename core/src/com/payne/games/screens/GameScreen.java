@@ -163,6 +163,8 @@ public class GameScreen implements Screen {
 //        camera.viewportWidth  = width/32f;  //We will see width/32f units!
 //        camera.viewportHeight = camera.viewportWidth * height/width;
 //        camera.update();
+
+        stage.getViewport().update(width, height, true); // todo: no idea if necessary
     }
 
     /**

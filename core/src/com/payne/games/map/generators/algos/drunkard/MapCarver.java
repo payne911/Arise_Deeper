@@ -1,10 +1,9 @@
 package com.payne.games.map.generators.algos.drunkard;
 
+import com.badlogic.gdx.math.RandomXS128;
 import com.payne.games.map.BaseMapLayer;
 import com.payne.games.map.tiles.Floor;
 import com.payne.games.map.tiles.Wall;
-
-import java.util.Random;
 
 
 /**
@@ -17,7 +16,7 @@ import java.util.Random;
 public class MapCarver {
     private BaseMapLayer level;
     private Drunkard drunk;
-    private Random rand;
+    private RandomXS128 rand;
     private double targetFloorPercent;
 
     private int floorTilesCreated = 0;
@@ -44,7 +43,7 @@ public class MapCarver {
         this.drunk = new Drunkard(init_x, init_y);
         dig(init_x, init_y);
 
-        rand = new Random(RANDOM_SEED ? (int)(Math.random()*1000) : seed);
+        rand = new RandomXS128(RANDOM_SEED ? (int)(Math.random()*1000) : seed);
     }
 
     /**

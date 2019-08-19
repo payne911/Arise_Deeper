@@ -73,11 +73,11 @@ public class SecondaryMapLayer {
         placeHero(player, 25,16);
 
         // todo: populate level with other Secondary objects
-        createChest(28, 13);
-        createChest(15, 3);
+        createChest(31, 13);
+        createChest(18, 2);
         createKey(14, 10);
-        createEnemy(15, 10);
-        createEnemy(27, 13);
+        createEnemy(14, 11);
+        createEnemy(29, 14);
         createEnemy(56, 25);
 
     }
