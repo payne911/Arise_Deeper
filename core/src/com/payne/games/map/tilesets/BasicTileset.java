@@ -1,14 +1,13 @@
 package com.payne.games.map.tilesets;
 
 import com.badlogic.gdx.math.GridPoint2;
-import com.payne.games.logic.GameLogic;
 
 
 public class BasicTileset extends Tileset {
 
 
-    public BasicTileset(GameLogic gameLogic) {
-        super(gameLogic);
+    public BasicTileset() {
+        super();
         setRenderingTileset("dungeon_tileset.png");
 
         floors = new GridPoint2[]{

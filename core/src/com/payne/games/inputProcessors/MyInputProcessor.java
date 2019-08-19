@@ -1,8 +1,8 @@
 package com.payne.games.inputProcessors;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.payne.games.logic.GameLogic;
 import com.payne.games.logic.MapController;
 
 
@@ -11,14 +11,12 @@ import com.payne.games.logic.MapController;
  *
  */
 public class MyInputProcessor extends InputAdapter {
-    private GameLogic gLogic;
     private OrthographicCamera camera;
     private MapController mapController;
     private int down_relativePixelCoord_TL_X, down_relativePixelCoord_TL_Y; // used for dragging the map
 
 
-    public MyInputProcessor(GameLogic gameLogic, OrthographicCamera camera, MapController mapController) {
-        this.gLogic = gameLogic;
+    public MyInputProcessor(OrthographicCamera camera, MapController mapController) {
         this.camera = camera;
         this.mapController = mapController;
     }
@@ -28,7 +26,7 @@ public class MyInputProcessor extends InputAdapter {
     public boolean keyDown(int keycode) {
 
         switch (keycode) {
-            case 62: // space    todo: should TOGGLE a centerView option
+            case Input.Keys.SPACE: // todo: should TOGGLE a centerView option?
                 mapController.centerOnHero();
                 break;
             default:

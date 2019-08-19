@@ -13,7 +13,6 @@ import java.util.Random;
  * todo: see TexturePacker  https://github.com/crashinvaders/gdx-texture-packer-gui
  */
 public abstract class Tileset {
-    protected GameLogic gLogic;
     protected Random rand;
 
     protected Texture tiles;
@@ -27,9 +26,8 @@ public abstract class Tileset {
     protected GridPoint2[] empty;
 
 
-    public Tileset(GameLogic gameLogic) {
-        this.gLogic = gameLogic;
-        this.rand = new Random(gLogic.getSeed());
+    public Tileset() {
+        this.rand = new Random(GameLogic.randSeed);
     }
 
     /**
@@ -39,7 +37,7 @@ public abstract class Tileset {
      */
     protected void setRenderingTileset(String tileset) {
         tiles = new Texture(Gdx.files.internal(tileset));
-        splitTiles = TextureRegion.split(tiles, gLogic.TILE_WIDTH, gLogic.TILE_HEIGHT);
+        splitTiles = TextureRegion.split(tiles, GameLogic.TILE_WIDTH, GameLogic.TILE_HEIGHT);
     }
 
     public Texture getTiles() {

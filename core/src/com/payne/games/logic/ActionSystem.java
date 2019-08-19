@@ -12,14 +12,12 @@ import com.payne.games.turns.actions.MoveAction;
 
 
 public class ActionSystem {
-    private GameLogic gLogic;
     private BaseMapLayer level;
     private SecondaryMapLayer secondaryMapLayer;
     private MyIndexedGraph indexedGraph;
 
 
-    public ActionSystem(GameLogic gameLogic) {
-        this.gLogic = gameLogic;
+    public ActionSystem() {
     }
 
 

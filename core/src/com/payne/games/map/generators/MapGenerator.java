@@ -12,12 +12,10 @@ import java.util.Random;
 
 public class MapGenerator {
     private Random rand;
-    private GameLogic gLogic;
 
 
-    public MapGenerator(GameLogic gameLogic) {
-        this.gLogic = gameLogic;
-        this.rand = new Random(gLogic.getSeed());
+    public MapGenerator() {
+        this.rand = new Random(GameLogic.randSeed);
     }
 
     public BaseMapLayer createMap(int mapWidth, int mapHeight) {
@@ -45,7 +43,7 @@ public class MapGenerator {
      * @param targetFloorPercent percentage of the level that must be passable.
      */
     private void drunkardWalkAlgo(BaseMapLayer level, int init_x, int init_y, float targetFloorPercent) {
-        MapCarver drunkardAlgo = new MapCarver(level, init_x, init_y, gLogic.getSeed(), targetFloorPercent);
+        MapCarver drunkardAlgo = new MapCarver(level, init_x, init_y, GameLogic.randSeed, targetFloorPercent);
         drunkardAlgo.walk();
     }
 

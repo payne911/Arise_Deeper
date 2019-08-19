@@ -2,19 +2,16 @@ package com.payne.games.map;
 
 import com.badlogic.gdx.utils.Array;
 import com.payne.games.gameObjects.*;
-import com.payne.games.logic.GameLogic;
 import com.payne.games.map.renderers.IRenderable;
 
 
 public class SecondaryMapLayer {
-    private GameLogic gLogic; // todo: maybe not necessary?
     private GameObjectFactory objectFactory;
     private Array<IRenderable> inertLayer; // keys, chests, etc.
     private Array<Actor> actorLayer; // hero, enemies, etc.
 
 
-    public SecondaryMapLayer(GameLogic gameLogic, GameObjectFactory gameObjectFactory) {
-        this.gLogic = gameLogic;
+    public SecondaryMapLayer(GameObjectFactory gameObjectFactory) {
         this.objectFactory = gameObjectFactory;
     }
 

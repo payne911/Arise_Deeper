@@ -18,7 +18,6 @@ public class GameScreen implements Screen {
     private final AriseDeeper game;
     private OrthographicCamera camera;
 
-    private GameLogic gLogic;
     private MapController mapController;
 
     private float currTime = 0f; // turn system
@@ -26,23 +25,22 @@ public class GameScreen implements Screen {
 
     public GameScreen(final AriseDeeper game) {
         this.game = game;
-        this.gLogic = new GameLogic(game);
 
         Gdx.gl.glClearColor(0, 0, 0, 1); // black background
 
         // create the camera and the SpriteBatch
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, gLogic.GAME_WIDTH, gLogic.GAME_HEIGHT);
-        camera.zoom = gLogic.CAM_ZOOM;
+        camera.setToOrtho(false, GameLogic.GAME_WIDTH, GameLogic.GAME_HEIGHT);
+        camera.zoom = GameLogic.CAM_ZOOM;
 
-        this.mapController = new MapController(gLogic, camera);
+        this.mapController = new MapController(camera);
 
         // generate the initial level and place the GameObjects (hero, etc.)
-        mapController.generateLevel(64, 32, new BasicTileset(gLogic));
+        mapController.generateLevel(64, 32, new BasicTileset());
 
-        // input processors
-        MyInputProcessor inputProcessor1  = new MyInputProcessor(gLogic, camera, mapController);
-        MyGestureListener inputProcessor2 = new MyGestureListener(gLogic, camera, mapController);
+        // input processors  todo: the order matters! First one passed is first one to try to process.
+        MyInputProcessor inputProcessor1  = new MyInputProcessor(camera, mapController);
+        MyGestureListener inputProcessor2 = new MyGestureListener(camera, mapController);
         Gdx.input.setInputProcessor(new MyInputMultiplexer(
                 inputProcessor1,
                 new GestureDetector(inputProcessor2)));
@@ -59,7 +57,7 @@ public class GameScreen implements Screen {
 
 
         /* Turn system. */
-        if(currTime >= gLogic.TURN_TIME) {
+        if(currTime >= GameLogic.TURN_TIME) {
             currTime = 0f;
             mapController.processTurn();
             mapController.updateLighting();
@@ -85,7 +83,7 @@ public class GameScreen implements Screen {
          */
         game.font.draw(game.batch,
                 "MaxSpritesBatch: " + game.batch.maxSpritesInBatch
-                + " | seed: " + gLogic.getSeed()
+                + " | seed: " + GameLogic.randSeed
                 + " | fps: " + Gdx.graphics.getFramesPerSecond(), 4, 14); // at the bottom-left of the screen
 
         game.batch.end();

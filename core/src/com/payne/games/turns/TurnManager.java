@@ -3,7 +3,6 @@ package com.payne.games.turns;
 import com.badlogic.gdx.utils.BinaryHeap;
 import com.payne.games.gameObjects.Actor;
 import com.payne.games.gameObjects.Hero;
-import com.payne.games.logic.GameLogic;
 import com.payne.games.map.SecondaryMapLayer;
 import com.payne.games.turns.actions.AttackAction;
 import com.payne.games.turns.actions.IAction;
@@ -11,14 +10,13 @@ import com.payne.games.turns.actions.MoveAction;
 
 
 public class TurnManager {
-    private GameLogic gLogic;
     private BinaryHeap<ActorNode> actorsHeap = new BinaryHeap<>(); // minHeap
     private IAction actionToExecute;
     private SecondaryMapLayer secondaryMapLayer;
+    private boolean waitingOnPlayerInput;
 
 
-    public TurnManager(GameLogic gameLogic, SecondaryMapLayer secondaryMapLayer) {
-        this.gLogic = gameLogic;
+    public TurnManager(SecondaryMapLayer secondaryMapLayer) {
         this.secondaryMapLayer = secondaryMapLayer;
     }
 
@@ -41,8 +39,7 @@ public class TurnManager {
         } while(shouldRunAgain);
 
         /* If waiting on input, we want to allow the player to freely explore the map with drag. */
-        boolean waitingOnPlayer = (actionToExecute == null);
-        return waitingOnPlayer;
+        return waitingOnPlayerInput;
     }
 
 
@@ -55,14 +52,14 @@ public class TurnManager {
      * @return 'true' if another turn should be ran.
      */
     private boolean checkIfShouldRunAnotherTurn() {
-        boolean anActionWasExecuted = (actionToExecute != null);
-        if(!anActionWasExecuted)
-            return false; // we are waiting after the player's input
+        if(waitingOnPlayerInput)
+            return false;
 
         boolean lastActionWasAnAttack = (actionToExecute instanceof AttackAction);
         boolean heroIssuedMove = (actionToExecute.getSource() instanceof Hero) && (actionToExecute instanceof MoveAction);
 
         // todo: don't allow two moves from the same Actor within a turn without blocking in between?
+        // todo: maybe ONLY skip "enemy MoveAction" ?
 
         return !lastActionWasAnAttack && !heroIssuedMove;
     }
@@ -87,6 +84,7 @@ public class TurnManager {
             }
         }
 
+        waitingOnPlayerInput = (actionToExecute == null);
     }
 
     /**
@@ -107,8 +105,8 @@ public class TurnManager {
      * If waiting on player input, nothing happens.
      */
     private void execute() {
-        if(actionToExecute != null) {
-            actionToExecute.execute();
+        if(!waitingOnPlayerInput) {
+            actionToExecute.execute(); // todo: maybe update collectedActors (if someone died or a minion was spawned?)
             actorsHeap.pop();
         }
     }

@@ -10,22 +10,19 @@ import com.payne.games.logic.GameLogic;
  * Factory that helps decoupling the visual representation of secondary objects from the logical layers.
  */
 public class GameObjectFactory {
-    private GameLogic gLogic;
-
     private Texture objects_20p;
     private Texture objects_16p;
     private TextureRegion[][] split_20p;
     private TextureRegion[][] split_16p;
 
 
-    public GameObjectFactory(GameLogic gameLogic) {
-        this.gLogic = gameLogic;
+    public GameObjectFactory() {
 
         objects_20p = new Texture(Gdx.files.internal("game_objects_20p.png"));
-        split_20p = TextureRegion.split(objects_20p, gLogic.TILE_BIG_WIDTH, gLogic.TILE_BIG_HEIGHT);
+        split_20p = TextureRegion.split(objects_20p, GameLogic.TILE_BIG_WIDTH, GameLogic.TILE_BIG_HEIGHT);
 
         objects_16p = new Texture(Gdx.files.internal("game_objects_16p.png"));
-        split_16p = TextureRegion.split(objects_16p, gLogic.TILE_WIDTH, gLogic.TILE_HEIGHT);
+        split_16p = TextureRegion.split(objects_16p, GameLogic.TILE_WIDTH, GameLogic.TILE_HEIGHT);
     }
 
 

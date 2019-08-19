@@ -11,13 +11,11 @@ import java.util.HashSet;
  * todo:  see  https://www.redblobgames.com/articles/visibility/
  */
 public class LightingSystem {
-    private GameLogic gLogic;
     private BaseMapLayer level;
     private Hero player;
 
 
-    public LightingSystem(GameLogic gameLogic, Hero player) {
-        this.gLogic = gameLogic;
+    public LightingSystem(Hero player) {
         this.player = player;
     }
 

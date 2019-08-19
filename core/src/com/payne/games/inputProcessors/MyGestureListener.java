@@ -15,15 +15,13 @@ import com.payne.games.logic.MapController;
  * Middle-scroll-click:     Button = 2
  */
 public class MyGestureListener implements GestureDetector.GestureListener {
-    private GameLogic gLogic;
     private OrthographicCamera camera;
     private MapController mapController;
 
     private final boolean DEBUG_PRINT = false;
 
 
-    public MyGestureListener(GameLogic gameLogic, OrthographicCamera camera, MapController mapController) {
-        this.gLogic = gameLogic;
+    public MyGestureListener(OrthographicCamera camera, MapController mapController) {
         this.camera = camera;
         this.mapController = mapController;
     }
@@ -39,11 +37,11 @@ public class MyGestureListener implements GestureDetector.GestureListener {
     public boolean tap(float x, float y, int count, int button) {
         if(DEBUG_PRINT) System.out.println("tap: " + x + "," + y + " | count: " + count + " | button: " + button);
 
-        final double OFFSET = gLogic.AESTHETIC_OFFSET;
+        final double OFFSET = GameLogic.AESTHETIC_OFFSET;
         final double ZOOM = camera.zoom;
 
-        double coordX = (camera.position.x + x*ZOOM - OFFSET - ((double)camera.viewportWidth/2)*ZOOM)  / gLogic.TILE_WIDTH;
-        double coordY = (camera.position.y - y*ZOOM - OFFSET + ((double)camera.viewportHeight/2)*ZOOM) / gLogic.TILE_HEIGHT;
+        double coordX = (camera.position.x + x*ZOOM - OFFSET - ((double)camera.viewportWidth/2)*ZOOM)  / GameLogic.TILE_WIDTH;
+        double coordY = (camera.position.y - y*ZOOM - OFFSET + ((double)camera.viewportHeight/2)*ZOOM) / GameLogic.TILE_HEIGHT;
 
         System.out.println("Tile coordinate: (" + (int)coordX + ", " + (int)coordY + ")");
 

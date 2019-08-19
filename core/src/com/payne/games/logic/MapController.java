@@ -14,7 +14,6 @@ import com.payne.games.turns.TurnManager;
 
 
 public class MapController {
-    private GameLogic gLogic;
     private MapRenderer mapRenderer;
     private OrthographicCamera camera;
 
@@ -35,18 +34,17 @@ public class MapController {
     private TurnManager turnManager;
 
 
-    public MapController(GameLogic gameLogic, OrthographicCamera camera) {
-        this.gLogic = gameLogic;
+    public MapController(OrthographicCamera camera) {
         this.camera = camera;
 
-        this.mapGenerator = new MapGenerator(gLogic);
-        this.gameObjectFactory = new GameObjectFactory(gLogic);
+        this.mapGenerator = new MapGenerator();
+        this.gameObjectFactory = new GameObjectFactory();
         this.player = gameObjectFactory.createHero(0, 0); // todo: this will eventually move somewhere else!
-        this.secondaryMapLayer = new SecondaryMapLayer(gLogic, gameObjectFactory);
-        this.lightingSystem = new LightingSystem(gLogic, player);
-        this.mapRenderer = new MapRenderer(gLogic, secondaryMapLayer, lightingSystem);
-        this.actionSystem = new ActionSystem(gLogic);
-        this.turnManager = new TurnManager(gLogic, secondaryMapLayer);
+        this.secondaryMapLayer = new SecondaryMapLayer(gameObjectFactory);
+        this.lightingSystem = new LightingSystem(player);
+        this.mapRenderer = new MapRenderer(secondaryMapLayer, lightingSystem);
+        this.actionSystem = new ActionSystem();
+        this.turnManager = new TurnManager(secondaryMapLayer);
     }
 
 
@@ -87,8 +85,8 @@ public class MapController {
      */
     public void centerOnHero() {
         if(player != null) {
-            camera.position.set(gLogic.AESTHETIC_OFFSET + player.getX()*gLogic.TILE_WIDTH,
-                    gLogic.AESTHETIC_OFFSET + player.getY()*gLogic.TILE_HEIGHT,
+            camera.position.set(GameLogic.AESTHETIC_OFFSET + player.getX()*GameLogic.TILE_WIDTH,
+                    GameLogic.AESTHETIC_OFFSET + player.getY()*GameLogic.TILE_HEIGHT,
                     0f);
         }
     }

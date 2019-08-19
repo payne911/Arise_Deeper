@@ -11,7 +11,6 @@ import com.payne.games.map.tilesets.Tileset;
 
 
 public class MapRenderer {
-    private GameLogic gLogic;
 
     // Base layer
     private WallRenderer wallRenderer;
@@ -26,8 +25,7 @@ public class MapRenderer {
     private final boolean DEBUG_NO_FOG = false;
 
 
-    public MapRenderer(GameLogic gameLogic, SecondaryMapLayer secondaryMapLayer, LightingSystem lightingSystem) {
-        this.gLogic = gameLogic;
+    public MapRenderer(SecondaryMapLayer secondaryMapLayer, LightingSystem lightingSystem) {
         this.secondaryMapLayer = secondaryMapLayer;
         this.wallRenderer = new WallRenderer();
         this.lightingSystem = lightingSystem;
@@ -116,8 +114,8 @@ public class MapRenderer {
 
         if(shouldDraw)
             batch.draw(toRender.getTexture(),
-                    gLogic.AESTHETIC_OFFSET + toRender.getX()*gLogic.TILE_WIDTH,
-                    gLogic.AESTHETIC_OFFSET + toRender.getY()*gLogic.TILE_HEIGHT);
+                    GameLogic.AESTHETIC_OFFSET + toRender.getX()*GameLogic.TILE_WIDTH,
+                    GameLogic.AESTHETIC_OFFSET + toRender.getY()*GameLogic.TILE_HEIGHT);
     }
 
 
