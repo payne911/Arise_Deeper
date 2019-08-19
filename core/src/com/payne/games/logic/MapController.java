@@ -2,6 +2,9 @@ package com.payne.games.logic;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.Array;
+import com.payne.games.AriseDeeper;
 import com.payne.games.gameObjects.GameObjectFactory;
 import com.payne.games.gameObjects.Hero;
 import com.payne.games.map.BaseMapLayer;
@@ -10,10 +13,12 @@ import com.payne.games.map.generators.MapGenerator;
 import com.payne.games.map.renderers.MapRenderer;
 import com.payne.games.map.tiles.Tile;
 import com.payne.games.map.tilesets.Tileset;
+import com.payne.games.screens.MainMenuScreen;
 import com.payne.games.turns.TurnManager;
 
 
 public class MapController {
+    private AriseDeeper game;
     private MapRenderer mapRenderer;
     private OrthographicCamera camera;
 
@@ -33,10 +38,17 @@ public class MapController {
     private ActionSystem actionSystem;
     private TurnManager turnManager;
 
+    // inventory
+    private InventorySystem inventorySystem;
+    private Array<TextButton> inventorySlots;
 
-    public MapController(OrthographicCamera camera) {
+
+    public MapController(AriseDeeper game, OrthographicCamera camera, Array<TextButton> inventorySlots) {
+        this.game = game;
         this.camera = camera;
+        this.inventorySlots = inventorySlots;
 
+        this.inventorySystem = new InventorySystem(inventorySlots);
         this.mapGenerator = new MapGenerator();
         this.gameObjectFactory = new GameObjectFactory();
         this.player = gameObjectFactory.createHero(0, 0); // todo: this will eventually move somewhere else!
@@ -135,5 +147,13 @@ public class MapController {
      */
     public void updateLighting() {
         lightingSystem.updateLighting();
+    }
+
+    /**
+     * Returns to the MainScreenMenu.
+     * todo: should save state, etc.!
+     */
+    public void returnToMainMenu() {
+        game.setScreen(new MainMenuScreen(game));
     }
 }

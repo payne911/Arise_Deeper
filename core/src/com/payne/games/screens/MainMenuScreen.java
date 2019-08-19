@@ -37,12 +37,10 @@ public class MainMenuScreen implements Screen {
 
         skin = new Skin(Gdx.files.internal(GameLogic.SKIN_FILE));
         stage = new Stage(new ScreenViewport());
-
         table = new Table();
         initButtons();
         setUpButtonsClickListeners();
         setUpTableLayout();
-
         stage.addActor(table);
 
         Gdx.input.setInputProcessor(stage);
@@ -111,7 +109,8 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void hide() {
-
+        stage.dispose();
+        skin.dispose();
     }
 
     @Override

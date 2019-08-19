@@ -25,4 +25,7 @@ public class GameLogic {
     // turn
     public static final float TURN_TIME = 0.07f;
 
+    // inventory
+    public static final int INV_SLOTS = 4;
+
 }

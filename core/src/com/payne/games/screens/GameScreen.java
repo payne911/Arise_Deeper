@@ -5,6 +5,10 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.utils.Array;
 import com.payne.games.AriseDeeper;
 import com.payne.games.logic.GameLogic;
 import com.payne.games.logic.MapController;
@@ -18,30 +22,81 @@ public class GameScreen implements Screen {
     private final AriseDeeper game;
     private OrthographicCamera camera;
 
-    private MapController mapController;
+    // ui
+    private Stage stage;
+    private Skin skin;
+    private Table ui;
+    private Array<TextButton> inventorySlots = new Array<>();
 
+    // controllers
+    private MapController mapController;
     private float currTime = 0f; // turn system
 
 
     public GameScreen(final AriseDeeper game) {
         this.game = game;
-
         Gdx.gl.glClearColor(0, 0, 0, 1); // black background
 
-        // create the camera and the SpriteBatch
+        setUpGameScreen();
+    }
+
+
+    /**
+     * Order is important.
+     */
+    private void setUpGameScreen() {
+        setUpUi(); // ui
+        setUpCamera(); // create the camera and the SpriteBatch
+        this.mapController = new MapController(game, camera, inventorySlots); // controller
+        setUpMap(); // generate the initial level and place the GameObjects (hero, etc.)
+        setUpInputProcessors(); // input processors
+    }
+
+    private void setUpUi() {
+        this.stage = new Stage();
+        this.skin = new Skin(Gdx.files.internal(GameLogic.SKIN_FILE));
+
+        this.ui = new Table();
+        ui.debugTable();
+        ui.setFillParent(true);
+
+        setUpInventoryUi();
+
+        stage.addActor(ui);
+    }
+
+    private void setUpInventoryUi() {
+        ui.bottom();
+        ui.setTouchable(Touchable.childrenOnly);
+
+        final int SIZE = 2 * GameLogic.TILE_HEIGHT;
+        Table container = new Table();
+        container.setTouchable(Touchable.enabled);
+        container.defaults().pad(2f).prefSize(SIZE).minSize(SIZE);
+        for(int i=0; i<GameLogic.INV_SLOTS; i++) {
+            inventorySlots.add(new TextButton(""+i, skin));
+            container.add(inventorySlots.get(i));
+        }
+
+        final Value VAL = Value.percentWidth(0.2f, ui);
+        ui.add(container).prefWidth(VAL).minWidth(VAL);
+    }
+
+    private void setUpCamera() {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, GameLogic.GAME_WIDTH, GameLogic.GAME_HEIGHT);
         camera.zoom = GameLogic.CAM_ZOOM;
+    }
 
-        this.mapController = new MapController(camera);
-
-        // generate the initial level and place the GameObjects (hero, etc.)
+    private void setUpMap() {
         mapController.generateLevel(64, 32, new BasicTileset());
+    }
 
-        // input processors  todo: the order matters! First one passed is first one to try to process.
+    private void setUpInputProcessors() {
         MyInputProcessor inputProcessor1  = new MyInputProcessor(camera, mapController);
         MyGestureListener inputProcessor2 = new MyGestureListener(camera, mapController);
         Gdx.input.setInputProcessor(new MyInputMultiplexer(
+                stage,
                 inputProcessor1,
                 new GestureDetector(inputProcessor2)));
     }
@@ -87,6 +142,11 @@ public class GameScreen implements Screen {
                 + " | fps: " + Gdx.graphics.getFramesPerSecond(), 4, 14); // at the bottom-left of the screen
 
         game.batch.end();
+
+
+        /* Drawing the UI over the map. */
+        stage.act(delta);
+        stage.draw();
     }
 
     @Override
@@ -125,7 +185,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
-
+        stage.dispose();
+        skin.dispose();
     }
 
     /**

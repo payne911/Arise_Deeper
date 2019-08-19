@@ -29,6 +29,9 @@ public class MyInputProcessor extends InputAdapter {
             case Input.Keys.SPACE: // todo: should TOGGLE a centerView option?
                 mapController.centerOnHero();
                 break;
+            case Input.Keys.ESCAPE:
+                mapController.returnToMainMenu();
+                break;
             default:
                 System.out.println("keyDown_keyCode: " + keycode);
                 break;
@@ -45,7 +48,7 @@ public class MyInputProcessor extends InputAdapter {
      * @param screenY Relative y position, in pixel.
      * @param pointer ?
      * @param button left-click = 0, right-click = 1
-     * @return if handled.
+     * @return 'true' only if the event shouldn't be passed to the next InputProcessor.
      */
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
@@ -60,8 +63,8 @@ public class MyInputProcessor extends InputAdapter {
      *
      * @param screenX relative pixel x-coordinate, where the mouse is currently.
      * @param screenY relative pixel y-coordinate, where the mouse is currently.
-     * @param pointer
-     * @return
+     * @param pointer ?
+     * @return 'true' only if the event shouldn't be passed to the next InputProcessor.
      */
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
@@ -89,7 +92,7 @@ public class MyInputProcessor extends InputAdapter {
      * Mouse-wheel scroll.
      *
      * @param amount Either 1 or -1, based on the direction of the scroll.
-     * @return If handled.
+     * @return 'true' only if the event shouldn't be passed to the next InputProcessor.
      */
     @Override
     public boolean scrolled(int amount) {
