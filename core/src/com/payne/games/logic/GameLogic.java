@@ -3,6 +3,7 @@ package com.payne.games.logic;
 
 public class GameLogic {
     public static final String GAME_NAME = "Arise Deeper";
+    public static final String SKIN_FILE = "uiskin.json";
 
     // seeded "random" level generator
     public static final int RANDOM_SEED = 1337;
