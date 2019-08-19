@@ -1,6 +1,5 @@
 package com.payne.games.map;
 
-import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.utils.Array;
 import com.payne.games.map.tiles.Tile;
 
@@ -98,12 +97,9 @@ public class BaseMapLayer {
     public HashSet<Tile> getNeighborsWithinSquareRange(int x, int y, int range) {
         HashSet<Tile> neighbors = new HashSet<>();
 
-        for(int i=0; i<=range; i++) {        // height
-            for(int j=0; j<=range; j++) {    // width
-                neighbors.add(getTile(x-j, y+i));
-                neighbors.add(getTile(x+j, y+i));
-                neighbors.add(getTile(x-j, y-i));
-                neighbors.add(getTile(x+j, y-i));
+        for(int i = -range; i <= range; i++) {          // height
+            for(int j = -range; j <= range; j++) {      // width
+                neighbors.add(getTile(j+x, i+y));
             }
         }
 

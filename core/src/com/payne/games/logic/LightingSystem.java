@@ -11,6 +11,7 @@ import java.util.HashSet;
  * todo:  see  https://www.redblobgames.com/articles/visibility/
  */
 public class LightingSystem {
+    private HashSet<Tile> oldTiles = new HashSet<>();
     private BaseMapLayer level;
     private Hero player;
 
@@ -38,9 +39,8 @@ public class LightingSystem {
         visitedTile.setSeen(true);
 
 
-        // Lazily checking if Tiles within "rangeOfSight + 1" are outside of "rangeOfSight" to remove the `seen` flag.
+        // Using "non-intersection" between sets to update the FogOfWar.
         HashSet<Tile> surroundingTiles = level.getNeighborsWithinSquareRange(x, y, rangeOfSight);
-        HashSet<Tile> oldTiles = level.getNeighborsWithinSquareRange(x, y, rangeOfSight+1); // todo: more efficient please!
         for(Tile t : oldTiles) {
             if(surroundingTiles.contains(t)) { // within range of sight
                 t.setSeen(true);
@@ -49,6 +49,7 @@ public class LightingSystem {
                 t.setSeen(false);
             }
         }
+        oldTiles = (HashSet<Tile>)surroundingTiles.clone();
 
         return surroundingTiles;
     }
