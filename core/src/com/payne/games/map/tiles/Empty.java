@@ -12,7 +12,7 @@ public class Empty extends Tile {
 
     @Override
     public void setTexture(Tileset tileset) {
-        setTexture(tileset.getEmptyRandomTexture());
+        setTexture(tileset.getEmptyRandomTexture(getBitmask()));
     }
 
     @Override

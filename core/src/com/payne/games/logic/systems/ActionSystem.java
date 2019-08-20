@@ -1,8 +1,9 @@
-package com.payne.games.logic;
+package com.payne.games.logic.systems;
 
 import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.math.GridPoint2;
 import com.payne.games.gameObjects.Actor;
+import com.payne.games.logic.Utils;
 import com.payne.games.map.BaseMapLayer;
 import com.payne.games.map.SecondaryMapLayer;
 import com.payne.games.map.tiles.Tile;
@@ -74,6 +75,25 @@ public class ActionSystem {
         }
     }
 
+    /**
+     * Selects a random walkable tile in the level, and then issues a queue of MoveActions to get the actor to move there.
+     *
+     * @param actor The actor that will move to a random point.
+     */
+    public void moveToRandomPoint(Actor actor) {
+        Tile randomTile = level.getWalkableTiles().random();
+        moveTo(actor, randomTile.getX(), randomTile.getY());
+    }
+
+    /**
+     * Gets the Actor to take a step in a random (walkable) direction.
+     * @param actor the Actor that will move.
+     */
+    public void takeOneRandomStep(Actor actor) {
+        Tile randomStep = level.getWalkableNeighbors(actor.getX(), actor.getY()).random();
+        moveTo(actor, randomStep.getX(), randomStep.getY());
+    }
+
 
     /**
      * If the player had other actions already in queue, those are removed.
@@ -82,14 +102,10 @@ public class ActionSystem {
      * @return 'false' only if there were no actions in the Queue.
      */
     private boolean hasInterruptedActions(Actor player) {
-        if(doingSomethingElse(player)) {
-            player.getActionsQueue().clear(); // this means we interrupt current actions
+        if(player.isOccupied()) {
+            player.clearActionsQueue(); // this means we interrupt current actions
             return true;
         }
         return false;
-    }
-
-    private boolean doingSomethingElse(Actor actor) {
-        return actor.getActionsQueue().size > 0;
     }
 }

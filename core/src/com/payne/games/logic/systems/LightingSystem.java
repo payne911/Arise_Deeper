@@ -1,4 +1,4 @@
-package com.payne.games.logic;
+package com.payne.games.logic.systems;
 
 import com.payne.games.gameObjects.Hero;
 import com.payne.games.map.BaseMapLayer;

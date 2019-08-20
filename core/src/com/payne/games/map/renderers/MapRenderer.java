@@ -3,7 +3,7 @@ package com.payne.games.map.renderers;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.payne.games.gameObjects.Actor;
 import com.payne.games.logic.GameLogic;
-import com.payne.games.logic.LightingSystem;
+import com.payne.games.logic.systems.LightingSystem;
 import com.payne.games.map.BaseMapLayer;
 import com.payne.games.map.SecondaryMapLayer;
 import com.payne.games.map.tiles.Tile;
@@ -13,7 +13,7 @@ import com.payne.games.map.tilesets.Tileset;
 public class MapRenderer {
 
     // Base layer
-    private WallRenderer wallRenderer;
+    private SubclassTileAssigner subclassTileAssigner;
     private Tileset tileset;
     private BaseMapLayer level;
 
@@ -22,12 +22,11 @@ public class MapRenderer {
 
     // Fog of War
     private LightingSystem lightingSystem;
-    private final boolean DEBUG_NO_FOG = false;
 
 
     public MapRenderer(SecondaryMapLayer secondaryMapLayer, LightingSystem lightingSystem) {
         this.secondaryMapLayer = secondaryMapLayer;
-        this.wallRenderer = new WallRenderer();
+        this.subclassTileAssigner = new SubclassTileAssigner();
         this.lightingSystem = lightingSystem;
     }
 
@@ -45,7 +44,7 @@ public class MapRenderer {
     public void setUpBaseLayer(BaseMapLayer level, Tileset tileset) {
         this.level = level;
         this.tileset = tileset;
-        this.wallRenderer.setTileset(tileset);
+        subclassTileAssigner.setLevel(level);
 
         assignTilesTexture();
     }
@@ -69,7 +68,9 @@ public class MapRenderer {
      * @param y y-coordinate input.
      */
     public void assignSingleTileTexture(int x, int y) {
-        level.getTile(x, y).setTexture(tileset);
+        Tile tile = level.getTile(x, y);
+        if(GameLogic.DEBUG_SUBCLASSED_TILES) subclassTileAssigner.patternMatchSurroundings(tile); // looks at the 4-direction tiles (N,S,E,W)
+        tile.setTexture(tileset);
     }
 
     /**
@@ -127,7 +128,7 @@ public class MapRenderer {
      * @return 'false' only if the SpriteBatch should not attempt to draw the IRenderable object.
      */
     private boolean determineFogOfWarOverlay(SpriteBatch batch, IRenderable renderable) {
-        if(DEBUG_NO_FOG) {
+        if(GameLogic.DEBUG_NO_FOG) {
             batch.setColor(1,1,1,1);
             return true;
         }

@@ -7,6 +7,9 @@ import com.badlogic.gdx.utils.Array;
 import com.payne.games.AriseDeeper;
 import com.payne.games.gameObjects.GameObjectFactory;
 import com.payne.games.gameObjects.Hero;
+import com.payne.games.logic.systems.ActionSystem;
+import com.payne.games.logic.systems.InventorySystem;
+import com.payne.games.logic.systems.LightingSystem;
 import com.payne.games.map.BaseMapLayer;
 import com.payne.games.map.SecondaryMapLayer;
 import com.payne.games.map.generators.MapGenerator;
@@ -32,14 +35,14 @@ public class MapController {
     private GameObjectFactory gameObjectFactory;
 
     // map's tertiary layer
-    private LightingSystem lightingSystem;
+    private com.payne.games.logic.systems.LightingSystem lightingSystem;
 
     // movements and turns
-    private ActionSystem actionSystem;
+    private com.payne.games.logic.systems.ActionSystem actionSystem;
     private TurnManager turnManager;
 
     // inventory
-    private InventorySystem inventorySystem;
+    private com.payne.games.logic.systems.InventorySystem inventorySystem;
     private Array<TextButton> inventorySlots;
 
 
@@ -50,12 +53,12 @@ public class MapController {
 
         this.inventorySystem = new InventorySystem(inventorySlots);
         this.mapGenerator = new MapGenerator();
-        this.gameObjectFactory = new GameObjectFactory();
+        this.actionSystem = new ActionSystem();
+        this.gameObjectFactory = new GameObjectFactory(actionSystem);
         this.player = gameObjectFactory.createHero(0, 0); // todo: this will eventually move somewhere else!
         this.secondaryMapLayer = new SecondaryMapLayer(gameObjectFactory);
         this.lightingSystem = new LightingSystem(player);
         this.mapRenderer = new MapRenderer(secondaryMapLayer, lightingSystem);
-        this.actionSystem = new ActionSystem();
         this.turnManager = new TurnManager(secondaryMapLayer);
     }
 
@@ -71,7 +74,7 @@ public class MapController {
 
     /**
      * Uses the Fatigue system in order to figure out who's turn it is.
-     * The AI determines the actions of the Enemies.
+     * The DecisionMaking determines the actions of the Enemies.
      */
     public void processTurn() {
         boolean waitingOnPlayer = turnManager.executeTurn();

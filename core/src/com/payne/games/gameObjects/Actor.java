@@ -6,9 +6,11 @@ import com.payne.games.turns.actions.IAction;
 
 public abstract class Actor extends GameObject {
     protected Queue<IAction> actions = new Queue<>(); // all the Actions the Actor wants to see executed
-    private int rangeOfSight = 6; // how far the Actor can see in a straight line
     private int priority = 2; // used by the MinHeap of the TurnManager to determine who goes first in case of equality
 
+    // states
+    private boolean sleeping = false;
+    private int rangeOfSight = 6; // how far the Actor can see in a straight line
     private boolean invincible = false;
     private int maxHp;
     private int currHp;
@@ -48,18 +50,31 @@ public abstract class Actor extends GameObject {
 
     /**
      * Command Pattern implementation. The `TurnManager` ends up collecting the actions from all the Actors in the map.
-     * This is where an Enemy's AI takes a decision, among other things.
+     * This is where an Enemy's DecisionMaking takes a decision, among other things.
      *
      * @return The Action this Actor wants to see executed. 'null' only if the engine is waiting for the player to act.
      */
     abstract public IAction extractAction();
 
-    public Queue<IAction> getActionsQueue() {
-        return actions;
+
+    /**
+     * Determines whether or not this Actor already has Actions that it wants to take.
+     *
+     * @return 'false' only if idle (no Actions in the Queue).
+     */
+    public boolean isOccupied() {
+        return actions.size > 0;
     }
 
     public void clearActionsQueue() {
         actions.clear();
+    }
+
+    public IAction getNextAction() {
+        if(isOccupied())
+            return actions.removeFirst();
+        else
+            return extractAction();
     }
 
     public void regenFatigue() {
@@ -89,6 +104,9 @@ public abstract class Actor extends GameObject {
         GETTERS/SETTERS
      */
 
+    public Queue<IAction> getActionsQueue() {
+        return actions;
+    }
 
     public int getRange() {
         return range;
@@ -144,5 +162,23 @@ public abstract class Actor extends GameObject {
     }
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    public boolean isSleeping() {
+        return sleeping;
+    }
+    public void setSleeping(boolean sleeping) {
+        this.sleeping = sleeping;
+    }
+
+
+
+
+    @Override
+    public String toString() {
+        return "Actor{" +
+                "position= (" + getX() + "," + getY() + ") " +
+                ", texture=" + getTexture().toString() +
+                '}';
     }
 }

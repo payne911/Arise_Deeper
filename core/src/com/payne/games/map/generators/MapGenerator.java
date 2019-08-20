@@ -1,6 +1,7 @@
 package com.payne.games.map.generators;
 
 import com.badlogic.gdx.math.RandomXS128;
+import com.badlogic.gdx.utils.Array;
 import com.payne.games.logic.GameLogic;
 import com.payne.games.map.BaseMapLayer;
 import com.payne.games.map.generators.algos.drunkard.MapCarver;
@@ -30,6 +31,7 @@ public class MapGenerator {
                 0.28f + rand.nextFloat()/15);
 
 
+        level.computeWalkableTiles();
         return level;
     }
 

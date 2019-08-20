@@ -19,7 +19,27 @@ public abstract class Tileset {
 
     // collections of points within the split tileset's SpriteSheet where each type of tile is (for random picks).
     protected GridPoint2[] floors;
+    protected GridPoint2[] floors_N;
+    protected GridPoint2[] floors_S;
+    protected GridPoint2[] floors_E;
+    protected GridPoint2[] floors_W;
+    protected GridPoint2[] floors_NE;
+    protected GridPoint2[] floors_NW;
+    protected GridPoint2[] floors_SE;
+    protected GridPoint2[] floors_SW;
+    protected GridPoint2[] floors_horiz;
+    protected GridPoint2[] floors_vert;
     protected GridPoint2[] walls;
+    protected GridPoint2[] walls_N;
+    protected GridPoint2[] walls_S;
+    protected GridPoint2[] walls_E;
+    protected GridPoint2[] walls_W;
+    protected GridPoint2[] walls_NE;
+    protected GridPoint2[] walls_NW;
+    protected GridPoint2[] walls_SE;
+    protected GridPoint2[] walls_SW;
+    protected GridPoint2[] walls_horiz; // EW
+    protected GridPoint2[] walls_vert;  // NS
     protected GridPoint2[] doors;
     protected GridPoint2[] water;
     protected GridPoint2[] empty;
@@ -39,51 +59,98 @@ public abstract class Tileset {
         splitTiles = TextureRegion.split(tiles, GameLogic.TILE_WIDTH, GameLogic.TILE_HEIGHT);
     }
 
-    public Texture getTiles() {
-        return tiles;
-    }
-
-    private GridPoint2 getRandomDoor() {
-        return doors[rand.nextInt(doors.length)];
-    }
-
-    private GridPoint2 getRandomWall() {
-        return walls[rand.nextInt(walls.length)];
-    }
-
-    private GridPoint2 getRandomFloor() {
-        return floors[rand.nextInt(floors.length)];
-    }
-
-    private GridPoint2 getRandomWater() {
-        return water[rand.nextInt(water.length)];
-    }
-
-    private GridPoint2 getRandomEmpty() {
-        return empty[rand.nextInt(empty.length)];
-    }
-
+    /**
+     * Returns the TextureRegion at the specified GridPoint2 within the split SpriteSheet Texture.
+     *
+     * @param positionInTileset Coordinate, with (0,0) starting from top-left.
+     * @return A texture that can be drawn on the screen.
+     */
     private TextureRegion getTextureFromPoint(GridPoint2 positionInTileset) {
         return splitTiles[positionInTileset.y][positionInTileset.x];
     }
 
-    public TextureRegion getFloorRandomTexture() {
-        return getTextureFromPoint(getRandomFloor());
+    public Texture getTiles() {
+        return tiles;
     }
 
-    public TextureRegion getWallRandomTexture() {
-        return getTextureFromPoint(getRandomWall());
+    /**
+     * To obtain a random drawable texture taken from the list of possible coordinates set in a concrete Tileset.
+     *
+     * @param input name of the variable.
+     * @return the coordinate of the randomly selected texture.
+     */
+    private GridPoint2 getRandom(GridPoint2[] input) {
+        return input[rand.nextInt(input.length)];
     }
 
-    public TextureRegion getWaterRandomTexture() {
-        return getTextureFromPoint(getRandomWater());
+
+
+
+
+
+
+    /* todo: use an array with each index being matched against the bitmask? */
+
+    public TextureRegion getFloorRandomTexture(int bitmask) {
+        switch (bitmask) {
+            case GameLogic.NORTH:
+                return getTextureFromPoint(getRandom(floors_N));
+            case GameLogic.EAST:
+                return getTextureFromPoint(getRandom(floors_E));
+            case GameLogic.WEST:
+                return getTextureFromPoint(getRandom(floors_W));
+            case GameLogic.SOUTH:
+                return getTextureFromPoint(getRandom(floors_S));
+            case GameLogic.SOUTH|GameLogic.WEST:
+                return getTextureFromPoint(getRandom(floors_SW));
+            case GameLogic.SOUTH|GameLogic.EAST:
+                return getTextureFromPoint(getRandom(floors_SE));
+            case GameLogic.NORTH|GameLogic.WEST:
+                return getTextureFromPoint(getRandom(floors_NW));
+            case GameLogic.NORTH|GameLogic.EAST:
+                return getTextureFromPoint(getRandom(floors_NE));
+            default:
+                return getTextureFromPoint(getRandom(floors));
+        }
     }
 
-    public TextureRegion getDoorRandomTexture() {
-        return getTextureFromPoint(getRandomDoor());
+    public TextureRegion getWallRandomTexture(int bitmask) {
+        switch (bitmask) {
+            case GameLogic.NORTH:
+                return getTextureFromPoint(getRandom(walls_N));
+            case GameLogic.EAST:
+                return getTextureFromPoint(getRandom(walls_E));
+            case GameLogic.WEST:
+                return getTextureFromPoint(getRandom(walls_W));
+            case GameLogic.SOUTH:
+                return getTextureFromPoint(getRandom(walls_S));
+            case GameLogic.SOUTH|GameLogic.WEST:
+                return getTextureFromPoint(getRandom(walls_SW));
+            case GameLogic.SOUTH|GameLogic.EAST:
+                return getTextureFromPoint(getRandom(walls_SE));
+            case GameLogic.NORTH|GameLogic.WEST:
+                return getTextureFromPoint(getRandom(walls_NW));
+            case GameLogic.NORTH|GameLogic.EAST:
+                return getTextureFromPoint(getRandom(walls_NE));
+            case GameLogic.NORTH|GameLogic.SOUTH:
+                return getTextureFromPoint(getRandom(walls_vert));
+            case GameLogic.WEST|GameLogic.EAST:
+                return getTextureFromPoint(getRandom(walls_horiz));
+            default:
+                return getTextureFromPoint(getRandom(walls));
+        }
     }
 
-    public TextureRegion getEmptyRandomTexture() {
-        return getTextureFromPoint(getRandomEmpty());
+
+
+
+    public TextureRegion getWaterRandomTexture(int bitmask) {
+        return getTextureFromPoint(getRandom(water));
+    }
+    public TextureRegion getDoorRandomTexture(int bitmask) {
+        return getTextureFromPoint(getRandom(doors));
+    }
+    public TextureRegion getEmptyRandomTexture(int bitmask) {
+        return getTextureFromPoint(getRandom(empty));
     }
 }

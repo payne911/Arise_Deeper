@@ -77,7 +77,7 @@ public class TurnManager {
             Actor currentActor = actorsHeap.peek().actor;
             if(currentActor.notFatigued()) {
                 foundNextActor = true;
-                actionToExecute = currentActor.extractAction(); // 'null' if waiting on player input
+                actionToExecute = currentActor.getNextAction(); // 'null' if waiting on player input
             } else {
                 currentActor.regenFatigue();
                 actorsHeap.pop();

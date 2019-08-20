@@ -18,9 +18,9 @@ public class Floor extends Tile {
     @Override
     public void setTexture(Tileset tileset) {
         if(isWater)
-            setTexture(tileset.getWaterRandomTexture());
+            setTexture(tileset.getWaterRandomTexture(getBitmask()));
         else
-            setTexture(tileset.getFloorRandomTexture());
+            setTexture(tileset.getFloorRandomTexture(getBitmask()));
     }
 
     @Override

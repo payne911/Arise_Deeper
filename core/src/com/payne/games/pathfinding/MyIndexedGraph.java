@@ -19,16 +19,21 @@ public class MyIndexedGraph implements IndexedGraph<Tile> {
     public MyIndexedGraph(BaseMapLayer currLevel) {
         this.currLevel = currLevel;
 
-        // Exclude the edge because the World is surrounded by Walls.
-        for(int i=1; i<currLevel.getMapHeight()-1; i++) {
-            for(int j=1; j<currLevel.getMapWidth()-1; j++) {
-                Tile currTile = currLevel.getTile(j, i);
-                if(currTile.isAllowingMove()) {
-                    currTile.setGraphIndex(nodeCount);
-                    nodeCount++;
-                }
-            }
+        // todo: currently assumes the initial WalkableTiles set will never expand (e.g. digging a wall).
+        for(Tile t: currLevel.getWalkableTiles()) {
+            t.setGraphIndex(nodeCount++);
         }
+
+//        // Excluding edge because always Walls.
+//        for(int i=1; i<currLevel.getMapHeight()-1; i++) {
+//            for(int j=1; j<currLevel.getMapWidth()-1; j++) {
+//                Tile currTile = currLevel.getTile(j, i);
+//                if(currTile.isAllowingMove()) {
+//                    currTile.setGraphIndex(nodeCount);
+//                    nodeCount++;
+//                }
+//            }
+//        }
     }
 
 

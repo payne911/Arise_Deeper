@@ -1,18 +1,20 @@
 package com.payne.games.gameObjects;
 
-
-import com.badlogic.gdx.math.GridPoint2;
+import com.payne.games.logic.DecisionMaking;
 import com.payne.games.turns.actions.IAction;
-import com.payne.games.turns.actions.MoveAction;
+
 
 public class Enemy extends Actor {
     private int xpWorth;
+    private DecisionMaking ai;
 
 
-    public Enemy(int x, int y, int maxHp, int staminaRegen, int range, int xpWorth) {
+    public Enemy(int x, int y, int maxHp, int staminaRegen, int range, int xpWorth, boolean sleeping, DecisionMaking ai) {
         super(x, y, maxHp, staminaRegen, range);
         setPriority(2);
+        setSleeping(sleeping);
         this.xpWorth = xpWorth;
+        this.ai = ai;
     }
 
 
@@ -27,12 +29,12 @@ public class Enemy extends Actor {
 
 
     /**
-     * Runs the AI to find what decision the Enemy wants to take.
-     * @return the Action outputted by the AI.
+     * Runs the DecisionMaking to find what decision the Enemy wants to take.
+     * @return the Action outputted by the DecisionMaking.
      */
     @Override
     public IAction extractAction() {
-        return new MoveAction(this, new GridPoint2(0,1)); // todo: integrate AI here
+        return ai.decide(this);
     }
 
 }

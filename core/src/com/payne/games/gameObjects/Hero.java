@@ -34,8 +34,6 @@ public class Hero extends Actor {
      */
     @Override
     public IAction extractAction() {
-        if(actions.notEmpty())
-            return actions.removeFirst();
         return null;
     }
 

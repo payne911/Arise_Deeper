@@ -15,7 +15,7 @@ public class Door extends Tile {
 
     @Override
     public void setTexture(Tileset tileset) {
-        setTexture(tileset.getDoorRandomTexture());
+        setTexture(tileset.getDoorRandomTexture(getBitmask()));
     }
 
     @Override

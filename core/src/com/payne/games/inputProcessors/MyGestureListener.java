@@ -19,8 +19,6 @@ public class MyGestureListener implements GestureDetector.GestureListener {
     private OrthographicCamera camera;
     private MapController mapController;
 
-    private final boolean DEBUG_PRINT = false;
-
 
     public MyGestureListener(OrthographicCamera camera, MapController mapController) {
         this.camera = camera;
@@ -30,7 +28,7 @@ public class MyGestureListener implements GestureDetector.GestureListener {
 
     @Override
     public boolean touchDown(float x, float y, int pointer, int button) {
-        if(DEBUG_PRINT) System.out.println("touchDown: " + x + "," + y + " | pointer: " + pointer + " | button: " + button);
+        if(GameLogic.DEBUG_GESTURE_PRINT) System.out.println("touchDown: " + x + "," + y + " | pointer: " + pointer + " | button: " + button);
         return false;
     }
 
@@ -45,7 +43,7 @@ public class MyGestureListener implements GestureDetector.GestureListener {
      */
     @Override
     public boolean tap(float x, float y, int count, int button) {
-        if(DEBUG_PRINT) System.out.println("tap: " + x + "," + y + " | count: " + count + " | button: " + button);
+        if(GameLogic.DEBUG_GESTURE_PRINT) System.out.println("tap: " + x + "," + y + " | count: " + count + " | button: " + button);
 
 //        final double OFFSET = GameLogic.AESTHETIC_OFFSET;
 //        final double ZOOM = camera.zoom;
@@ -68,19 +66,21 @@ public class MyGestureListener implements GestureDetector.GestureListener {
 
     @Override
     public boolean longPress(float x, float y) {
-        if(DEBUG_PRINT) System.out.println("longPress: " + x + "," + y);
+        if(GameLogic.DEBUG_GESTURE_PRINT) System.out.println("longPress: " + x + "," + y);
         return false;
     }
 
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
-        if(DEBUG_PRINT) System.out.println("fling | velocityX: " + velocityX + " | velocityY: " + velocityY + " | button: " + button);
+        if(GameLogic.DEBUG_GESTURE_PRINT) System.out.println("fling | velocityX: " + velocityX + " | velocityY: " + velocityY + " | button: " + button);
         return false;
     }
 
+
+    // todo: spread through "touchDown" and "touchUp" so that clicks don't get registrered in between padding of UI.
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
-        if(DEBUG_PRINT) System.out.println("pan: " + x + "," + y + " | deltaX: " + deltaX + " | deltaY: " + deltaY);
+        if(GameLogic.DEBUG_GESTURE_PRINT) System.out.println("pan: " + x + "," + y + " | deltaX: " + deltaX + " | deltaY: " + deltaY);
 
 //        // todo: prevent drag outside of map regions
 //        if(camera.position.x + dX > camera.viewportWidth/2) { // prevent going further left
@@ -97,25 +97,25 @@ public class MyGestureListener implements GestureDetector.GestureListener {
 
     @Override
     public boolean panStop(float x, float y, int pointer, int button) {
-        if(DEBUG_PRINT) System.out.println("panStop: " + x + "," + y + " | pointer: " + pointer + " | button: " + button);
+        if(GameLogic.DEBUG_GESTURE_PRINT) System.out.println("panStop: " + x + "," + y + " | pointer: " + pointer + " | button: " + button);
         return false;
     }
 
     @Override
     public boolean zoom(float initialDistance, float distance) {
-        if(DEBUG_PRINT) System.out.println("zoom | initialDistance: " + initialDistance + " | distance: " + distance);
+        if(GameLogic.DEBUG_GESTURE_PRINT) System.out.println("zoom | initialDistance: " + initialDistance + " | distance: " + distance);
         return false;
     }
 
     @Override
     public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
         // todo: implement "Zoom" for mobiles
-        if(DEBUG_PRINT) System.out.println("pinch");
+        if(GameLogic.DEBUG_GESTURE_PRINT) System.out.println("pinch");
         return false;
     }
 
     @Override
     public void pinchStop() {
-        if(DEBUG_PRINT) System.out.println("pinchStop");
+        if(GameLogic.DEBUG_GESTURE_PRINT) System.out.println("pinchStop");
     }
 }

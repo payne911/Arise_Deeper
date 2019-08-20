@@ -1,6 +1,7 @@
 package com.payne.games.map.generators.algos.drunkard;
 
 import com.badlogic.gdx.math.RandomXS128;
+import com.payne.games.logic.GameLogic;
 import com.payne.games.map.BaseMapLayer;
 import com.payne.games.map.tiles.Floor;
 import com.payne.games.map.tiles.Wall;
@@ -22,9 +23,6 @@ public class MapCarver {
     private int floorTilesCreated = 0;
     private int numberOfTiles;
 
-    /* [DEBUG] Set to 'true' if the generator should actually try to be random. */
-    private final boolean RANDOM_SEED = false;
-
 
     /**
      * Used to start up the Drunkard algo.
@@ -43,7 +41,7 @@ public class MapCarver {
         this.drunk = new Drunkard(init_x, init_y);
         dig(init_x, init_y);
 
-        rand = new RandomXS128(RANDOM_SEED ? (int)(Math.random()*1000) : seed);
+        rand = new RandomXS128(GameLogic.RANDOM_DRUNKARD ? (int)(Math.random()*1000) : seed);
     }
 
     /**

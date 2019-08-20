@@ -53,11 +53,11 @@ public class GameScreen implements Screen {
     }
 
     private void setUpUi() {
-        this.stage = new Stage();
+        this.stage = new Stage(); // todo: add `new ScreenViewport()` parameter?
         this.skin = new Skin(Gdx.files.internal(GameLogic.SKIN_FILE));
 
         this.ui = new Table();
-        ui.debugTable();
+//        ui.debugTable();
         ui.setFillParent(true);
 
         setUpInventoryUi();

@@ -1,4 +1,4 @@
-package com.payne.games.logic;
+package com.payne.games.logic.systems;
 
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Array;
