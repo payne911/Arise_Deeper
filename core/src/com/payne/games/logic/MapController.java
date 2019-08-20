@@ -74,7 +74,7 @@ public class MapController {
 
     /**
      * Uses the Fatigue system in order to figure out who's turn it is.
-     * The DecisionMaking determines the actions of the Enemies.
+     * The AI (`DecisionMaking`) determines the actions of the Enemies.
      */
     public void processTurn() {
         boolean waitingOnPlayer = turnManager.executeTurn();

@@ -50,7 +50,7 @@ public abstract class Actor extends GameObject {
 
     /**
      * Command Pattern implementation. The `TurnManager` ends up collecting the actions from all the Actors in the map.
-     * This is where an Enemy's DecisionMaking takes a decision, among other things.
+     * This is where an Enemy's AI takes a decision, among other things.
      *
      * @return The Action this Actor wants to see executed. 'null' only if the engine is waiting for the player to act.
      */

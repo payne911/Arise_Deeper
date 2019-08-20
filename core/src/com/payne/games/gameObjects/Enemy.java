@@ -29,8 +29,9 @@ public class Enemy extends Actor {
 
 
     /**
-     * Runs the DecisionMaking to find what decision the Enemy wants to take.
-     * @return the Action outputted by the DecisionMaking.
+     * Runs the AI to find what decision the Enemy wants to take.
+     *
+     * @return the Action outputted by the AI.
      */
     @Override
     public IAction extractAction() {
