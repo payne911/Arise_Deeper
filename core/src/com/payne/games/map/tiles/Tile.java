@@ -1,6 +1,7 @@
 package com.payne.games.map.tiles;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Array;
 import com.payne.games.gameObjects.GameObject;
 import com.payne.games.logic.GameLogic;
 import com.payne.games.map.renderers.IRenderable;
@@ -12,19 +13,28 @@ public abstract class Tile implements IRenderable {
     private int x, y;
     private TextureRegion texture;
     private boolean allowingMove;
+    private Array<Tile> neighbors = new Array<>();
 
     // pathfinding
     private int graphIndex = -1;
-    private boolean seen = false;
+    private boolean inSight = false;
     private boolean explored = false;
 
 
-    // todo: figure out if the parameters are necessary (do the Tiles need to know their position?)
     public Tile(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
+
+    /**
+     * Used to improve performance in the pathfinding. (Prevents from having to allocate memory many times per `render()` call.)
+     *
+     * @return The 4 neighbors of this Tile (N, S, E, W).
+     */
+    public Array<Tile> getNeighbors() {
+        return neighbors;
+    }
 
     /**
      * Whether or not to render the Tile when it has been explored, but is now not being seen (aka "in the fog of war").
@@ -115,12 +125,11 @@ public abstract class Tile implements IRenderable {
     }
 
 
-
-
-
-
-
-
+    /**
+     * A Tile is "explored" if it has been seen at least once by the player.
+     *
+     * @return 'true' if this Tile was seen at least once by the player.
+     */
     public boolean isExplored() {
         return explored;
     }
@@ -128,11 +137,16 @@ public abstract class Tile implements IRenderable {
         this.explored = explored;
     }
 
-    public boolean isSeen() {
-        return seen;
+    /**
+     * A Tile is "in sight" if it is within line of sight of the player's hero. It also means the Tile is lit up.
+     *
+     * @return 'true' if the tile is within sight.
+     */
+    public boolean isInSight() {
+        return inSight;
     }
-    public void setSeen(boolean seen) {
-        this.seen = seen;
+    public void setInSight(boolean inSight) {
+        this.inSight = inSight;
     }
 
     public int getGraphIndex() {
@@ -176,7 +190,7 @@ public abstract class Tile implements IRenderable {
                 ", y=" + y +
                 ", allowingMove=" + allowingMove +
                 ", graphIndex=" + graphIndex +
-                ", seen=" + seen +
+                ", seen=" + inSight +
                 '}';
     }
 }

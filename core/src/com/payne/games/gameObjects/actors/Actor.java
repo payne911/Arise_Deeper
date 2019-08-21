@@ -1,6 +1,7 @@
-package com.payne.games.gameObjects;
+package com.payne.games.gameObjects.actors;
 
 import com.badlogic.gdx.utils.Queue;
+import com.payne.games.gameObjects.GameObject;
 import com.payne.games.turns.actions.IAction;
 
 
@@ -86,7 +87,8 @@ public abstract class Actor extends GameObject {
     }
 
     public void addAction(IAction action) {
-        actions.addLast(action);
+        if (action != null)
+            actions.addLast(action);
     }
 
     /**

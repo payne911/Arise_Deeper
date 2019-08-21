@@ -1,6 +1,6 @@
 package com.payne.games.turns.actions;
 
-import com.payne.games.gameObjects.Actor;
+import com.payne.games.gameObjects.actors.Actor;
 
 
 public class NoopAction extends Action {

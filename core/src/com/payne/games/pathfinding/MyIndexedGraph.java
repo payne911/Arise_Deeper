@@ -37,13 +37,32 @@ public class MyIndexedGraph implements IndexedGraph<Tile> {
     }
 
 
-    public DefaultGraphPath getPathToMoveTo(Tile movingFrom, Tile movingTo) {
+    /**
+     * If a path is found, the very first node will be the tile the algorithm started from (where an Actor is).
+     *
+     * @param movingFrom Tile starting from.
+     * @param movingTo Tile wished to finish at.
+     * @return A sequence of node to move through. If no path exists, the sequence is empty (but not null).
+     */
+    public DefaultGraphPath getWholePathToMoveTo(Tile movingFrom, Tile movingTo) {
         DefaultGraphPath<Tile> outputGraphPath = new DefaultGraphPath<>();
 
         IndexedAStarPathFinder<Tile> pathFinder = new IndexedAStarPathFinder<>(this);
         pathFinder.searchNodePath(movingFrom, movingTo, heuristic, outputGraphPath);
 
         return outputGraphPath;
+    }
+
+    /**
+     * Will return the very first Tile an Actor would need to move to in order to get to the desired end point.
+     *
+     * @param movingFrom Tile starting from.
+     * @param movingTo Tile wished to finish at.
+     * @return The first Tile required to be moved to. If no path existed, `null` is returned.
+     */
+    public Tile extractFirstMove(Tile movingFrom, Tile movingTo) {
+        DefaultGraphPath<Tile> path = getWholePathToMoveTo(movingFrom, movingTo);
+        return path.getCount() > 1 ? path.nodes.get(1) : null;
     }
 
 
@@ -61,7 +80,7 @@ public class MyIndexedGraph implements IndexedGraph<Tile> {
     @Override
     public Array<Connection<Tile>> getConnections(Tile fromNode) {
         Array<Connection<Tile>> edges = new Array<>();
-        Array<Tile> neighbors = currLevel.getWalkableNeighbors(fromNode.getX(), fromNode.getY());
+        Array<Tile> neighbors = currLevel.getWalkableNeighbors(fromNode);
 
         for(Tile tile : neighbors) {
             DefaultConnection<Tile> edge = new DefaultConnection<>(fromNode, tile);

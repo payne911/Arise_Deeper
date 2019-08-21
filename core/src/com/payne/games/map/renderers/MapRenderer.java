@@ -1,7 +1,7 @@
 package com.payne.games.map.renderers;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.payne.games.gameObjects.Actor;
+import com.payne.games.gameObjects.actors.Actor;
 import com.payne.games.logic.GameLogic;
 import com.payne.games.logic.systems.LightingSystem;
 import com.payne.games.map.BaseMapLayer;
@@ -36,7 +36,7 @@ public class MapRenderer {
      * Determines the Tile map's array size.
      * Then associates a tileset SpriteSheet and prepares the graphical tiles to be rendered
      * (`TextureRegion.split()` extracts individual tiles from the SpriteSheet).
-     * And finally assigns a Texture to the instanciated Tile deducted from the LogicalMap.
+     * And finally assigns a Texture to the instantiated Tile deducted from the LogicalMap.
      *
      * @param level A generated level (the output of the MapGenerator).
      * @param tileset String of the name of a SpriteSheet located in the "core/assets" folder.
@@ -92,7 +92,7 @@ public class MapRenderer {
 
 
         /* Drawing the secondary layer. */
-        for (IRenderable gameObject : secondaryMapLayer.getInertLayer()) {
+        for (IRenderable gameObject : secondaryMapLayer.getStaticLayer()) {
             drawAtMapCoordinate(batch, gameObject);
         }
         for (Actor gameObject : secondaryMapLayer.getActorLayer()) {
@@ -134,7 +134,7 @@ public class MapRenderer {
         }
 
         Tile tile = level.getTile(renderable.getX(), renderable.getY());
-        if (tile.isSeen())
+        if (tile.isInSight())
             batch.setColor(1,1,1,1); // in plain sight
         else if (tile.isExplored() && renderable.renderInFog())
             batch.setColor(0.65f,0.2f,0.65f,0.5f); // in the fog of war

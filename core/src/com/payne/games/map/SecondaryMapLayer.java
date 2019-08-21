@@ -2,13 +2,16 @@ package com.payne.games.map;
 
 import com.badlogic.gdx.utils.Array;
 import com.payne.games.gameObjects.*;
-import com.payne.games.map.renderers.IRenderable;
+import com.payne.games.gameObjects.statics.Static;
+import com.payne.games.gameObjects.actors.Hero;
+import com.payne.games.gameObjects.actors.Actor;
 
 
 public class SecondaryMapLayer {
+    private BaseMapLayer currentLevel;
     private GameObjectFactory objectFactory;
-    private Array<IRenderable> inertLayer; // keys, chests, etc.
-    private Array<Actor> actorLayer; // hero, enemies, etc.
+    private Array<Static> staticLayer; // keys, chests, etc.
+    private Array<Actor> actorLayer;   // hero, enemies, etc.
 
 
     public SecondaryMapLayer(GameObjectFactory gameObjectFactory) {
@@ -50,24 +53,25 @@ public class SecondaryMapLayer {
     }
 
 
-    public Array<IRenderable> getInertLayer() {
-        return inertLayer;
+    public Array<Static> getStaticLayer() {
+        return staticLayer;
     }
     public Array<Actor> getActorLayer() {
         return actorLayer;
     }
 
-    public void removeFromInertLayer(GameObject object) {
-        System.out.println("Removed object from InertLayer.");
-        inertLayer.removeValue(object, true);
+    public void removeFromStaticLayer(Static object) {
+        System.out.println("Removed an object from InertLayer.");
+        staticLayer.removeValue(object, true);
     }
     public void removeFromActorLayer(Actor actor) {
-        System.out.println("Remove actor from ActorLayer.");
+        System.out.println("Remove an actor from ActorLayer.");
         actorLayer.removeValue(actor, true);
     }
 
     public void setUpSecondaryLayer(Hero player, BaseMapLayer currentLevel) {
-        inertLayer = new Array<>();
+        this.currentLevel = currentLevel;
+        staticLayer = new Array<>();
         actorLayer = new Array<>();
 
         placeHero(player, 25,16);
@@ -86,16 +90,20 @@ public class SecondaryMapLayer {
         player.setX(x);
         player.setY(y);
         actorLayer.add(player);
+        currentLevel.getTile(x,y).setAllowingMove(false);
     }
     private void createEnemy(int x, int y) {
         actorLayer.add(objectFactory.createEnemy(x, y));
+        currentLevel.getTile(x,y).setAllowingMove(false);
     }
+
 
     // todo: add into Floor's list of objects?
     private void createChest(int x, int y) {
-        inertLayer.add(objectFactory.createChest(x, y));
+        staticLayer.add(objectFactory.createChest(x, y));
+        currentLevel.getTile(x,y).setAllowingMove(false); // todo: uncertain...
     }
     private void createKey(int x, int y) {
-        inertLayer.add(objectFactory.createKey(x, y));
+        staticLayer.add(objectFactory.createKey(x, y));
     }
 }

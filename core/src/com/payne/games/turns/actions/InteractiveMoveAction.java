@@ -3,22 +3,24 @@ package com.payne.games.turns.actions;
 import com.payne.games.gameObjects.actors.Actor;
 
 
-public class WakeUpAction extends Action {
+/**
+ * A MoveAction, but with the goal to interact with a specific GameObject.
+ */
+public class InteractiveMoveAction extends Action {
 
 
-    public WakeUpAction(Actor source) {
+    public InteractiveMoveAction(Actor source) {
         super(source);
     }
 
 
     @Override
     public void executeAction() {
-        System.out.println("Awakened: " + getSource().toString());
-        // todo: nothing to do?
+        // todo
     }
 
     @Override
     public int getFatigueCost() {
-        return 70;
+        return 50;
     }
 }

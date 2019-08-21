@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Array;
 import com.payne.games.AriseDeeper;
 import com.payne.games.gameObjects.GameObjectFactory;
-import com.payne.games.gameObjects.Hero;
+import com.payne.games.gameObjects.actors.Hero;
 import com.payne.games.logic.systems.ActionSystem;
 import com.payne.games.logic.systems.InventorySystem;
 import com.payne.games.logic.systems.LightingSystem;
@@ -35,14 +35,14 @@ public class MapController {
     private GameObjectFactory gameObjectFactory;
 
     // map's tertiary layer
-    private com.payne.games.logic.systems.LightingSystem lightingSystem;
+    private LightingSystem lightingSystem;
 
     // movements and turns
-    private com.payne.games.logic.systems.ActionSystem actionSystem;
+    private ActionSystem actionSystem;
     private TurnManager turnManager;
 
     // inventory
-    private com.payne.games.logic.systems.InventorySystem inventorySystem;
+    private InventorySystem inventorySystem;
     private Array<TextButton> inventorySlots;
 
 
@@ -51,11 +51,10 @@ public class MapController {
         this.camera = camera;
         this.inventorySlots = inventorySlots;
 
-        this.inventorySystem = new InventorySystem(inventorySlots);
         this.mapGenerator = new MapGenerator();
         this.actionSystem = new ActionSystem();
         this.gameObjectFactory = new GameObjectFactory(actionSystem);
-        this.player = gameObjectFactory.createHero(0, 0); // todo: this will eventually move somewhere else!
+        createHero(); // todo: this will change at some point!
         this.secondaryMapLayer = new SecondaryMapLayer(gameObjectFactory);
         this.lightingSystem = new LightingSystem(player);
         this.mapRenderer = new MapRenderer(secondaryMapLayer, lightingSystem);
@@ -66,7 +65,6 @@ public class MapController {
     public BaseMapLayer getCurrentLevel() {
         return currentLevel;
     }
-
     public SecondaryMapLayer getSecondaryMapLayer() {
         return secondaryMapLayer;
     }
@@ -82,6 +80,15 @@ public class MapController {
             centerOnHero();
             secondaryMapLayer.removeDeadActors();
         }
+    }
+
+    /**
+     * Create the Hero, and assign its Inventory.
+     */
+    public void createHero() {
+        player = gameObjectFactory.createHero(0, 0);
+        inventorySystem = new InventorySystem(inventorySlots);
+        player.setInventory(inventorySystem);
     }
 
 

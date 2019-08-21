@@ -69,10 +69,10 @@ public class GameScreen implements Screen {
         ui.bottom();
         ui.setTouchable(Touchable.childrenOnly);
 
-        final int SIZE = 2 * GameLogic.TILE_HEIGHT;
+        final int SIZE = 3 * GameLogic.TILE_HEIGHT;
         Table container = new Table();
         container.setTouchable(Touchable.enabled);
-        container.defaults().pad(2f).prefSize(SIZE).minSize(SIZE);
+        container.defaults().prefSize(SIZE).minSize(SIZE);
         for(int i=0; i<GameLogic.INV_SLOTS; i++) {
             inventorySlots.add(new TextButton(""+i, skin));
             container.add(inventorySlots.get(i));

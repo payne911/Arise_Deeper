@@ -4,6 +4,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.payne.games.map.renderers.IRenderable;
 
 
+/**
+ * Anything interactive, that is on top of a Tile.
+ */
 public abstract class GameObject implements IRenderable {
     private int x, y;
     private TextureRegion texture;
@@ -13,6 +16,17 @@ public abstract class GameObject implements IRenderable {
         this.x = x;
         this.y = y;
     }
+
+
+    /**
+     * An interaction with a Pickable item would be to pick it up.<br>
+     * An interaction with an Enemy would be to attack it.<br>
+     * An interaction with an NPC would be to pop up a dialog.<br>
+     * An interaction with a Door would be to try to open it.
+     *
+     * @return 'true' if the interaction was successful.
+     */
+    public abstract boolean interact();
 
 
     public boolean renderInFog() {

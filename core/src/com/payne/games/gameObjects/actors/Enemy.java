@@ -1,4 +1,4 @@
-package com.payne.games.gameObjects;
+package com.payne.games.gameObjects.actors;
 
 import com.payne.games.logic.DecisionMaking;
 import com.payne.games.turns.actions.IAction;
@@ -38,4 +38,10 @@ public class Enemy extends Actor {
         return ai.decide(this);
     }
 
+
+    @Override
+    public boolean interact() {
+        // todo: attack me
+        return false;
+    }
 }

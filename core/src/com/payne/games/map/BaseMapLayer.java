@@ -23,6 +23,7 @@ public class BaseMapLayer {
         graphicalMap = new Tile[mapHeight][mapWidth];
     }
 
+
     public int getMapWidth() {
         return graphicalMap[0].length;
     }
@@ -38,7 +39,29 @@ public class BaseMapLayer {
 
 
     /**
-     * Basically just a Setter for the GraphicalMap to instanciate a new Tile at a certain coordinate.
+     * To determine if the Tile at the input position was ever explored by the player.
+     *
+     * @param x x tile-coordinate.
+     * @param y y tile-coordinate.
+     * @return 'true' if the Tile has been seen at least once by the player's hero.
+     */
+    public boolean tileWasExplored(int x, int y) {
+        return getTile(x,y).isExplored();
+    }
+
+    /**
+     * To determine if the Tile at the input position is currently in sight of the player's hero.
+     *
+     * @param x x tile-coordinate.
+     * @param y y tile-coordinate.
+     * @return 'true' if the Tile is currently seen by the hero.
+     */
+    public boolean tileIsInSight(int x, int y) {
+        return getTile(x,y).isInSight();
+    }
+
+    /**
+     * Basically just a Setter for the GraphicalMap to instantiate a new Tile at a certain coordinate.
      *
      * @param x x-coordinate input.
      * @param y y-coordinate input.
@@ -102,15 +125,26 @@ public class BaseMapLayer {
     public Array<Tile> getWalkableNeighbors(int x, int y) {
         Array<Tile> neighbors = new Array<>();
 
-        Array<Tile> tmp = new Array<>();
-        tmp.addAll(
-                getNorth(x,y),
-                getSouth(x,y),
-                getEast(x,y),
-                getWest(x,y)
-        );
-        for(Tile t : tmp) {
-            if(t.isAllowingMove())
+        for (Tile t : getTile(x,y).getNeighbors()) {
+            if (t.isAllowingMove())
+                neighbors.add(t);
+        }
+
+        return neighbors;
+    }
+
+    /**
+     * Returns the list of tiles that ALLOW_MOVEMENT surrounding the input coordinate.
+     * Used to build a graph for the pathfinding system.
+     *
+     * @param tile The tile for which we want the walkable neighbors.
+     * @return An Array of Tile that are the Tiles that allow movement from the input Tile. Does not include the input Tile.
+     */
+    public Array<Tile> getWalkableNeighbors(Tile tile) {
+        Array<Tile> neighbors = new Array<>();
+
+        for (Tile t : tile.getNeighbors()) {
+            if (t.isAllowingMove())
                 neighbors.add(t);
         }
 
@@ -140,12 +174,19 @@ public class BaseMapLayer {
 
     /**
      * Reinitializes the `walkableTiles` Array with all the Tiles that allow movement.
+     * Also sets up the "4-neighbors" Array for each Tile.
      */
     public void computeWalkableTiles() {
         walkableTiles = new Array<>();
         for(int i=0; i<getMapHeight(); i++) {
             for(int j=0; j<getMapWidth(); j++) {
                 Tile currTile = getTile(j, i);
+                currTile.getNeighbors().addAll(
+                        getNorth(currTile),
+                        getSouth(currTile),
+                        getEast(currTile),
+                        getWest(currTile)
+                );
                 if(currTile.isAllowingMove())
                     walkableTiles.add(currTile);
             }

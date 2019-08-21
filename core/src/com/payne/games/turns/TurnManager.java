@@ -1,8 +1,8 @@
 package com.payne.games.turns;
 
 import com.badlogic.gdx.utils.BinaryHeap;
-import com.payne.games.gameObjects.Actor;
-import com.payne.games.gameObjects.Hero;
+import com.payne.games.gameObjects.actors.Actor;
+import com.payne.games.gameObjects.actors.Hero;
 import com.payne.games.map.SecondaryMapLayer;
 import com.payne.games.turns.actions.AttackAction;
 import com.payne.games.turns.actions.IAction;

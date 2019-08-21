@@ -1,7 +1,7 @@
 package com.payne.games.logic;
 
 import com.badlogic.gdx.math.RandomXS128;
-import com.payne.games.gameObjects.Actor;
+import com.payne.games.gameObjects.actors.Actor;
 import com.payne.games.logic.systems.ActionSystem;
 import com.payne.games.turns.actions.IAction;
 import com.payne.games.turns.actions.NoopAction;
@@ -29,7 +29,7 @@ public class DecisionMaking {
      */
     public IAction decide(Actor src) {
         if(src.isOccupied())
-            return src.getActionsQueue().removeFirst();
+            return src.getNextAction();
 
         if(src.isSleeping()) {
             boolean awakened = wakeUp(src);

@@ -1,8 +1,8 @@
 package com.payne.games.logic.systems;
 
-import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.math.GridPoint2;
-import com.payne.games.gameObjects.Actor;
+import com.payne.games.gameObjects.actors.Actor;
+import com.payne.games.gameObjects.actors.Hero;
 import com.payne.games.logic.Utils;
 import com.payne.games.map.BaseMapLayer;
 import com.payne.games.map.SecondaryMapLayer;
@@ -13,7 +13,7 @@ import com.payne.games.turns.actions.MoveAction;
 
 
 public class ActionSystem {
-    private BaseMapLayer level;
+    private BaseMapLayer baseMapLayer;
     private SecondaryMapLayer secondaryMapLayer;
     private MyIndexedGraph indexedGraph;
 
@@ -23,34 +23,82 @@ public class ActionSystem {
 
 
     public void setUpIndexedGraph(BaseMapLayer currLevel, SecondaryMapLayer secondaryMapLayer) {
-        level = currLevel;
-        indexedGraph = new MyIndexedGraph(level);
+        baseMapLayer = currLevel;
+        indexedGraph = new MyIndexedGraph(baseMapLayer);
         this.secondaryMapLayer = secondaryMapLayer;
     }
 
 
     /**
-     * Assigns the proper Action to the player according to the tap's coordinate.
+     * Assigns the proper Action to the player according to the tap's coordinate.<br>
+     * If Actions were already in the process, they are canceled.<br>
+     * If the tap happened outside of the explored regions, nothing happens.<br>
+     * If the tap happened on an Actor in sight, the hero will try to go interact with the Actor.<br>
+     * If the tap happened on an Item in sight, the hero will try to go pick it up.<br>
+     * If the tap happened on a movable square, the hero will try to move there.<br>
+     * If the tap happened on anything else, nothing happens.
      *
      * @param player the Hero.
      * @param x x-coordinate of the player's tap.
      * @param y y-coordinate of the player's tap.
      */
-    public void checkTap(Actor player, int x, int y) {
-        if (!hasInterruptedActions(player)) {
-            Actor atPos = secondaryMapLayer.findActorAt(x, y);
-            boolean withinRange = Utils.straightDistanceBetweenMiddleOfTiles(new GridPoint2(player.getX(), player.getY()), new GridPoint2(x, y)) < player.getRange();
-            System.out.println("Actor at click: " + atPos
-                    + " | distance: " + Utils.straightDistanceBetweenMiddleOfTiles(new GridPoint2(player.getX(), player.getY()), new GridPoint2(x, y))
-                    + " | playerRange: " + player.getRange()
-                    + " | withinRange? " + withinRange);
-            if (atPos == null || !withinRange) { // no Actors where clicked, or are within range : just move there
+    public void checkTap(Hero player, int x, int y) {
+        if (!hasInterruptedActions(player)) { // hero already had other actions: cancel them
+
+            if (!baseMapLayer.tileWasExplored(x,y)) // tile wasn't explored: abort
+                return;
+
+            if (baseMapLayer.tileIsInSight(x,y)) {
+
+                if (findGameObject(player, x, y)) // finding if a GameObject might be in range for interaction
+                    return;
+
+                moveTo(player, x, y); // clicked on a tile with no GameObjects on it : just walk there
+
+            } else { // clicked on an explored (but not in sight) tile : just walk there
                 moveTo(player, x, y);
-            } else {
-                player.addAction(new AttackAction(player, atPos, 30));
             }
         }
     }
+
+    /**
+     * First, the Actor is checked because attacking takes priority over picking up when targeting a Tile which
+     * contains both an Actor and a Static object.
+     *
+     * @param player The player's Hero.
+     * @param x x-coordinate of the player's tap.
+     * @param y y-coordinate of the player's tap.
+     * @return 'true' if the tap was handled.
+     */
+    private boolean findGameObject(Actor player, int x, int y) {
+        if (findActor(player, x, y)) // finding if an Actor might be in range
+            return true;
+
+        return findStatic(player, x, y); // trying to interact with a static object
+    }
+
+    private boolean findStatic(Actor player, int x, int y) {
+        // todo
+        return false;
+    }
+
+
+    private boolean findActor(Actor player, int x, int y) {
+        Actor actorAt = secondaryMapLayer.findActorAt(x, y);
+        if (actorAt != null) {
+            boolean withinRange = Utils.straightDistanceBetweenMiddleOfTiles(new GridPoint2(player.getX(), player.getY()), new GridPoint2(x, y)) < player.getRange();
+            if (!withinRange) { // Actor not in range: just move over there and try to interact
+                moveTo(player, x, y); // todo: should be INTERACTIVE move
+            } else { // Actor is in range: attack!
+                player.addAction(new AttackAction(player, actorAt, 30));
+            }
+
+            return true; // found an actor : we're done handling the tap
+        }
+        return false; // didn't find an actor : keep handling the tap
+    }
+
+
 
 
     /**
@@ -63,15 +111,14 @@ public class ActionSystem {
      */
     public void moveTo(Actor actor, int x, int y) {
 
-        Tile from = level.getTile(actor.getX(), actor.getY());
-        Tile to   = level.getTile(x, y);
-        DefaultGraphPath<Tile> path = indexedGraph.getPathToMoveTo(from, to); // find path
+        Tile from = baseMapLayer.getTile(actor.getX(), actor.getY());
+        Tile to   = baseMapLayer.getTile(x, y);
 
         /* Assigning MoveActions accordingly. */
-        for(int i=0; i<path.getCount()-1; i++) { // takes care of not doing anything if `path` is empty
-            GridPoint2 delta = Utils.deltaOfTiles(path.nodes.get(i), path.nodes.get(i+1));
-            MoveAction moveAction = new MoveAction(actor, delta);
-            actor.addAction(moveAction); // todo: the last MoveAction should also trigger a `Tile.interact()`
+        Tile next = indexedGraph.extractFirstMove(from, to);
+        if(next != null) {
+            MoveAction moveAction = new MoveAction(indexedGraph, actor, from, next, to);
+            actor.addAction(moveAction);
         }
     }
 
@@ -81,7 +128,7 @@ public class ActionSystem {
      * @param actor The actor that will move to a random point.
      */
     public void moveToRandomPoint(Actor actor) {
-        Tile randomTile = level.getWalkableTiles().random();
+        Tile randomTile = baseMapLayer.getWalkableTiles().random();
         moveTo(actor, randomTile.getX(), randomTile.getY());
     }
 
@@ -90,7 +137,7 @@ public class ActionSystem {
      * @param actor the Actor that will move.
      */
     public void takeOneRandomStep(Actor actor) {
-        Tile randomStep = level.getWalkableNeighbors(actor.getX(), actor.getY()).random();
+        Tile randomStep = baseMapLayer.getWalkableNeighbors(actor.getX(), actor.getY()).random();
         moveTo(actor, randomStep.getX(), randomStep.getY());
     }
 
@@ -101,7 +148,7 @@ public class ActionSystem {
      * @param player the Hero of the player.
      * @return 'false' only if there were no actions in the Queue.
      */
-    private boolean hasInterruptedActions(Actor player) {
+    private boolean hasInterruptedActions(Hero player) {
         if(player.isOccupied()) {
             player.clearActionsQueue(); // this means we interrupt current actions
             return true;

@@ -1,10 +1,10 @@
 package com.payne.games.turns.actions;
 
-import com.payne.games.gameObjects.Actor;
+import com.payne.games.gameObjects.actors.Actor;
 
 
 public abstract class Action implements IAction {
-    private Actor source;
+    protected Actor source;
 
 
     public Action(Actor source) {

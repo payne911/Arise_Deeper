@@ -1,7 +1,7 @@
 package com.payne.games.turns;
 
 import com.badlogic.gdx.utils.BinaryHeap;
-import com.payne.games.gameObjects.Actor;
+import com.payne.games.gameObjects.actors.Actor;
 
 
 public class ActorNode extends BinaryHeap.Node {

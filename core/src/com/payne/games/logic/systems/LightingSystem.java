@@ -1,6 +1,6 @@
 package com.payne.games.logic.systems;
 
-import com.payne.games.gameObjects.Hero;
+import com.payne.games.gameObjects.actors.Hero;
 import com.payne.games.map.BaseMapLayer;
 import com.payne.games.map.tiles.Tile;
 
@@ -36,17 +36,17 @@ public class LightingSystem {
         int y = player.getY();
 
         Tile visitedTile = level.getTile(x, y);
-        visitedTile.setSeen(true);
+        visitedTile.setInSight(true);
 
 
         // Using "non-intersection" between sets to update the FogOfWar.
         HashSet<Tile> surroundingTiles = level.getNeighborsWithinSquareRange(x, y, rangeOfSight);
         for(Tile t : oldTiles) {
             if(surroundingTiles.contains(t)) { // within range of sight
-                t.setSeen(true);
+                t.setInSight(true);
                 t.setExplored(true);
             } else {
-                t.setSeen(false);
+                t.setInSight(false);
             }
         }
         oldTiles = (HashSet<Tile>)surroundingTiles.clone();

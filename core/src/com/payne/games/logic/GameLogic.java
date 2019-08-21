@@ -1,7 +1,11 @@
 package com.payne.games.logic;
 
 
-public class GameLogic {
+public final class GameLogic { /* Can't be inherited. */
+
+    private GameLogic() { } /* Can't be instantiated. (Can't touch this!) */
+
+
 
     /*  DEBUG and Randomizers */
     public static final boolean DEBUG_NO_FOG = false;

@@ -4,6 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.RandomXS128;
+import com.payne.games.gameObjects.actors.Enemy;
+import com.payne.games.gameObjects.actors.Hero;
+import com.payne.games.gameObjects.statics.Chest;
+import com.payne.games.gameObjects.statics.Key;
 import com.payne.games.logic.DecisionMaking;
 import com.payne.games.logic.GameLogic;
 import com.payne.games.logic.systems.ActionSystem;
@@ -41,7 +45,7 @@ public class GameObjectFactory {
     }
 
     public Hero createHero(int x, int y) {
-        Hero hero = new Hero(x, y, 100, 3, 5);
+        Hero hero = new Hero(x, y, 150, 3, 5);
         hero.setTexture(split_20p[0][0]);
         return hero;
     }
