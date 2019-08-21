@@ -11,29 +11,15 @@ import com.payne.games.map.tiles.Tile;
 
 
 public class MyIndexedGraph implements IndexedGraph<Tile> {
-    private BaseMapLayer currLevel;
     private int nodeCount = 0;
     private MyHeuristic heuristic = new MyHeuristic();
 
 
     public MyIndexedGraph(BaseMapLayer currLevel) {
-        this.currLevel = currLevel;
-
         // todo: currently assumes the initial WalkableTiles set will never expand (e.g. digging a wall).
         for(Tile t: currLevel.getWalkableTiles()) {
             t.setGraphIndex(nodeCount++);
         }
-
-//        // Excluding edge because always Walls.
-//        for(int i=1; i<currLevel.getMapHeight()-1; i++) {
-//            for(int j=1; j<currLevel.getMapWidth()-1; j++) {
-//                Tile currTile = currLevel.getTile(j, i);
-//                if(currTile.isAllowingMove()) {
-//                    currTile.setGraphIndex(nodeCount);
-//                    nodeCount++;
-//                }
-//            }
-//        }
     }
 
 
@@ -62,7 +48,7 @@ public class MyIndexedGraph implements IndexedGraph<Tile> {
      */
     public Tile extractFirstMove(Tile movingFrom, Tile movingTo) {
         DefaultGraphPath<Tile> path = getWholePathToMoveTo(movingFrom, movingTo);
-        return path.getCount() > 1 ? path.nodes.get(1) : null;
+        return path.getCount() > 1 ? path.nodes.get(1) : null; // we output only if there is at least one move to be done
     }
 
 
@@ -80,11 +66,12 @@ public class MyIndexedGraph implements IndexedGraph<Tile> {
     @Override
     public Array<Connection<Tile>> getConnections(Tile fromNode) {
         Array<Connection<Tile>> edges = new Array<>();
-        Array<Tile> neighbors = currLevel.getWalkableNeighbors(fromNode);
 
-        for(Tile tile : neighbors) {
-            DefaultConnection<Tile> edge = new DefaultConnection<>(fromNode, tile);
-            edges.add(edge);
+        for(Tile tile : fromNode.getNeighbors()) {
+            if(tile.isAllowingMove()) {
+                DefaultConnection<Tile> edge = new DefaultConnection<>(fromNode, tile);
+                edges.add(edge);
+            }
         }
 
         return edges;

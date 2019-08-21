@@ -133,23 +133,6 @@ public class BaseMapLayer {
         return neighbors;
     }
 
-    /**
-     * Returns the list of tiles that ALLOW_MOVEMENT surrounding the input coordinate.
-     * Used to build a graph for the pathfinding system.
-     *
-     * @param tile The tile for which we want the walkable neighbors.
-     * @return An Array of Tile that are the Tiles that allow movement from the input Tile. Does not include the input Tile.
-     */
-    public Array<Tile> getWalkableNeighbors(Tile tile) {
-        Array<Tile> neighbors = new Array<>();
-
-        for (Tile t : tile.getNeighbors()) {
-            if (t.isAllowingMove())
-                neighbors.add(t);
-        }
-
-        return neighbors;
-    }
 
     /**
      * Returns all the Tiles surrounding the (x,y) input coordinate, within the specified range.

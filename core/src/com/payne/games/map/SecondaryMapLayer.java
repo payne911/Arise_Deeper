@@ -38,18 +38,19 @@ public class SecondaryMapLayer {
 
     /**
      * Finds the Actor at the (x,y) position.
+     *
      * @param x x-coord.
      * @param y y-coord.
-     * @return could be 'null' if no Actor is at that position.
+     * @return Could be 'null' if no Actor is at that position.
      */
     public Actor findActorAt(int x, int y) {
-        Actor ret = null;
+        Actor actorAt = null;
         for(Actor a : actorLayer) {
             if (a.getX() == x && a.getY() == y) {
-                ret = a;
+                actorAt = a;
             }
         }
-        return ret;
+        return actorAt;
     }
 
 
@@ -82,6 +83,7 @@ public class SecondaryMapLayer {
         createKey(14, 10);
         createEnemy(14, 11);
         createEnemy(29, 14);
+        createEnemy(25, 13);
         createEnemy(56, 25);
 
     }

@@ -106,8 +106,9 @@ public class TurnManager {
      */
     private void execute() {
         if(!waitingOnPlayerInput) {
-            actionToExecute.execute(); // todo: maybe update collectedActors (if someone died or a minion was spawned?)
-            actorsHeap.pop();
+            boolean canceled = actionToExecute.execute(); // todo: maybe update collectedActors (if someone died or a minion was spawned?)
+            if(!canceled)
+                actorsHeap.pop();
         }
     }
 

@@ -12,15 +12,14 @@ public abstract class Action implements IAction {
     }
 
 
-    /**
-     * Takes care of executing the action and adding the proper amount of fatigue.
-     */
-    public void execute() {
-        source.addFatigue(getFatigueCost());
-        executeAction();
+    public boolean execute() {
+        boolean canceled = !executeAction();
+        if(!canceled)
+            source.addFatigue(getFatigueCost());
+        return canceled;
     }
 
-    abstract public void executeAction();
+    abstract public boolean executeAction();
     abstract public int getFatigueCost();
 
     public Actor getSource(){

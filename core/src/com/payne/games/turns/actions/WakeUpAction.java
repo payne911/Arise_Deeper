@@ -12,9 +12,10 @@ public class WakeUpAction extends Action {
 
 
     @Override
-    public void executeAction() {
+    public boolean executeAction() {
         System.out.println("Awakened: " + getSource().toString());
         // todo: nothing to do?
+        return true;
     }
 
     @Override

@@ -190,7 +190,7 @@ public abstract class Tile implements IRenderable {
                 ", y=" + y +
                 ", allowingMove=" + allowingMove +
                 ", graphIndex=" + graphIndex +
-                ", seen=" + inSight +
+                ", inSight=" + inSight +
                 '}';
     }
 }

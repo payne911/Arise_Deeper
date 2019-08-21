@@ -19,12 +19,13 @@ public class AttackAction extends Action {
 
 
     @Override
-    public void executeAction() {
+    public boolean executeAction() {
         boolean hasDied = recipient.takeHit(dmg);
         if(hasDied) {
             recipient.clearActionsQueue();
             recipient.die(source);
         }
+        return true;
     }
 
     @Override

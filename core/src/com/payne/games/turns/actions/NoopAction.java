@@ -3,6 +3,9 @@ package com.payne.games.turns.actions;
 import com.payne.games.gameObjects.actors.Actor;
 
 
+/**
+ * Wastes a turn..?
+ */
 public class NoopAction extends Action {
 
 
@@ -12,12 +15,12 @@ public class NoopAction extends Action {
 
 
     @Override
-    public void executeAction() {
-
+    public boolean executeAction() {
+        return true;
     }
 
     @Override
     public int getFatigueCost() {
-        return 50;
+        return 0;
     }
 }

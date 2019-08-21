@@ -117,7 +117,7 @@ public class ActionSystem {
         /* Assigning MoveActions accordingly. */
         Tile next = indexedGraph.extractFirstMove(from, to);
         if(next != null) {
-            MoveAction moveAction = new MoveAction(indexedGraph, actor, from, next, to);
+            MoveAction moveAction = new MoveAction(actor, indexedGraph, from, next, to);
             actor.addAction(moveAction);
         }
     }

@@ -12,8 +12,8 @@ public class TapAction extends Action {
 
 
     @Override
-    public void executeAction() {
-
+    public boolean executeAction() {
+        return true;
     }
 
     @Override
