@@ -56,7 +56,7 @@ public class MyGestureListener implements GestureDetector.GestureListener {
         double coordX = ((double)vec.x / GameLogic.TILE_WIDTH) - OFFSET;
         double coordY = ((double)vec.y / GameLogic.TILE_HEIGHT) - OFFSET;
 
-        System.out.println("Tile coordinate: (" + (int)coordX + ", " + (int)coordY + ")");
+        System.out.println("\nTile coordinate: ( x= " + (int)coordX + ", y= " + (int)coordY + " )");
 
         // todo: be wiser! tap.location: if monster -> AttackAction, if Door -> DoorAction, if Item -> PickUpAction
         mapController.playerTapped((int)coordX, (int)coordY);

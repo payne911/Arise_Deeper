@@ -3,6 +3,7 @@ package com.payne.games.logic.systems;
 import com.badlogic.gdx.utils.BinaryHeap;
 import com.payne.games.gameObjects.actors.Actor;
 import com.payne.games.gameObjects.actors.Hero;
+import com.payne.games.logic.GameLogic;
 import com.payne.games.map.SecondaryMapLayer;
 import com.payne.games.turns.ActorNode;
 import com.payne.games.turns.actions.AttackAction;
@@ -109,6 +110,7 @@ public class TurnManager {
     private void execute() {
         if(!waitingOnPlayerInput) {
             boolean canceled = actionToExecute.execute(); // todo: maybe update collectedActors (if someone died or a minion was spawned?)
+            if(GameLogic.DEBUG_ACTION_PRINT) System.out.println("canceled? " + canceled + " : " + actionToExecute.toString());
             if(!canceled)
                 actorsHeap.pop();
         }

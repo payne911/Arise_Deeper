@@ -1,7 +1,10 @@
 package com.payne.games.map.renderers;
 
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.payne.games.gameObjects.actors.Actor;
+import com.payne.games.gameObjects.statics.Static;
 import com.payne.games.logic.GameLogic;
 import com.payne.games.logic.systems.SightSystem;
 import com.payne.games.map.BaseMapLayer;
@@ -11,6 +14,11 @@ import com.payne.games.map.tilesets.Tileset;
 
 
 public class MapRenderer {
+    // Temporary HP bars    todo: remove this and implement with SpriteSheet
+    private final int HP_WIDTH  = (int)(GameLogic.TILE_WIDTH*.75);
+    private final int HP_HEIGHT = GameLogic.TILE_HEIGHT/6;
+    private final Texture HP_BACKGROUND = new Texture(createProceduralPixmap(1, 0, 0, .7f));
+    private final Texture HP_PROGRESS   = new Texture(createProceduralPixmap(0, 1, 0, .7f));
 
     // Base layer
     private SubclassTileAssigner subclassTileAssigner;
@@ -92,15 +100,19 @@ public class MapRenderer {
 
 
         /* Drawing the secondary layer. */
-        for (IRenderable gameObject : secondaryMapLayer.getStaticLayer()) {
+        for (Static gameObject : secondaryMapLayer.getStaticLayer()) {
             drawAtMapCoordinate(batch, gameObject);
         }
         for (Actor gameObject : secondaryMapLayer.getActorLayer()) {
             drawAtMapCoordinate(batch, gameObject);
+
+            /* HP Bars. */
+            drawAtOffsetCoordinate(batch, gameObject, HP_BACKGROUND, HP_WIDTH);
+            drawAtOffsetCoordinate(batch, gameObject, HP_PROGRESS, (float)gameObject.getCurrHp()/gameObject.getMaxHp()* HP_WIDTH);
         }
 
 
-        // todo: draw other layers (Overlays, HP bars, missiles, etc.)
+        // todo: draw other layers (Overlays, missiles, etc.)
 
     }
 
@@ -117,6 +129,41 @@ public class MapRenderer {
             batch.draw(toRender.getTexture(),
                     GameLogic.AESTHETIC_OFFSET + toRender.getX()*GameLogic.TILE_WIDTH,
                     GameLogic.AESTHETIC_OFFSET + toRender.getY()*GameLogic.TILE_HEIGHT);
+    }
+
+    /**
+     * Used temporarily to help draw HP bars. todo: actually integrate it properly through SpriteSheet and TextureRegion
+     *
+     * @param r red value percentage (between 0 and 1).
+     * @param g green value percentage (between 0 and 1).
+     * @param b blue value percentage (between 0 and 1).
+     * @param a alpha value percentage (between 0 and 1).
+     * @return a Pixmap that can be used to create a Texture procedurally.
+     */
+    private Pixmap createProceduralPixmap(float r, float g, float b, float a) {
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(r, g, b, a);
+        pixmap.fill();
+        return pixmap;
+    }
+
+    /**
+     * Used temporarily to help draw HP bars. todo: actually integrate it properly through SpriteSheet and TextureRegion
+     *
+     * @param batch the SpriteBatch to draw with.
+     * @param owner the Actor which will be used to draw relative to its position.
+     * @param toRender the Texture to be drawn.
+     * @param x_stretch stretch along the x axis, in pixels.
+     */
+    private void drawAtOffsetCoordinate(SpriteBatch batch, Actor owner, Texture toRender, float x_stretch) {
+        boolean shouldDraw = determineFogOfWarOverlay(batch, owner);
+
+        if(shouldDraw)
+            batch.draw(toRender,
+                    GameLogic.AESTHETIC_OFFSET + (int)(GameLogic.TILE_WIDTH*.125) + owner.getX()*GameLogic.TILE_WIDTH,
+                    GameLogic.AESTHETIC_OFFSET - (int)(GameLogic.TILE_HEIGHT*.1) + owner.getY()*GameLogic.TILE_HEIGHT,
+                    x_stretch,
+                    HP_HEIGHT);
     }
 
 

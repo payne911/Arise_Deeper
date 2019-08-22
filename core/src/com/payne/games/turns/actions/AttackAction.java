@@ -5,7 +5,6 @@ import com.payne.games.gameObjects.actors.Actor;
 
 public class AttackAction extends Action {
     private Actor recipient;
-    private Actor source;
     private int dmg;
 
 
@@ -13,7 +12,6 @@ public class AttackAction extends Action {
         super(source);
 
         this.recipient = recipient;
-        this.source = source;
         this.dmg = dmg;
     }
 
@@ -31,5 +29,14 @@ public class AttackAction extends Action {
     @Override
     public float getFatigueCostMultiplier() {
         return 2;
+    }
+
+    @Override
+    public String toString() {
+        return "AttackAction{" +
+                "recipient=" + recipient +
+                ", dmg=" + dmg +
+                ", source=" + source +
+                '}';
     }
 }

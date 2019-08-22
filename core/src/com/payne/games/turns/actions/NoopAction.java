@@ -4,7 +4,7 @@ import com.payne.games.gameObjects.actors.Actor;
 
 
 /**
- * Wastes a turn..?
+ * todo : Wastes a turn..?
  */
 public class NoopAction extends Action {
 
@@ -22,5 +22,12 @@ public class NoopAction extends Action {
     @Override
     public float getFatigueCostMultiplier() {
         return 0;
+    }
+
+    @Override
+    public String toString() {
+        return "NoopAction{" +
+                "source=" + source +
+                '}';
     }
 }

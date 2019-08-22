@@ -3,6 +3,9 @@ package com.payne.games.turns.actions;
 import com.payne.games.gameObjects.actors.Actor;
 
 
+/**
+ * Awakens a sleeping Actor.
+ */
 public class WakeUpAction extends Action {
 
 
@@ -21,5 +24,12 @@ public class WakeUpAction extends Action {
     @Override
     public float getFatigueCostMultiplier() {
         return 1.4f;
+    }
+
+    @Override
+    public String toString() {
+        return "WakeUpAction{" +
+                "source=" + source +
+                '}';
     }
 }

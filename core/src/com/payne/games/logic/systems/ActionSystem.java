@@ -41,10 +41,13 @@ public class ActionSystem {
      * @param y y-coordinate of the player's tap.
      */
     public void checkTap(Hero player, int x, int y) {
-        if (alreadyHadActionsInQueue(player)) // hero already had other actions: cancel them and abort
+        if (alreadyHadActionsInQueue(player)) // hero already had other actions : cancel them and abort
             return;
 
-        if (!baseMapLayer.tileWasExplored(x,y)) // tile wasn't explored: abort
+        if (clickedSelf(player, x, y)) // the player clicked his hero
+            return;
+
+        if (!baseMapLayer.tileWasExplored(x,y)) // tile wasn't explored : abort
             return;
 
         if (baseMapLayer.tileIsInSight(x,y)) {
@@ -57,6 +60,22 @@ public class ActionSystem {
         } else { // clicked on an explored (but not in sight) tile : just walk there
             moveTo(player, x, y);
         }
+    }
+
+    /**
+     * Determines what to do when the player clicked his own Hero.
+     *
+     * @param player the Hero.
+     * @param x the x-coordinate of the click.
+     * @param y the y-coordinate of the click.
+     * @return 'true' only if the player clicked his Hero.
+     */
+    private boolean clickedSelf(Hero player, int x, int y) {
+        if (player.getX() == x && player.getY() == y) {
+            // todo: open backpack? skip a turn?
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -81,6 +100,14 @@ public class ActionSystem {
     }
 
 
+    /**
+     *
+     *
+     * @param player the Hero player.
+     * @param x x-coordinate of the click.
+     * @param y y-coordinate of the click.
+     * @return 'true' only if the click was handled.
+     */
     private boolean findActor(Actor player, int x, int y) {
         Actor actorAt = secondaryMapLayer.findActorAt(x, y);
         if (actorAt != null) {

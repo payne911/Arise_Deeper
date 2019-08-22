@@ -11,6 +11,7 @@ public final class GameLogic { /* Can't be inherited. */
     public static final boolean DEBUG_NO_FOG = false;
     public static final boolean DEBUG_SUBCLASSED_TILES = false;
     public static final boolean DEBUG_GESTURE_PRINT = false;
+    public static final boolean DEBUG_ACTION_PRINT = true;
     public static boolean RANDOM_DECISIONS = false;
     public static boolean RANDOM_DRUNKARD = false;
     public static boolean RANDOM_ENEMIES = true;

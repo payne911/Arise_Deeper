@@ -45,7 +45,6 @@ public abstract class Actor extends GameObject {
     public boolean takeHit(int dmg) {
         if(!invincible)
             currHp -= dmg;
-        System.out.println("Damage taken. New HP: " + Math.max(0,currHp) + "/" + maxHp);
         return isDead();
     }
     abstract public void die(Actor killer);
