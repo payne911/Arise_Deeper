@@ -3,7 +3,7 @@ package com.payne.games.map.renderers;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.payne.games.gameObjects.actors.Actor;
 import com.payne.games.logic.GameLogic;
-import com.payne.games.logic.systems.LightingSystem;
+import com.payne.games.logic.systems.SightSystem;
 import com.payne.games.map.BaseMapLayer;
 import com.payne.games.map.SecondaryMapLayer;
 import com.payne.games.map.tiles.Tile;
@@ -21,13 +21,13 @@ public class MapRenderer {
     private SecondaryMapLayer secondaryMapLayer;
 
     // Fog of War
-    private LightingSystem lightingSystem;
+    private SightSystem sightSystem;
 
 
-    public MapRenderer(SecondaryMapLayer secondaryMapLayer, LightingSystem lightingSystem) {
+    public MapRenderer(SecondaryMapLayer secondaryMapLayer, SightSystem sightSystem) {
         this.secondaryMapLayer = secondaryMapLayer;
         this.subclassTileAssigner = new SubclassTileAssigner();
-        this.lightingSystem = lightingSystem;
+        this.sightSystem = sightSystem;
     }
 
 

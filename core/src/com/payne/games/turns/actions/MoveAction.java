@@ -1,14 +1,16 @@
 package com.payne.games.turns.actions;
 
 import com.payne.games.gameObjects.actors.Actor;
-import com.payne.games.gameObjects.actors.Hero;
 import com.payne.games.map.tiles.Tile;
 import com.payne.games.pathfinding.MyIndexedGraph;
 
 
+/**
+ * This MoveAction was targeted at an empty walkable Floor tile.
+ */
 public class MoveAction extends Action {
-    private Tile next, from, to;
-    private MyIndexedGraph graph;
+    protected Tile next, from, to;
+    protected MyIndexedGraph graph;
 
 
     /**
@@ -60,12 +62,12 @@ public class MoveAction extends Action {
     }
 
 
-    private boolean newActorInSight() {
+    protected boolean newActorInSight() {
         return false; // todo: detect if new enemies appeared in sight
     }
 
 
-    private void move() {
+    protected void move() {
         from.setAllowingMove(true);
         source.setX(next.getX());
         source.setY(next.getY());
@@ -78,6 +80,7 @@ public class MoveAction extends Action {
         // todo: activate Traps if stepped on one (and don't issue another MoveAction)
 
         /* Keep assigning MoveActions until reaching destination. */
+        // todo: if "to" is now occupied by an Actor, the action is aborted.
         Tile again = graph.extractFirstMove(next, to); // "next", at this point, is the current position of the actor
         if (again != null) {
             MoveAction moveAction = new MoveAction(source, graph, next, again, to);
@@ -86,15 +89,18 @@ public class MoveAction extends Action {
     }
 
     @Override
-    public int getFatigueCost() {
-        return 50;
+    public float getFatigueCostMultiplier() {
+        return 1;
     }
+
 
     @Override
     public String toString() {
         return "MoveAction{" +
-                "src=" + getSource() +
-                ", movingTo=" + next +
+                "next=" + next +
+                ", from=" + from +
+                ", to=" + to +
+                ", source=" + source +
                 '}';
     }
 }

@@ -1,15 +1,13 @@
 package com.payne.games.logic.systems;
 
-import com.badlogic.gdx.math.GridPoint2;
 import com.payne.games.gameObjects.actors.Actor;
 import com.payne.games.gameObjects.actors.Hero;
-import com.payne.games.logic.Utils;
 import com.payne.games.map.BaseMapLayer;
 import com.payne.games.map.SecondaryMapLayer;
 import com.payne.games.map.tiles.Tile;
 import com.payne.games.pathfinding.MyIndexedGraph;
-import com.payne.games.turns.actions.AttackAction;
 import com.payne.games.turns.actions.MoveAction;
+import com.payne.games.turns.actions.ActorInteractionMoveAction;
 
 
 public class ActionSystem {
@@ -43,26 +41,26 @@ public class ActionSystem {
      * @param y y-coordinate of the player's tap.
      */
     public void checkTap(Hero player, int x, int y) {
-        if (!hasInterruptedActions(player)) { // hero already had other actions: cancel them
+        if (alreadyHadActionsInQueue(player)) // hero already had other actions: cancel them and abort
+            return;
 
-            if (!baseMapLayer.tileWasExplored(x,y)) // tile wasn't explored: abort
+        if (!baseMapLayer.tileWasExplored(x,y)) // tile wasn't explored: abort
+            return;
+
+        if (baseMapLayer.tileIsInSight(x,y)) {
+
+            if (findGameObject(player, x, y)) // finding if a GameObject might be in range for interaction
                 return;
 
-            if (baseMapLayer.tileIsInSight(x,y)) {
+            moveTo(player, x, y); // clicked on a tile with no GameObjects on it : just walk there
 
-                if (findGameObject(player, x, y)) // finding if a GameObject might be in range for interaction
-                    return;
-
-                moveTo(player, x, y); // clicked on a tile with no GameObjects on it : just walk there
-
-            } else { // clicked on an explored (but not in sight) tile : just walk there
-                moveTo(player, x, y);
-            }
+        } else { // clicked on an explored (but not in sight) tile : just walk there
+            moveTo(player, x, y);
         }
     }
 
     /**
-     * First, the Actor is checked because attacking takes priority over picking up when targeting a Tile which
+     * First, the Actor is checked because "attacking" takes priority over "picking up" when targeting a Tile which
      * contains both an Actor and a Static object.
      *
      * @param player The player's Hero.
@@ -86,26 +84,45 @@ public class ActionSystem {
     private boolean findActor(Actor player, int x, int y) {
         Actor actorAt = secondaryMapLayer.findActorAt(x, y);
         if (actorAt != null) {
-            boolean withinRange = Utils.straightDistanceBetweenMiddleOfTiles(new GridPoint2(player.getX(), player.getY()), new GridPoint2(x, y)) < player.getRange();
-            if (!withinRange) { // Actor not in range: just move over there and try to interact
-                moveTo(player, x, y); // todo: should be INTERACTIVE move
-            } else { // Actor is in range: attack!
-                player.addAction(new AttackAction(player, actorAt, 30));
+
+            boolean successfulInteraction = actorAt.interact(player);
+            if (successfulInteraction) {
+                return true; // an interaction happened: we're done handling the tap
             }
 
-            return true; // found an actor : we're done handling the tap
+            Tile from = baseMapLayer.getTile(player.getX(), player.getY());
+            Tile to   = baseMapLayer.getTile(x, y);
+
+            /* Since the "to" Tile is occupied by an Actor, we need to temporarily set it to allow movements.*/
+            to.setAllowingMove(true);
+            Tile next = findNextTile(from, to);
+            to.setAllowingMove(false);
+            if(next != null) { // there is a path that leads to the Actor
+                player.addAction(new ActorInteractionMoveAction(player, actorAt, indexedGraph, from, next, to));
+                return true; // we're done handling the tap
+            }
+
+            return true; // found an actor, but nothing could be done : we're done handling the tap
         }
         return false; // didn't find an actor : keep handling the tap
     }
 
 
-
-
     /**
      * Uses the PathFinding to find a path to the input point from the current location of the input actor.
+     *
+     * @param from initial point.
+     * @param to desired destination.
+     * @return 'null' only if no path can be found. Otherwise, returns the next Tile to move to.
+     */
+    private Tile findNextTile(Tile from, Tile to) {
+        return indexedGraph.extractFirstMove(from, to);
+    }
+
+    /**
      * If no path can be found (for example, trying to walk into a wall), nothing happens.
      *
-     * @param actor The GameObject that wants to move.
+     * @param actor The Actor that wants to move.
      * @param x destination's x-coordinate.
      * @param y destination's y-coordinate.
      */
@@ -115,11 +132,9 @@ public class ActionSystem {
         Tile to   = baseMapLayer.getTile(x, y);
 
         /* Assigning MoveActions accordingly. */
-        Tile next = indexedGraph.extractFirstMove(from, to);
-        if(next != null) {
-            MoveAction moveAction = new MoveAction(actor, indexedGraph, from, next, to);
-            actor.addAction(moveAction);
-        }
+        Tile next = findNextTile(from, to);
+        if(next != null)
+            actor.addAction(new MoveAction(actor, indexedGraph, from, next, to));
     }
 
     /**
@@ -148,7 +163,7 @@ public class ActionSystem {
      * @param player the Hero of the player.
      * @return 'false' only if there were no actions in the Queue.
      */
-    private boolean hasInterruptedActions(Hero player) {
+    private boolean alreadyHadActionsInQueue(Hero player) {
         if(player.isOccupied()) {
             player.clearActionsQueue(); // this means we interrupt current actions
             return true;

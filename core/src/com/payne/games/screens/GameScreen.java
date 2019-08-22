@@ -106,6 +106,31 @@ public class GameScreen implements Screen {
 
     }
 
+    /**
+     * Performance tuning:<br>
+     *
+     * SpriteBatch has a constructor that sets the maximum number of sprites that can be buffered before sending
+     * to the GPU. If this is too low, it will cause extra calls to the GPU. If this is too high, the SpriteBatch
+     * will be using more memory than is necessary.<br>
+     *
+     * SpriteBatch has a public int field named maxSpritesInBatch. This indicates the highest number of sprites
+     * that were sent to the GPU at once over the lifetime of the SpriteBatch. Setting a very large SpriteBatch
+     * size and then checking this field can help determine the optimum SpriteBatch size. It should be sized equal
+     * to or slightly more than maxSpritesInBatch. This field may be set to zero to reset it at any time.<br>
+     *
+     * SpriteBatch has a public int field named renderCalls. After end is called, this field indicates how many
+     * times a batch of geometry was sent to the GPU between the last calls to begin and end. This occurs when a
+     * different texture must be bound, or when the SpriteBatch has cached enough sprites to be full. If the
+     * SpriteBatch is sized appropriately and renderCalls is large (more than maybe 15-20), it indicates that
+     * many texture binds are occurring.<br>
+     *
+     * SpriteBatch has an additional constructor that takes a size and a number of buffers. This is an advanced
+     * feature that causes vertex buffer objects (VBOs) to be used rather than the usual vertex arrays (VAs).
+     * A list of buffers is kept, and each render call uses the next buffer in the list (wrapping around).
+     * When maxSpritesInBatch is low and renderCalls is large, this may provide a small performance boost.
+     *
+     * @param delta Time spent since last render call.
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // clear the screen
@@ -130,12 +155,7 @@ public class GameScreen implements Screen {
         game.batch.begin();
         mapController.renderLevel(game.batch);
 
-        /*
-        This indicates the highest number of sprites that were sent to the GPU at once over the lifetime
-        of the SpriteBatch. Setting a very large SpriteBatch size and then checking this field can help
-        determine the optimum SpriteBatch size. It should be sized equal to or slightly more than
-        maxSpritesInBatch. This field may be set to zero to reset it at any time.
-         */
+        /* Debugging text. */
         game.font.draw(game.batch,
                 "MaxSpritesBatch: " + game.batch.maxSpritesInBatch
                 + " | seed: " + GameLogic.RANDOM_SEED

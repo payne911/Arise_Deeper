@@ -1,9 +1,10 @@
-package com.payne.games.turns;
+package com.payne.games.logic.systems;
 
 import com.badlogic.gdx.utils.BinaryHeap;
 import com.payne.games.gameObjects.actors.Actor;
 import com.payne.games.gameObjects.actors.Hero;
 import com.payne.games.map.SecondaryMapLayer;
+import com.payne.games.turns.ActorNode;
 import com.payne.games.turns.actions.AttackAction;
 import com.payne.games.turns.actions.IAction;
 import com.payne.games.turns.actions.MoveAction;
@@ -13,11 +14,13 @@ public class TurnManager {
     private BinaryHeap<ActorNode> actorsHeap = new BinaryHeap<>(); // minHeap
     private IAction actionToExecute;
     private SecondaryMapLayer secondaryMapLayer;
+    private SightSystem sightSystem;
     private boolean waitingOnPlayerInput;
 
 
-    public TurnManager(SecondaryMapLayer secondaryMapLayer) {
+    public TurnManager(SecondaryMapLayer secondaryMapLayer, SightSystem sightSystem) {
         this.secondaryMapLayer = secondaryMapLayer;
+        this.sightSystem = sightSystem;
     }
 
 
@@ -67,7 +70,6 @@ public class TurnManager {
 
     /**
      * Check on all the Actors until one that can act is found.
-     * If waiting on the player to decide, this just skips.
      */
     private void collectNextAction() {
         boolean foundNextActor = false;
@@ -75,7 +77,7 @@ public class TurnManager {
             recollectActors(); // keep going until an Actor is ready to take a turn
 
             Actor currentActor = actorsHeap.peek().actor;
-            if(currentActor.notFatigued()) {
+            if(currentActor.notFatigued()) { // found an Actor that is ready to act
                 foundNextActor = true;
                 actionToExecute = currentActor.getNextAction(); // 'null' if waiting on player input
             } else {

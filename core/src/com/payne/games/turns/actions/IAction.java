@@ -16,16 +16,16 @@ public interface IAction {
     boolean execute();
 
     /**
+     * @return The added cost of using this Action.
+     */
+    float getFatigueCostMultiplier();
+
+    /**
      * @return Has the action achieved its purpose?<br>
      * 'true' if the action should consume the Actor's turn.<br>
      * 'false' if the turn should be given back to the Actor.
      */
     boolean executeAction();
-
-    /**
-     * @return The added cost of using this Action.
-     */
-    int getFatigueCost();
 
     /**
      * @return The Actor initiating the Action.

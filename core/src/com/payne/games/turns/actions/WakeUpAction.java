@@ -19,7 +19,7 @@ public class WakeUpAction extends Action {
     }
 
     @Override
-    public int getFatigueCost() {
-        return 70;
+    public float getFatigueCostMultiplier() {
+        return 1.4f;
     }
 }

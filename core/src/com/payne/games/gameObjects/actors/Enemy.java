@@ -1,6 +1,8 @@
 package com.payne.games.gameObjects.actors;
 
 import com.payne.games.logic.DecisionMaking;
+import com.payne.games.logic.Utils;
+import com.payne.games.turns.actions.AttackAction;
 import com.payne.games.turns.actions.IAction;
 
 
@@ -40,8 +42,11 @@ public class Enemy extends Actor {
 
 
     @Override
-    public boolean interact() {
-        // todo: attack me
-        return false;
+    public boolean interact(Actor source) {
+        boolean withinRange = Utils.straightDistanceBetweenObjects(source, this) < source.getRange();
+        if (withinRange) { // Actor is in range: attack!
+            source.addAction(new AttackAction(source, this, source.getDmg()));
+        }
+        return withinRange;
     }
 }

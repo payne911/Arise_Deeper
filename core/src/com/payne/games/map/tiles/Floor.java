@@ -15,6 +15,7 @@ public class Floor extends Tile {
         setAllowingMove(true);
     }
 
+
     @Override
     public void setTexture(Tileset tileset) {
         if(isWater)
@@ -41,7 +42,6 @@ public class Floor extends Tile {
     public void addObject(GameObject gameObject) {
         objectsOnThisTile.add(gameObject);
     }
-
     public void removeObject(GameObject gameObject) {
         objectsOnThisTile.removeValue(gameObject, true);
     }
@@ -50,7 +50,6 @@ public class Floor extends Tile {
     public boolean isHasBlood() {
         return hasBlood;
     }
-
     public void setHasBlood(boolean hasBlood) {
         this.hasBlood = hasBlood;
     }
@@ -58,7 +57,6 @@ public class Floor extends Tile {
     public boolean isWater() {
         return isWater;
     }
-
     public void setWater(boolean water) {
         isWater = water;
     }

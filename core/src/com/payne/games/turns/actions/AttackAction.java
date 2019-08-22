@@ -29,7 +29,7 @@ public class AttackAction extends Action {
     }
 
     @Override
-    public int getFatigueCost() {
-        return 100;
+    public float getFatigueCostMultiplier() {
+        return 2;
     }
 }

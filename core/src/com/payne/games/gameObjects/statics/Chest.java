@@ -1,6 +1,8 @@
 package com.payne.games.gameObjects.statics;
 
 
+import com.payne.games.gameObjects.actors.Actor;
+
 public class Chest extends Static {
 
 
@@ -10,7 +12,7 @@ public class Chest extends Static {
 
 
     @Override
-    public boolean interact() {
+    public boolean interact(Actor source) {
         // todo: open me
         return false;
     }

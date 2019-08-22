@@ -45,6 +45,7 @@ public final class GameLogic { /* Can't be inherited. */
 
     // turn
     public static final float TURN_TIME = 0.07f;
+    public static final int TURN_GENERAL_COST = 50;
 
     // inventory
     public static final int INV_SLOTS = 4;

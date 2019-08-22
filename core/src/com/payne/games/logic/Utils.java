@@ -1,6 +1,8 @@
 package com.payne.games.logic;
 
 import com.badlogic.gdx.math.GridPoint2;
+import com.payne.games.gameObjects.GameObject;
+import com.payne.games.gameObjects.actors.Actor;
 import com.payne.games.map.tiles.Tile;
 
 
@@ -29,10 +31,50 @@ public class Utils {
      * @param to the To coordinate.
      * @return straight-line distance.
      */
-    public static double straightDistanceBetweenMiddleOfTiles(GridPoint2 from, GridPoint2 to) {
+    public static double straightDistanceBetweenMiddleOfPoints(GridPoint2 from, GridPoint2 to) {
         double deltaX = Math.pow(to.x - from.x, 2);
         double deltaY = Math.pow(to.y - from.y, 2);
 
         return Math.sqrt(deltaX + deltaY);
+    }
+
+    /**
+     * Gives the straight-line distance, in tile units, between two Tiles.
+     *
+     * @param from the From coordinate.
+     * @param to the To coordinate.
+     * @return straight-line distance.
+     */
+    public static double straightDistanceBetweenMiddleOfPoints(Tile from, Tile to) {
+        double deltaX = Math.pow(to.getX() - from.getX(), 2);
+        double deltaY = Math.pow(to.getY() - from.getY(), 2);
+
+        return Math.sqrt(deltaX + deltaY);
+    }
+
+    /**
+     * Gives the straight-line distance, in tile units, between two GameObjects.
+     * Uses the middle point of the Tile on which the Actors are standing.
+     *
+     * @param from the From object.
+     * @param to the To object.
+     * @return straight-line distance.
+     */
+    public static double straightDistanceBetweenObjects(GameObject from, GameObject to) {
+        double deltaX = Math.pow(to.getX() - from.getX(), 2);
+        double deltaY = Math.pow(to.getY() - from.getY(), 2);
+
+        return Math.sqrt(deltaX + deltaY);
+    }
+
+    /**
+     * To know if two GameObjects occupy the same Tile.
+     *
+     * @param from the From object.
+     * @param to the To object.
+     * @return 'true' only if they are on the same Tile.
+     */
+    public static boolean occupySameTile(GameObject from, GameObject to) {
+        return (from.getX() == to.getX()) && (from.getY() == to.getY());
     }
 }

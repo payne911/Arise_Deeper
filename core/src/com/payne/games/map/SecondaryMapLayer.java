@@ -30,6 +30,7 @@ public class SecondaryMapLayer {
             if(actor.isDead()) {
                 removeFromActorLayer(actor);
                 deadActors.add(actor);
+                currentLevel.getTile(actor.getX(), actor.getY()).setAllowingMove(true); // todo: unless the Actor is flying?
             }
         }
         return deadActors;

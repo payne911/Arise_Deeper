@@ -9,7 +9,7 @@ import com.payne.games.gameObjects.GameObjectFactory;
 import com.payne.games.gameObjects.actors.Hero;
 import com.payne.games.logic.systems.ActionSystem;
 import com.payne.games.logic.systems.InventorySystem;
-import com.payne.games.logic.systems.LightingSystem;
+import com.payne.games.logic.systems.SightSystem;
 import com.payne.games.map.BaseMapLayer;
 import com.payne.games.map.SecondaryMapLayer;
 import com.payne.games.map.generators.MapGenerator;
@@ -17,7 +17,7 @@ import com.payne.games.map.renderers.MapRenderer;
 import com.payne.games.map.tiles.Tile;
 import com.payne.games.map.tilesets.Tileset;
 import com.payne.games.screens.MainMenuScreen;
-import com.payne.games.turns.TurnManager;
+import com.payne.games.logic.systems.TurnManager;
 
 
 public class MapController {
@@ -35,7 +35,7 @@ public class MapController {
     private GameObjectFactory gameObjectFactory;
 
     // map's tertiary layer
-    private LightingSystem lightingSystem;
+    private SightSystem sightSystem;
 
     // movements and turns
     private ActionSystem actionSystem;
@@ -56,9 +56,9 @@ public class MapController {
         this.gameObjectFactory = new GameObjectFactory(actionSystem);
         createHero(); // todo: this will change at some point!
         this.secondaryMapLayer = new SecondaryMapLayer(gameObjectFactory);
-        this.lightingSystem = new LightingSystem(player);
-        this.mapRenderer = new MapRenderer(secondaryMapLayer, lightingSystem);
-        this.turnManager = new TurnManager(secondaryMapLayer);
+        this.sightSystem = new SightSystem(player);
+        this.mapRenderer = new MapRenderer(secondaryMapLayer, sightSystem);
+        this.turnManager = new TurnManager(secondaryMapLayer, sightSystem);
     }
 
 
@@ -136,7 +136,7 @@ public class MapController {
         mapRenderer.setUpBaseLayer(currentLevel, tileset); // assign the graphical representations to base layer's Tiles
         secondaryMapLayer.setUpSecondaryLayer(player, currentLevel); // place secondary layer (Hero, Chests, Keys, etc.)
         actionSystem.setUpIndexedGraph(currentLevel, secondaryMapLayer); // set up the graph for pathfinding
-        lightingSystem.setUpLightingOverlay(currentLevel);
+        sightSystem.setUpLightingOverlay(currentLevel);
         centerOnHero();
     }
 
@@ -156,7 +156,7 @@ public class MapController {
      * todo: this might change to being called within `mapRenderer.renderLevel()` if some spells change the lighting.
      */
     public void updateLighting() {
-        lightingSystem.updateLighting();
+        sightSystem.updateLighting();
     }
 
     /**

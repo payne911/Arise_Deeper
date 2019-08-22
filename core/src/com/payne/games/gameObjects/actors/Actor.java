@@ -2,6 +2,7 @@ package com.payne.games.gameObjects.actors;
 
 import com.badlogic.gdx.utils.Queue;
 import com.payne.games.gameObjects.GameObject;
+import com.payne.games.logic.systems.InventorySystem;
 import com.payne.games.turns.actions.IAction;
 
 
@@ -17,7 +18,11 @@ public abstract class Actor extends GameObject {
     private int currHp;
     private int fatigueRegen;
     private int currFatigue = 0; // used by the TurnManager
-    private int range;
+
+    // equipment
+    private InventorySystem inventory;
+    private int range; // attacking range of the currently equipped primary weapon
+    private int dmg = 30; // damage of the currently equipped primary weapon
 
 
 
@@ -82,7 +87,7 @@ public abstract class Actor extends GameObject {
         currFatigue = Math.max(0, currFatigue - fatigueRegen);
     }
 
-    public void addFatigue(int amount) {
+    public void addFatigue(float amount) {
         currFatigue += amount;
     }
 
@@ -110,11 +115,25 @@ public abstract class Actor extends GameObject {
         return actions;
     }
 
+    public void setInventory(InventorySystem inventory) {
+        this.inventory = inventory;
+    }
+    public InventorySystem getInventory() {
+        return inventory;
+    }
+
     public int getRange() {
         return range;
     }
     public void setRange(int range) {
         this.range = range;
+    }
+
+    public int getDmg() {
+        return dmg;
+    }
+    public void setDmg(int dmg) {
+        this.dmg = dmg;
     }
 
     public boolean isInvincible() {

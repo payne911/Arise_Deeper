@@ -1,6 +1,7 @@
 package com.payne.games.gameObjects;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.payne.games.gameObjects.actors.Actor;
 import com.payne.games.map.renderers.IRenderable;
 
 
@@ -24,10 +25,10 @@ public abstract class GameObject implements IRenderable {
      * An interaction with an NPC would be to pop up a dialog.<br>
      * An interaction with a Door would be to try to open it.
      *
+     * @param source the initiator of the interaction.
      * @return 'true' if the interaction was successful.
      */
-    public abstract boolean interact();
-
+    public abstract boolean interact(Actor source);
 
     public boolean renderInFog() {
         return false;

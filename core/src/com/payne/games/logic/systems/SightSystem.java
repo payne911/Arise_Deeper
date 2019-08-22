@@ -10,13 +10,13 @@ import java.util.HashSet;
 /**
  * todo:  see  https://www.redblobgames.com/articles/visibility/
  */
-public class LightingSystem {
-    private HashSet<Tile> oldTiles = new HashSet<>();
+public class SightSystem {
+    private HashSet<Tile> oldTiles = new HashSet<>(); // used for a small optimisation on Fog of War algo
     private BaseMapLayer level;
     private Hero player;
 
 
-    public LightingSystem(Hero player) {
+    public SightSystem(Hero player) {
         this.player = player;
     }
 
@@ -26,7 +26,7 @@ public class LightingSystem {
     }
 
     /**
-     * Updates the FogOfWar information and the lighting surround the Player.
+     * Updates the FogOfWar information and the lighting that surrounds the Player.
      *
      * @return a HashSet containing all the Tiles that are within a Square-Range of sight from the player.
      */
