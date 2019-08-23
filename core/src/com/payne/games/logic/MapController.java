@@ -166,4 +166,18 @@ public class MapController {
     public void returnToMainMenu() {
         game.setScreen(new MainMenuScreen(game));
     }
+
+
+
+
+
+
+    /*
+        DEBUG
+     */
+
+
+    public void DEBUG_spawn_enemies() {
+        secondaryMapLayer.DEBUG_spawn_enemies();
+    }
 }

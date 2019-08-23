@@ -32,6 +32,9 @@ public class MyInputProcessor extends InputAdapter {
             case Input.Keys.ESCAPE:
                 mapController.returnToMainMenu();
                 break;
+            case Input.Keys.S:
+                mapController.DEBUG_spawn_enemies();
+                break;
             default:
                 System.out.println("keyDown_keyCode: " + keycode);
                 break;

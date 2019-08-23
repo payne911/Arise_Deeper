@@ -82,11 +82,16 @@ public class SecondaryMapLayer {
         createChest(31, 13);
         createChest(18, 2);
         createKey(14, 10);
+        DEBUG_spawn_enemies();
+
+    }
+
+
+    public void DEBUG_spawn_enemies() {
         createEnemy(14, 11);
         createEnemy(29, 14);
         createEnemy(25, 13);
         createEnemy(56, 25);
-
     }
 
     private void placeHero(Hero player, int x, int y) {
