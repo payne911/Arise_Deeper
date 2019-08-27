@@ -55,6 +55,7 @@ public abstract class Tileset {
      * @param tileset String of the name of a SpriteSheet located in the "core/assets" folder.
      */
     protected void setRenderingTileset(String tileset) {
+        dispose();
         tiles = new Texture(Gdx.files.internal(tileset));
         splitTiles = TextureRegion.split(tiles, GameLogic.TILE_WIDTH, GameLogic.TILE_HEIGHT);
     }
@@ -69,8 +70,12 @@ public abstract class Tileset {
         return splitTiles[positionInTileset.y][positionInTileset.x];
     }
 
-    public Texture getTiles() {
-        return tiles;
+    /**
+     * Clears properly the GPU memory.
+     */
+    public void dispose() {
+        if(tiles != null)
+            tiles.dispose();
     }
 
     /**

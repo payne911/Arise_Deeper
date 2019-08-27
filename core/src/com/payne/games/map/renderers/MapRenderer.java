@@ -17,8 +17,8 @@ public class MapRenderer {
     // Temporary HP bars    todo: remove this and implement with SpriteSheet
     private final int HP_WIDTH  = (int)(GameLogic.TILE_WIDTH*.75);
     private final int HP_HEIGHT = GameLogic.TILE_HEIGHT/6;
-    private final Texture HP_BACKGROUND = new Texture(createProceduralPixmap(1, 0, 0, .7f));
-    private final Texture HP_PROGRESS   = new Texture(createProceduralPixmap(0, 1, 0, .7f));
+    private final Texture HP_BACKGROUND = createProceduralTexture(1, 0, 0, .7f);
+    private final Texture HP_PROGRESS   = createProceduralTexture(0, 1, 0, .7f);
 
     // Base layer
     private SubclassTileAssigner subclassTileAssigner;
@@ -138,13 +138,15 @@ public class MapRenderer {
      * @param g green value percentage (between 0 and 1).
      * @param b blue value percentage (between 0 and 1).
      * @param a alpha value percentage (between 0 and 1).
-     * @return a Pixmap that can be used to create a Texture procedurally.
+     * @return a Texture created procedurally.
      */
-    private Pixmap createProceduralPixmap(float r, float g, float b, float a) {
+    private Texture createProceduralTexture(float r, float g, float b, float a) {
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(r, g, b, a);
         pixmap.fill();
-        return pixmap;
+        Texture tmp = new Texture(pixmap);
+        pixmap.dispose();
+        return tmp;
     }
 
     /**
@@ -191,5 +193,15 @@ public class MapRenderer {
         }
 
         return true;
+    }
+
+
+    /**
+     * Clears the GPU's memory properly.
+     */
+    public void dispose() {
+        HP_BACKGROUND.dispose();
+        HP_PROGRESS.dispose();
+        tileset.dispose();
     }
 }

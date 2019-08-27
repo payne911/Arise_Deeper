@@ -34,6 +34,7 @@ public class GameScreen implements Screen {
 
 
     public GameScreen(final AriseDeeper game) {
+        System.out.println("game constructor");
         this.game = game;
         Gdx.gl.glClearColor(0, 0, 0, 1); // black background
 
@@ -103,7 +104,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-
+        System.out.println("game show");
     }
 
     /**
@@ -171,6 +172,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        System.out.println("game resize - width: " + width + " | height: " + height);
 //        /*
 //        The following resize strategy will ensure that you will always see
 //        30 units in the x axis no matter what pixel-width your device has.
@@ -194,7 +196,7 @@ public class GameScreen implements Screen {
      */
     @Override
     public void pause() {
-
+        System.out.println("game pause");
     }
 
     /**
@@ -202,13 +204,15 @@ public class GameScreen implements Screen {
      */
     @Override
     public void resume() {
-
+        System.out.println("game resume");
     }
 
     @Override
     public void hide() {
+        System.out.println("game hide");
         stage.dispose();
         skin.dispose();
+        mapController.dispose();
     }
 
     /**
@@ -217,6 +221,6 @@ public class GameScreen implements Screen {
      */
     @Override
     public void dispose() {
-
+        System.out.println("game dispose");
     }
 }

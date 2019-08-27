@@ -4,13 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.payne.games.AriseDeeper;
 import com.payne.games.logic.GameLogic;
@@ -35,6 +33,8 @@ public class MainMenuScreen implements Screen {
 
 
     public MainMenuScreen(final AriseDeeper game) {
+        System.out.println("menu constructor");
+        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         this.game = game;
 
         skin = new Skin(Gdx.files.internal(GameLogic.SKIN_FILE));
@@ -82,12 +82,11 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void show() {
-
+        System.out.println("menu show");
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.act(delta);
@@ -96,27 +95,29 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        System.out.println("menu resize - width: " + width + " | height: " + height);
         stage.getViewport().update(width, height, true); // todo: no idea if necessary
     }
 
     @Override
     public void pause() {
-
+        System.out.println("menu pause");
     }
 
     @Override
     public void resume() {
-
+        System.out.println("menu resume");
     }
 
     @Override
     public void hide() {
+        System.out.println("menu hide");
         stage.dispose();
         skin.dispose();
     }
 
     @Override
     public void dispose() {
-
+        System.out.println("menu dispose");
     }
 }

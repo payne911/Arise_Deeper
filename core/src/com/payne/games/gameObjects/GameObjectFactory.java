@@ -63,4 +63,12 @@ public class GameObjectFactory {
         return key;
     }
 
+    /**
+     * Clears the GPU's memory properly.
+     */
+    public void dispose() {
+        objects_20p.dispose();
+        objects_16p.dispose();
+    }
+
 }

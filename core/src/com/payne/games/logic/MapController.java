@@ -167,7 +167,13 @@ public class MapController {
         game.setScreen(new MainMenuScreen(game));
     }
 
-
+    /**
+     * Used to clean the GPU's memory properly (related to `Disposable` interface).
+     */
+    public void dispose() {
+        mapRenderer.dispose();
+        gameObjectFactory.dispose();
+    }
 
 
 
