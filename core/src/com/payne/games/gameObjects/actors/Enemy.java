@@ -42,7 +42,7 @@ public class Enemy extends Actor {
 
 
     @Override
-    public boolean interact(Actor source) {
+    public boolean tryInteractionFrom(Actor source) {
         boolean withinRange = Utils.straightDistanceBetweenObjects(source, this) < source.getRange();
         if (withinRange) { // Actor is in range: attack!
             source.addAction(new AttackAction(source, this, source.getDmg()));

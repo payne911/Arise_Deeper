@@ -54,6 +54,23 @@ public class SecondaryMapLayer {
         return actorAt;
     }
 
+    /**
+     * Finds the Static object at the (x,y) position.
+     *
+     * @param x x-coord.
+     * @param y y-coord.
+     * @return Could be 'null' if no Actor is at that position.
+     */
+    public Static findStaticAt(int x, int y) {
+        Static staticAt = null;
+        for(Static s : staticLayer) {
+            if (s.getX() == x && s.getY() == y) {
+                staticAt = s;
+            }
+        }
+        return staticAt;
+    }
+
 
     public Array<Static> getStaticLayer() {
         return staticLayer;

@@ -12,7 +12,7 @@ public class Chest extends Static {
 
 
     @Override
-    public boolean interact(Actor source) {
+    public boolean tryInteractionFrom(Actor source) {
         // todo: open me
         return false;
     }

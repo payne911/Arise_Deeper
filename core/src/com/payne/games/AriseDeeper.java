@@ -44,8 +44,8 @@ public class AriseDeeper extends Game {
 		System.out.println("arise create");
 		batch = new SpriteBatch();
 		font = new BitmapFont();
-		this.setScreen(new MainMenuScreen(this));
-//		this.setScreen(new GameScreen(this));
+//		this.setScreen(new MainMenuScreen(this));
+		this.setScreen(new GameScreen(this));
 	}
 
 	@Override

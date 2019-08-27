@@ -1,13 +1,16 @@
 package com.payne.games.logic.systems;
 
+import com.payne.games.gameObjects.GameObject;
 import com.payne.games.gameObjects.actors.Actor;
 import com.payne.games.gameObjects.actors.Hero;
+import com.payne.games.gameObjects.statics.Static;
 import com.payne.games.map.BaseMapLayer;
 import com.payne.games.map.SecondaryMapLayer;
 import com.payne.games.map.tiles.Tile;
 import com.payne.games.pathfinding.MyIndexedGraph;
+import com.payne.games.turns.actions.InteractiveMoveAction;
 import com.payne.games.turns.actions.MoveAction;
-import com.payne.games.turns.actions.ActorInteractionMoveAction;
+import com.payne.games.turns.actions.NoopAction;
 
 
 public class ActionSystem {
@@ -52,7 +55,7 @@ public class ActionSystem {
 
         if (baseMapLayer.tileIsInSight(x,y)) {
 
-            if (findGameObject(player, x, y)) // finding if a GameObject might be in range for interaction
+            if (findGameObject(player, x, y)) // finding if a GameObject was clicked for an interaction
                 return;
 
             moveTo(player, x, y); // clicked on a tile with no GameObjects on it : just walk there
@@ -64,6 +67,8 @@ public class ActionSystem {
 
     /**
      * Determines what to do when the player clicked his own Hero.
+     * If a Static object is on the same Tile, the Hero will try to interact with it.
+     * Else, a turn is skipped. todo: maybe should open the Backpack instead of skipping a turn?
      *
      * @param player the Hero.
      * @param x the x-coordinate of the click.
@@ -72,7 +77,14 @@ public class ActionSystem {
      */
     private boolean clickedSelf(Hero player, int x, int y) {
         if (player.getX() == x && player.getY() == y) {
-            // todo: open backpack? skip a turn?
+
+            Static staticAt = secondaryMapLayer.findStaticAt(x, y);
+            if(staticAt == null) { // nothing to interact with: skip a turn
+                player.addAction(new NoopAction(player));
+            } else {
+                staticAt.tryInteractionFrom(player);
+            }
+
             return true;
         }
         return false;
@@ -88,50 +100,37 @@ public class ActionSystem {
      * @return 'true' if the tap was handled.
      */
     private boolean findGameObject(Actor player, int x, int y) {
-        if (findActor(player, x, y)) // finding if an Actor might be in range
-            return true;
 
-        return findStatic(player, x, y); // trying to interact with a static object
-    }
-
-    private boolean findStatic(Actor player, int x, int y) {
-        // todo
-        return false;
-    }
+        /* Actors take priority over Static objects. */
+        GameObject objAt = secondaryMapLayer.findActorAt(x, y);
+        if(objAt == null)
+            objAt = secondaryMapLayer.findStaticAt(x, y);
+        if(objAt == null)
+            return false; // didn't find a GameObject to interact with : keep handling the tap
 
 
-    /**
-     *
-     *
-     * @param player the Hero player.
-     * @param x x-coordinate of the click.
-     * @param y y-coordinate of the click.
-     * @return 'true' only if the click was handled.
-     */
-    private boolean findActor(Actor player, int x, int y) {
-        Actor actorAt = secondaryMapLayer.findActorAt(x, y);
-        if (actorAt != null) {
+        boolean successfulInteraction = objAt.tryInteractionFrom(player);
+        if (successfulInteraction)
+            return true; // an interaction happened: we're done handling the tap
 
-            boolean successfulInteraction = actorAt.interact(player);
-            if (successfulInteraction) {
-                return true; // an interaction happened: we're done handling the tap
-            }
+        Tile from = baseMapLayer.getTile(player.getX(), player.getY());
+        Tile to   = baseMapLayer.getTile(x, y);
 
-            Tile from = baseMapLayer.getTile(player.getX(), player.getY());
-            Tile to   = baseMapLayer.getTile(x, y);
-
-            /* Since the "to" Tile is occupied by an Actor, we need to temporarily set it to allow movements.*/
+        /* Adapting the "to" Tile in case an Actor might be standing there. */
+        Tile next;
+        if(to.isAllowingMove()) {
+            next = findNextTile(from, to);
+        } else {
             to.setAllowingMove(true);
-            Tile next = findNextTile(from, to);
+            next = findNextTile(from, to);
             to.setAllowingMove(false);
-            if(next != null) { // there is a path that leads to the Actor
-                player.addAction(new ActorInteractionMoveAction(player, actorAt, indexedGraph, from, next, to));
-                return true; // we're done handling the tap
-            }
-
-            return true; // found an actor, but nothing could be done : we're done handling the tap
         }
-        return false; // didn't find an actor : keep handling the tap
+        if(next != null) { // there is a path that leads to the GameObject
+            player.addAction(new InteractiveMoveAction(player, objAt, baseMapLayer, indexedGraph, from, next, to));
+            return true; // we're done handling the tap
+        }
+
+        return true; // found a GameObject, but nothing could be done : we're done handling the tap
     }
 
 

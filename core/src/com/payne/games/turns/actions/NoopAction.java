@@ -21,7 +21,7 @@ public class NoopAction extends Action {
 
     @Override
     public float getFatigueCostMultiplier() {
-        return 0;
+        return 1;
     }
 
     @Override

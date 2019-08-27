@@ -25,7 +25,7 @@ public class PickUpAction extends Action {
     @Override
     public boolean executeAction() {
 //        source.getInventory().addItem(object); // todo: pick up the item
-        return false;
+        return true;
     }
 
     @Override

@@ -183,6 +183,11 @@ public class MapController {
      */
 
 
+    /**
+     * Pressing "S" while playing the game will spawn new enemies.
+     * Can cause bugs if enemies are spawned over other ones.
+     * Very temporary debug function.
+     */
     public void DEBUG_spawn_enemies() {
         secondaryMapLayer.DEBUG_spawn_enemies();
     }

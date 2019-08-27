@@ -15,7 +15,7 @@ public class Key extends Static implements IPickable {
 
 
     @Override
-    public boolean interact(Actor source) {
+    public boolean tryInteractionFrom(Actor source) {
         boolean onSameTile = Utils.occupySameTile(source, this);
         if (onSameTile) // Actor is in range: pick up
             source.addAction(new PickUpAction(source, this));

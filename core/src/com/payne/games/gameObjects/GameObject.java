@@ -20,6 +20,9 @@ public abstract class GameObject implements IRenderable {
 
 
     /**
+     * If the interaction is possible, the `source` parameter will have
+     * the appropriate `Action` added at the end of its queue.<br><br>
+     *
      * An interaction with a Pickable item would be to pick it up.<br>
      * An interaction with an Enemy would be to attack it.<br>
      * An interaction with an NPC would be to pop up a dialog.<br>
@@ -28,7 +31,7 @@ public abstract class GameObject implements IRenderable {
      * @param source the initiator of the interaction.
      * @return 'true' if the interaction was successful.
      */
-    public abstract boolean interact(Actor source);
+    public abstract boolean tryInteractionFrom(Actor source);
 
     public boolean renderInFog() {
         return false;

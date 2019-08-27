@@ -1,19 +1,25 @@
 package com.payne.games.turns.actions;
 
+import com.payne.games.gameObjects.GameObject;
 import com.payne.games.gameObjects.actors.Actor;
+import com.payne.games.map.BaseMapLayer;
 import com.payne.games.map.tiles.Tile;
 import com.payne.games.pathfinding.MyIndexedGraph;
 
 
 /**
- * A MoveAction, but with the goal to interact with a specific Actor.
+ * A MoveAction, but with the goal to interact with a specific Actor (aka "recipient").
  */
-public class ActorInteractionMoveAction extends MoveAction {
-    private Actor recipient;
+public class InteractiveMoveAction extends MoveAction {
+    private GameObject recipient;
+    private BaseMapLayer baseMapLayer;
 
 
-    public ActorInteractionMoveAction(Actor source, Actor recipient, MyIndexedGraph graph, Tile from, Tile next, Tile to) {
+    public InteractiveMoveAction(Actor source, GameObject recipient, BaseMapLayer baseMapLayer,
+                                 MyIndexedGraph graph, Tile from, Tile next, Tile to) {
         super(source, graph, from, next, to);
+
+        this.baseMapLayer = baseMapLayer;
         this.recipient = recipient;
     }
 
@@ -25,7 +31,7 @@ public class ActorInteractionMoveAction extends MoveAction {
         if(newActorInSight()) // todo:  something requires attention : abort automatic move (probably to place somewhere)
             return false;
 
-        boolean successfulInteraction = recipient.interact(source);
+        boolean successfulInteraction = recipient.tryInteractionFrom(source);
         if (successfulInteraction) // the goal was achieved
             return false; // execute the "recipient.interact()" Action instead of this one
 
@@ -55,14 +61,19 @@ public class ActorInteractionMoveAction extends MoveAction {
 
         // todo: activate Traps if stepped on one (and don't issue another MoveAction)
 
-        /* Keep assigning MoveActions until reaching destination. */
-        // todo: "to" needs to be updated since the Actor could have moved.
-        to.setAllowingMove(true);
-        Tile again = graph.extractFirstMove(next, to); // "next", at this point, is the current position of the actor
-        to.setAllowingMove(false);
-        if (again != null) {
-            ActorInteractionMoveAction actorInteractionMoveAction = new ActorInteractionMoveAction(source, recipient, graph, next, again, to);
-            source.addAction(actorInteractionMoveAction);
+        /* Since the Actor might have moved, we recompute where the "to" Tile is. */
+        to = baseMapLayer.getTile(recipient.getX(), recipient.getY());
+
+        /* Extract next move. */
+        Tile again = findNextMove();
+
+        /* Assign next Action accordingly. */
+        if (again != null) { // not there yet? keep moving!
+            InteractiveMoveAction interactiveMoveAction =
+                    new InteractiveMoveAction(source, recipient, baseMapLayer, graph, next, again, to);
+            source.addAction(interactiveMoveAction);
+        } else if (next == to) { // right at the desired destination? try to interact
+            recipient.tryInteractionFrom(source);
         }
     }
 
@@ -71,7 +82,7 @@ public class ActorInteractionMoveAction extends MoveAction {
 
     @Override
     public String toString() {
-        return "ActorInteractionMoveAction{" +
+        return "InteractiveMoveAction{" +
                 "recipient=" + recipient +
                 ", next=" + next +
                 ", from=" + from +

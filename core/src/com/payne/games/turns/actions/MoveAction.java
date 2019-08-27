@@ -67,11 +67,32 @@ public class MoveAction extends Action {
     }
 
 
+    /**
+     * Moves the Actor to the appropriate "next" Tile.
+     * Takes care of modifying the walkability-state of the associated Tiles as well.
+     */
     protected void move() {
         from.setAllowingMove(true);
         source.setX(next.getX());
         source.setY(next.getY());
         next.setAllowingMove(false);
+    }
+
+    /**
+     * Non-blocking graph exploration with the pathfinding.
+     *
+     * @return 'null' only if no path that leads to the desired destination exists OR if already standing at the destination.
+     */
+    protected Tile findNextMove() {
+        Tile again;
+        if(to.isAllowingMove()) {
+            again = graph.extractFirstMove(next, to); // "next", at this point, is the current position of the actor
+        } else { // an Actor is currently standing on the 'to' Tile
+            to.setAllowingMove(true);
+            again = graph.extractFirstMove(next, to); // "next", at this point, is the current position of the actor
+            to.setAllowingMove(false);
+        }
+        return again;
     }
 
 
@@ -80,8 +101,7 @@ public class MoveAction extends Action {
         // todo: activate Traps if stepped on one (and don't issue another MoveAction)
 
         /* Keep assigning MoveActions until reaching destination. */
-        // todo: if "to" is now occupied by an Actor, the action is aborted.
-        Tile again = graph.extractFirstMove(next, to); // "next", at this point, is the current position of the actor
+        Tile again = findNextMove();
         if (again != null) {
             MoveAction moveAction = new MoveAction(source, graph, next, again, to);
             source.addAction(moveAction);
