@@ -1,19 +1,19 @@
-package com.payne.games.logic.systems;
+package com.payne.games.turns;
 
 import com.badlogic.gdx.utils.BinaryHeap;
 import com.payne.games.gameObjects.actors.Actor;
 import com.payne.games.gameObjects.actors.Hero;
 import com.payne.games.logic.GameLogic;
+import com.payne.games.logic.systems.SightSystem;
 import com.payne.games.map.SecondaryMapLayer;
-import com.payne.games.turns.ActorNode;
+import com.payne.games.turns.actions.Action;
 import com.payne.games.turns.actions.AttackAction;
-import com.payne.games.turns.actions.IAction;
 import com.payne.games.turns.actions.MoveAction;
 
 
 public class TurnManager {
     private BinaryHeap<ActorNode> actorsHeap = new BinaryHeap<>(); // minHeap
-    private IAction actionToExecute;
+    private Action actionToExecute;
     private SecondaryMapLayer secondaryMapLayer;
     private SightSystem sightSystem;
     private boolean waitingOnPlayerInput;

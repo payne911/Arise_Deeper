@@ -2,8 +2,8 @@ package com.payne.games.gameObjects.actors;
 
 import com.payne.games.logic.DecisionMaking;
 import com.payne.games.logic.Utils;
+import com.payne.games.turns.actions.Action;
 import com.payne.games.turns.actions.AttackAction;
-import com.payne.games.turns.actions.IAction;
 
 
 public class Enemy extends Actor {
@@ -36,7 +36,7 @@ public class Enemy extends Actor {
      * @return the Action outputted by the AI.
      */
     @Override
-    public IAction extractAction() {
+    public Action extractAction() {
         return ai.decide(this);
     }
 

@@ -3,7 +3,7 @@ package com.payne.games.logic;
 import com.badlogic.gdx.math.RandomXS128;
 import com.payne.games.gameObjects.actors.Actor;
 import com.payne.games.logic.systems.ActionSystem;
-import com.payne.games.turns.actions.IAction;
+import com.payne.games.turns.actions.Action;
 import com.payne.games.turns.actions.NoopAction;
 import com.payne.games.turns.actions.WakeUpAction;
 
@@ -27,7 +27,7 @@ public class DecisionMaking {
      * @param src the Actor to whom the Action is associated.
      * @return the Action the Actor will take.
      */
-    public IAction decide(Actor src) {
+    public Action decide(Actor src) {
         if(src.isOccupied())
             return src.getNextAction();
 

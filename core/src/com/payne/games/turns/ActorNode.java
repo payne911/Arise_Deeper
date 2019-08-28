@@ -4,6 +4,9 @@ import com.badlogic.gdx.utils.BinaryHeap;
 import com.payne.games.gameObjects.actors.Actor;
 
 
+/**
+ * Used within the MinHeap that helps the TurnManager figure out the priority of each Actor within a turn.
+ */
 public class ActorNode extends BinaryHeap.Node {
     public Actor actor;
 

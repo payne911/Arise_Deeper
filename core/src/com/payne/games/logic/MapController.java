@@ -18,7 +18,7 @@ import com.payne.games.map.renderers.MapRenderer;
 import com.payne.games.map.tiles.Tile;
 import com.payne.games.map.tilesets.Tileset;
 import com.payne.games.screens.MainMenuScreen;
-import com.payne.games.logic.systems.TurnManager;
+import com.payne.games.turns.TurnManager;
 
 
 public class MapController {

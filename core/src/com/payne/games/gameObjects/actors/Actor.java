@@ -3,11 +3,11 @@ package com.payne.games.gameObjects.actors;
 import com.badlogic.gdx.utils.Queue;
 import com.payne.games.gameObjects.GameObject;
 import com.payne.games.inventory.Inventory;
-import com.payne.games.turns.actions.IAction;
+import com.payne.games.turns.actions.Action;
 
 
 public abstract class Actor extends GameObject {
-    protected Queue<IAction> actions = new Queue<>(); // all the Actions the Actor wants to see executed
+    protected Queue<Action> actions = new Queue<>(); // all the Actions the Actor wants to see executed
     private int priority = 2; // used by the MinHeap of the TurnManager to determine who goes first in case of equality
 
     // states
@@ -59,7 +59,7 @@ public abstract class Actor extends GameObject {
      *
      * @return The Action this Actor wants to see executed. 'null' only if the engine is waiting for the player to act.
      */
-    abstract public IAction extractAction();
+    abstract public Action extractAction();
 
 
     /**
@@ -75,7 +75,7 @@ public abstract class Actor extends GameObject {
         actions.clear();
     }
 
-    public IAction getNextAction() {
+    public Action getNextAction() {
         if(isOccupied())
             return actions.removeFirst();
         else
@@ -90,7 +90,7 @@ public abstract class Actor extends GameObject {
         currFatigue += amount;
     }
 
-    public void addAction(IAction action) {
+    public void addAction(Action action) {
         if (action != null)
             actions.addLast(action);
     }
@@ -110,7 +110,7 @@ public abstract class Actor extends GameObject {
         GETTERS/SETTERS
      */
 
-    public Queue<IAction> getActionsQueue() {
+    public Queue<Action> getActionsQueue() {
         return actions;
     }
 

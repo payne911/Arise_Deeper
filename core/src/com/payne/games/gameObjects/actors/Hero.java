@@ -1,8 +1,8 @@
 package com.payne.games.gameObjects.actors;
 
 import com.payne.games.logic.Utils;
+import com.payne.games.turns.actions.Action;
 import com.payne.games.turns.actions.AttackAction;
-import com.payne.games.turns.actions.IAction;
 
 
 public class Hero extends Actor {
@@ -39,7 +39,7 @@ public class Hero extends Actor {
      * @return 'null' only if the player still hasn't made a decision.
      */
     @Override
-    public IAction extractAction() {
+    public Action extractAction() {
         return null; // do not change this
     }
 
