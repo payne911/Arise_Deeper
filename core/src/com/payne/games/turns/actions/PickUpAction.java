@@ -1,6 +1,7 @@
 package com.payne.games.turns.actions;
 
-import com.payne.games.gameObjects.IPickable;
+import com.payne.games.gameObjects.GameObject;
+import com.payne.games.inventory.IPickable;
 import com.payne.games.gameObjects.actors.Actor;
 
 
@@ -24,7 +25,13 @@ public class PickUpAction extends Action {
 
     @Override
     public boolean executeAction() {
-//        source.getInventory().addItem(object); // todo: pick up the item
+        boolean success = source.getInventory().addItem(object);
+        System.out.println("Pick up success: " + success);
+
+        if(success){
+            ((GameObject)object).placeOutsideOfMap();
+        }
+
         return true;
     }
 

@@ -8,6 +8,7 @@ import com.payne.games.gameObjects.actors.Enemy;
 import com.payne.games.gameObjects.actors.Hero;
 import com.payne.games.gameObjects.statics.Chest;
 import com.payne.games.gameObjects.statics.Key;
+import com.payne.games.inventory.Inventory;
 import com.payne.games.logic.DecisionMaking;
 import com.payne.games.logic.GameLogic;
 import com.payne.games.logic.systems.ActionSystem;
@@ -44,9 +45,10 @@ public class GameObjectFactory {
         return chest;
     }
 
-    public Hero createHero(int x, int y) {
+    public Hero createHero(int x, int y, Inventory inventory) {
         Hero hero = new Hero(x, y, 150, 3, 5);
         hero.setTexture(split_20p[0][0]);
+        hero.setInventory(inventory);
         return hero;
     }
 

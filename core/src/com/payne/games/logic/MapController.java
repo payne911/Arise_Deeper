@@ -7,8 +7,9 @@ import com.badlogic.gdx.utils.Array;
 import com.payne.games.AriseDeeper;
 import com.payne.games.gameObjects.GameObjectFactory;
 import com.payne.games.gameObjects.actors.Hero;
+import com.payne.games.inventory.Inventory;
 import com.payne.games.logic.systems.ActionSystem;
-import com.payne.games.logic.systems.InventorySystem;
+import com.payne.games.inventory.HeroInventoryWrapper;
 import com.payne.games.logic.systems.SightSystem;
 import com.payne.games.map.BaseMapLayer;
 import com.payne.games.map.SecondaryMapLayer;
@@ -42,7 +43,7 @@ public class MapController {
     private TurnManager turnManager;
 
     // inventory
-    private InventorySystem inventorySystem;
+    private HeroInventoryWrapper heroInventoryWrapper;
     private Array<TextButton> inventorySlots;
 
 
@@ -86,9 +87,8 @@ public class MapController {
      * Create the Hero, and assign its Inventory.
      */
     public void createHero() {
-        player = gameObjectFactory.createHero(0, 0);
-        inventorySystem = new InventorySystem(inventorySlots);
-        player.setInventory(inventorySystem);
+        player = gameObjectFactory.createHero(0, 0, new Inventory(4));
+        heroInventoryWrapper = new HeroInventoryWrapper(inventorySlots, player.getInventory());
     }
 
 
@@ -148,6 +148,13 @@ public class MapController {
      */
     public void renderLevel(SpriteBatch batch) {
         mapRenderer.renderLevel(batch);
+    }
+
+    /**
+     * Updates certain elements of the UI.
+     */
+    public void updateUi() {
+        heroInventoryWrapper.render();
     }
 
     /**

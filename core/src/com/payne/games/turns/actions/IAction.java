@@ -16,7 +16,7 @@ public interface IAction {
     boolean execute();
 
     /**
-     * @return The added cost of using this Action.
+     * @return The multiplier applied to the "turn cost" of using this Action.
      */
     float getFatigueCostMultiplier();
 

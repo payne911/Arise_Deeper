@@ -142,6 +142,7 @@ public class GameScreen implements Screen {
             currTime = 0f;
             mapController.processTurn();
             mapController.updateLighting();
+            mapController.updateUi();
         } else {
             currTime += delta;
         }

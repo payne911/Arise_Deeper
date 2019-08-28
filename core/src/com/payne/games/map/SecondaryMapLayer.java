@@ -99,6 +99,10 @@ public class SecondaryMapLayer {
         createChest(31, 13);
         createChest(18, 2);
         createKey(14, 10);
+        createKey(27, 16);
+        createKey(20, 14);
+        createKey(18, 18);
+
         DEBUG_spawn_enemies();
 
     }

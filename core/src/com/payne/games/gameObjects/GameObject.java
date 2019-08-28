@@ -13,9 +13,24 @@ public abstract class GameObject implements IRenderable {
     private TextureRegion texture;
 
 
+    /**
+     * A GameObject can be interacted with, in some way or another.<br>
+     * The (0,0) is at the bottom-left.
+     *
+     * @param x x-coordinate, in Tile units (not pixels).
+     * @param y y-coordinate, in Tile units (not pixels).
+     */
     public GameObject(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    /**
+     * Used to move the GameObject to an unreachable place. Used, for example, after an item was picked from the ground.
+     */
+    public void placeOutsideOfMap() {
+        x = -2;
+        y = -2;
     }
 
 

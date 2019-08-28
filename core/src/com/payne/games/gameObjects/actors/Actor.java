@@ -2,7 +2,7 @@ package com.payne.games.gameObjects.actors;
 
 import com.badlogic.gdx.utils.Queue;
 import com.payne.games.gameObjects.GameObject;
-import com.payne.games.logic.systems.InventorySystem;
+import com.payne.games.inventory.Inventory;
 import com.payne.games.turns.actions.IAction;
 
 
@@ -20,7 +20,7 @@ public abstract class Actor extends GameObject {
     private int currFatigue = 0; // used by the TurnManager
 
     // equipment
-    private InventorySystem inventory;
+    private Inventory inventory;
     private int range; // attacking range of the currently equipped primary weapon
     private int dmg = 30; // damage of the currently equipped primary weapon
 
@@ -114,10 +114,10 @@ public abstract class Actor extends GameObject {
         return actions;
     }
 
-    public void setInventory(InventorySystem inventory) {
+    public void setInventory(Inventory inventory) {
         this.inventory = inventory;
     }
-    public InventorySystem getInventory() {
+    public Inventory getInventory() {
         return inventory;
     }
 
