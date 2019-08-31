@@ -3,7 +3,7 @@ package com.payne.games.inputProcessors;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.payne.games.logic.MapController;
+import com.payne.games.logic.Controller;
 
 
 /**
@@ -13,12 +13,12 @@ import com.payne.games.logic.MapController;
  */
 public class MyInputProcessor extends InputAdapter {
     private OrthographicCamera camera;
-    private MapController mapController;
+    private Controller controller;
 
 
-    public MyInputProcessor(OrthographicCamera camera, MapController mapController) {
+    public MyInputProcessor(OrthographicCamera camera, Controller controller) {
         this.camera = camera;
-        this.mapController = mapController;
+        this.controller = controller;
     }
 
 
@@ -27,13 +27,13 @@ public class MyInputProcessor extends InputAdapter {
 
         switch (keycode) {
             case Input.Keys.SPACE: // todo: should TOGGLE a centerView option?
-                mapController.centerOnHero();
+                controller.centerOnHero();
                 break;
             case Input.Keys.ESCAPE:
-                mapController.returnToMainMenu();
+                controller.returnToMainMenu();
                 break;
             case Input.Keys.S:
-                mapController.DEBUG_spawn_enemies();
+                controller.DEBUG_spawn_enemies();
                 break;
             default:
                 System.out.println("keyDown_keyCode: " + keycode);

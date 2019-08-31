@@ -2,6 +2,7 @@ package com.payne.games.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -20,6 +21,7 @@ import com.payne.games.logic.GameLogic;
  */
 public class MainMenuScreen implements Screen {
     private final AriseDeeper game;
+    private final AssetManager assets;
 
     private Stage stage; // to handle the ui
     private Skin skin; // json style
@@ -32,10 +34,11 @@ public class MainMenuScreen implements Screen {
     private TextButton quitButton;
 
 
-    public MainMenuScreen(final AriseDeeper game) {
+    public MainMenuScreen(final AriseDeeper game, final AssetManager assets) {
         System.out.println("menu constructor");
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         this.game = game;
+        this.assets = assets;
 
         skin = new Skin(Gdx.files.internal(GameLogic.SKIN_FILE));
         stage = new Stage(new ScreenViewport());
@@ -59,7 +62,7 @@ public class MainMenuScreen implements Screen {
         newGameButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                game.setScreen(new GameScreen(game));
+                game.setScreen(new GameScreen(game, assets));
                 dispose();
             }
         });

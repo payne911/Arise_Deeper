@@ -83,26 +83,26 @@ public class Inventory {
     }
 
     /**
-     * Removes and returns the first item of the specified type. Uses the class name, and not the reference itself.
+     * Removes and returns the first item of the specified type. Uses the class name.
      *
      * @param item The researched item.
      * @return 'null' if no item of that type was found, else the item that was removed is returned.
      */
-    public IPickable removeItem(IPickable item) {
+    public IPickable takeItem(Class<? extends IPickable> item) {
         int index = findIndex(item);
-        if(index < 0) // couldn't find item     todo: shouldn't happen?
+        if(index < 0) // couldn't find item
             return null;
 
         return getSlot(index).removeItem();
     }
 
     /**
-     * To find the first index of a specified item. Uses the class name, and not the reference itself.
+     * To find the first index of a specified item. Uses the class name.
      *
      * @param item The researched item.
      * @return The index where the item is. Could be "-1" if it isn't found.
      */
-    private int findIndex(IPickable item) {
+    private int findIndex(Class<? extends IPickable> item) {
         // todo: if two stackable slots available, return the smallest stack's index
 
         for (int i = 0; i < capacity; i++) {

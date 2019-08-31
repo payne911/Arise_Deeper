@@ -2,6 +2,7 @@ package com.payne.games.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
@@ -11,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Array;
 import com.payne.games.AriseDeeper;
 import com.payne.games.logic.GameLogic;
-import com.payne.games.logic.MapController;
+import com.payne.games.logic.Controller;
 import com.payne.games.map.tilesets.BasicTileset;
 import com.payne.games.inputProcessors.MyGestureListener;
 import com.payne.games.inputProcessors.MyInputMultiplexer;
@@ -20,22 +21,24 @@ import com.payne.games.inputProcessors.MyInputProcessor;
 
 public class GameScreen implements Screen {
     private final AriseDeeper game;
+    private final AssetManager assets;
     private OrthographicCamera camera;
 
     // ui
     private Stage stage;
     private Skin skin;
     private Table ui;
-    private Array<TextButton> inventorySlots = new Array<>();
+    private Array<ImageTextButton> inventorySlots = new Array<>();
 
     // controllers
-    private MapController mapController;
+    private Controller controller;
     private float currTime = 0f; // turn system
 
 
-    public GameScreen(final AriseDeeper game) {
+    public GameScreen(final AriseDeeper game, final AssetManager assets) {
         System.out.println("game constructor");
         this.game = game;
+        this.assets = assets;
         Gdx.gl.glClearColor(0, 0, 0, 1); // black background
 
         setUpGameScreen();
@@ -48,7 +51,7 @@ public class GameScreen implements Screen {
     private void setUpGameScreen() {
         setUpUi(); // ui
         setUpCamera(); // create the camera and the SpriteBatch
-        this.mapController = new MapController(game, camera, inventorySlots); // controller
+        this.controller = new Controller(game, assets, camera, inventorySlots); // controller
         setUpMap(); // generate the initial level and place the GameObjects (hero, etc.)
         setUpInputProcessors(); // input processors
     }
@@ -74,9 +77,15 @@ public class GameScreen implements Screen {
         Table container = new Table();
         container.setTouchable(Touchable.enabled);
         container.defaults().prefSize(SIZE).minSize(SIZE);
+        ImageTextButton currSlot;
         for(int i=0; i<GameLogic.INV_SLOTS; i++) {
-            inventorySlots.add(new TextButton(""+i, skin));
-            container.add(inventorySlots.get(i));
+            inventorySlots.add(new ImageTextButton(""+i, skin));
+            currSlot = inventorySlots.get(i);
+            currSlot.setStyle(new ImageTextButton.ImageTextButtonStyle(currSlot.getStyle()));
+            currSlot.getImageCell().grow();
+            currSlot.getLabel().setFontScale(.8f);
+            currSlot.getLabelCell().left();
+            container.add(currSlot);
         }
 
         final Value VAL = Value.percentWidth(0.2f, ui);
@@ -90,12 +99,12 @@ public class GameScreen implements Screen {
     }
 
     private void setUpMap() {
-        mapController.generateLevel(64, 32, new BasicTileset());
+        controller.generateLevel(64, 32, new BasicTileset());
     }
 
     private void setUpInputProcessors() {
-        MyInputProcessor inputProcessor1  = new MyInputProcessor(camera, mapController);
-        MyGestureListener inputProcessor2 = new MyGestureListener(camera, mapController);
+        MyInputProcessor inputProcessor1  = new MyInputProcessor(camera, controller);
+        MyGestureListener inputProcessor2 = new MyGestureListener(camera, controller);
         Gdx.input.setInputProcessor(new MyInputMultiplexer(
                 stage,
                 inputProcessor1,
@@ -140,9 +149,9 @@ public class GameScreen implements Screen {
         /* Turn system. */
         if(currTime >= GameLogic.TURN_TIME) {
             currTime = 0f;
-            mapController.processTurn();
-            mapController.updateLighting();
-            mapController.updateUi();
+            controller.processTurn();
+            controller.updateLighting();
+            controller.updateUi();
         } else {
             currTime += delta;
         }
@@ -155,7 +164,7 @@ public class GameScreen implements Screen {
 
         /* Actual map rendering. */
         game.batch.begin();
-        mapController.renderLevel(game.batch);
+        controller.renderLevel(game.batch);
 
         /* Debugging text. */
         game.font.draw(game.batch,
@@ -213,7 +222,7 @@ public class GameScreen implements Screen {
         System.out.println("game hide");
         stage.dispose();
         skin.dispose();
-        mapController.dispose();
+        controller.dispose();
     }
 
     /**

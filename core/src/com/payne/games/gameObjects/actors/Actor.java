@@ -1,9 +1,10 @@
 package com.payne.games.gameObjects.actors;
 
 import com.badlogic.gdx.utils.Queue;
+import com.payne.games.actions.ActionController;
 import com.payne.games.gameObjects.GameObject;
 import com.payne.games.inventory.Inventory;
-import com.payne.games.turns.actions.Action;
+import com.payne.games.actions.Action;
 
 
 public abstract class Actor extends GameObject {
@@ -26,8 +27,8 @@ public abstract class Actor extends GameObject {
 
 
 
-    public Actor(int x, int y, int maxHp, int fatigueRegen, int range) {
-        super(x, y);
+    public Actor(ActionController actionController, int x, int y, int maxHp, int fatigueRegen, int range) {
+        super(actionController, x, y);
         this.maxHp = maxHp;
         this.currHp = maxHp;
         this.fatigueRegen = fatigueRegen;
@@ -39,15 +40,27 @@ public abstract class Actor extends GameObject {
     /**
      * Method used to deal damage to an Actor.
      *
-     * @param dmg the amount of damage dealt.
+     * @param attacker The Actor that is the source of the damage.
+     * @param dmg The amount of damage dealt.
      * @return 'true' if the damage has killed the Actor receiving the damage.
      */
-    public boolean takeHit(int dmg) {
+    public boolean takeHit(Actor attacker, int dmg) {
         if(!invincible)
             currHp -= dmg;
+        if(isDead())
+            die(attacker);
         return isDead();
     }
-    abstract public void die(Actor killer);
+
+    /**
+     * Should be called whenever an Actor dies.
+     *
+     * @param killer The Actor that was the source of the death.
+     */
+    public void die(Actor killer) {
+        clearActionsQueue();
+        // todo: clear all actions (of other Actors) that related to this now-dead Actor
+    }
 
     public boolean isDead() {
         return currHp <= 0;

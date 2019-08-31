@@ -1,11 +1,9 @@
 package com.payne.games.map.generators;
 
 import com.badlogic.gdx.math.RandomXS128;
-import com.badlogic.gdx.utils.Array;
 import com.payne.games.logic.GameLogic;
 import com.payne.games.map.BaseMapLayer;
 import com.payne.games.map.generators.algos.drunkard.MapCarver;
-import com.payne.games.map.tiles.Door;
 import com.payne.games.map.tiles.Floor;
 import com.payne.games.map.tiles.Wall;
 
@@ -50,6 +48,9 @@ public class MapGenerator {
     }
 
 
+    /**
+     * todo: supposed to select a few random Floor spot and run a BFS algo to set their "Water" flag.
+     */
     private void floodFill() {
         // todo
     }
@@ -78,11 +79,7 @@ public class MapGenerator {
             for (int j = 0; j < mapWidth; j++) {
 
                 if(j == 0 || j == mapWidth-1 || i == 0 || i == mapHeight-1) { // if EDGE
-                    if(rand.nextDouble() < 0.15) { // slight chance of having a door
-                        level.setTile(j, i, new Door(j, i));
-                    } else {
-                        level.setTile(j, i, new Wall(j, i));
-                    }
+                    level.setTile(j, i, new Wall(j, i));
 
                 } else {
                     level.setTile(j, i, new Floor(j, i));

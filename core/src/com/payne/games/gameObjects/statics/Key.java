@@ -1,16 +1,16 @@
 package com.payne.games.gameObjects.statics;
 
+import com.payne.games.actions.ActionController;
 import com.payne.games.inventory.IStackable;
 import com.payne.games.gameObjects.actors.Actor;
 import com.payne.games.logic.Utils;
-import com.payne.games.turns.actions.PickUpAction;
 
 
 public class Key extends Static implements IStackable {
 
 
-    public Key(int x, int y) {
-        super(x, y);
+    public Key(ActionController actionController, int x, int y) {
+        super(actionController, x, y);
     }
 
 
@@ -18,7 +18,7 @@ public class Key extends Static implements IStackable {
     public boolean tryInteractionFrom(Actor source) {
         boolean onSameTile = Utils.occupySameTile(source, this);
         if (onSameTile) // Actor is in range: pick up
-            source.addAction(new PickUpAction(source, this));
+            controller.actionIssuer.pickUp(source, this);
         return onSameTile;
     }
 

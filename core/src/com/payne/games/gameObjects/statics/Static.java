@@ -1,5 +1,6 @@
 package com.payne.games.gameObjects.statics;
 
+import com.payne.games.actions.ActionController;
 import com.payne.games.gameObjects.GameObject;
 
 
@@ -9,8 +10,8 @@ import com.payne.games.gameObjects.GameObject;
 public abstract class Static extends GameObject {
 
 
-    public Static(int x, int y) {
-        super(x, y);
+    public Static(ActionController actionController, int x, int y) {
+        super(actionController, x, y);
     }
 
 

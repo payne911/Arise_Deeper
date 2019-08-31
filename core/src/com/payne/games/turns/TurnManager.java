@@ -6,11 +6,16 @@ import com.payne.games.gameObjects.actors.Hero;
 import com.payne.games.logic.GameLogic;
 import com.payne.games.logic.systems.SightSystem;
 import com.payne.games.map.SecondaryMapLayer;
-import com.payne.games.turns.actions.Action;
-import com.payne.games.turns.actions.AttackAction;
-import com.payne.games.turns.actions.MoveAction;
+import com.payne.games.actions.Action;
+import com.payne.games.actions.commands.AttackAction;
+import com.payne.games.actions.commands.MoveAction;
 
 
+/**
+ * Takes care of finding who is the next Actor to play and executing their Action.
+ * "Blocks" when waiting on the player's input.
+ * When no Actor is ready to act, all Actors see their Fatigue regenerated.
+ */
 public class TurnManager {
     private BinaryHeap<ActorNode> actorsHeap = new BinaryHeap<>(); // minHeap
     private Action actionToExecute;
@@ -75,9 +80,14 @@ public class TurnManager {
     private void collectNextAction() {
         boolean foundNextActor = false;
         while(!foundNextActor) {
-            recollectActors(); // keep going until an Actor is ready to take a turn
+            recollectActors(); // keep going until an Actor is ready to take a turn (if no one is ready, they regen fatigue)
 
             Actor currentActor = actorsHeap.peek().actor;
+            if(currentActor.isDead()) {
+                actorsHeap.pop();
+                continue;
+            }
+
             if(currentActor.notFatigued()) { // found an Actor that is ready to act
                 foundNextActor = true;
                 actionToExecute = currentActor.getNextAction(); // 'null' if waiting on player input
@@ -93,11 +103,13 @@ public class TurnManager {
     /**
      * Ensures the BinaryHeap is not empty.
      * (It becomes empty once every single Actor has taken a turn.)
+     * Dead actors are not added.
      */
     private void recollectActors() {
         if(actorsHeap.isEmpty()) {
             for(Actor actor : secondaryMapLayer.getActorLayer()) {
-                actorsHeap.add(new ActorNode(actor.getPriority(), actor));
+                if(!actor.isDead())
+                    actorsHeap.add(new ActorNode(actor.getPriority(), actor));
             }
         }
     }

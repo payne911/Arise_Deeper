@@ -20,20 +20,13 @@ public class SecondaryMapLayer {
 
 
     /**
-     * Removes all the dead Actors from the SecondaryLayer.
+     * Spawns a random item at the designated area.
      *
-     * @return the Collection of all the dead actors that were removed.
+     * @param x x-coordinate, in Tile units.
+     * @param y y-coordinate, in Tile units.
      */
-    public Array<Actor> removeDeadActors() {
-        Array<Actor> deadActors = new Array<>();
-        for(Actor actor : actorLayer) {
-            if(actor.isDead()) {
-                removeFromActorLayer(actor);
-                deadActors.add(actor);
-                currentLevel.getTile(actor.getX(), actor.getY()).setAllowingMove(true); // todo: unless the Actor is flying?
-            }
-        }
-        return deadActors;
+    public void spawnRandomItem(int x, int y) {
+        objectFactory.createRandomItem(x, y);
     }
 
 
@@ -88,6 +81,7 @@ public class SecondaryMapLayer {
         actorLayer.removeValue(actor, true);
     }
 
+
     public void setUpSecondaryLayer(Hero player, BaseMapLayer currentLevel) {
         this.currentLevel = currentLevel;
         staticLayer = new Array<>();
@@ -95,24 +89,32 @@ public class SecondaryMapLayer {
 
         placeHero(player, 25,16);
 
+
         // todo: populate level with other Secondary objects
-        createChest(31, 13);
-        createChest(18, 2);
-        createKey(14, 10);
-        createKey(27, 16);
-        createKey(20, 14);
-        createKey(18, 18);
+        objectFactory.createChest(31, 13);
+        objectFactory.createChest(18, 2);
+
+        objectFactory.createKey(14, 10);
+        objectFactory.createKey(27, 16);
+        objectFactory.createKey(20, 14);
+        objectFactory.createKey(18, 18);
+
+        objectFactory.createDoor(25, 18, true);
+        objectFactory.createDoor(28, 21, false);
+
+        objectFactory.createFlame(30, 20);
+
+        objectFactory.createHealthPotion(21, 15);
 
         DEBUG_spawn_enemies();
-
     }
 
 
     public void DEBUG_spawn_enemies() {
-        createEnemy(14, 11);
-        createEnemy(29, 14);
-        createEnemy(25, 13);
-        createEnemy(56, 25);
+        objectFactory.createEnemy(14, 11);
+        objectFactory.createEnemy(29, 14);
+        objectFactory.createEnemy(25, 13);
+        objectFactory.createEnemy(56, 25);
     }
 
     private void placeHero(Hero player, int x, int y) {
@@ -120,19 +122,5 @@ public class SecondaryMapLayer {
         player.setY(y);
         actorLayer.add(player);
         currentLevel.getTile(x,y).setAllowingMove(false);
-    }
-    private void createEnemy(int x, int y) {
-        actorLayer.add(objectFactory.createEnemy(x, y));
-        currentLevel.getTile(x,y).setAllowingMove(false);
-    }
-
-
-    // todo: add into Floor's list of objects?
-    private void createChest(int x, int y) {
-        staticLayer.add(objectFactory.createChest(x, y));
-        currentLevel.getTile(x,y).setAllowingMove(false); // todo: uncertain...
-    }
-    private void createKey(int x, int y) {
-        staticLayer.add(objectFactory.createKey(x, y));
     }
 }

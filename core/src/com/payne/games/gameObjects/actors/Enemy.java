@@ -1,9 +1,9 @@
 package com.payne.games.gameObjects.actors;
 
+import com.payne.games.actions.ActionController;
 import com.payne.games.logic.DecisionMaking;
 import com.payne.games.logic.Utils;
-import com.payne.games.turns.actions.Action;
-import com.payne.games.turns.actions.AttackAction;
+import com.payne.games.actions.Action;
 
 
 public class Enemy extends Actor {
@@ -11,8 +11,8 @@ public class Enemy extends Actor {
     private DecisionMaking ai;
 
 
-    public Enemy(int x, int y, int maxHp, int staminaRegen, int range, int xpWorth, boolean sleeping, DecisionMaking ai) {
-        super(x, y, maxHp, staminaRegen, range);
+    public Enemy(ActionController actionController, int x, int y, int maxHp, int staminaRegen, int range, int xpWorth, boolean sleeping, DecisionMaking ai) {
+        super(actionController, x, y, maxHp, staminaRegen, range);
         setPriority(2);
         setSleeping(sleeping);
         this.xpWorth = xpWorth;
@@ -22,9 +22,13 @@ public class Enemy extends Actor {
 
     @Override
     public void die(Actor killer) {
+        super.die(killer);
+
         if(killer instanceof Hero) {
             ((Hero) killer).setXp(((Hero) killer).getXp() + xpWorth);
         }
+
+        controller.removeActor(this);
 
         System.out.println("An enemy has died.");
     }
@@ -43,10 +47,9 @@ public class Enemy extends Actor {
 
     @Override
     public boolean tryInteractionFrom(Actor source) {
-        boolean withinRange = Utils.straightDistanceBetweenObjects(source, this) < source.getRange();
-        if (withinRange) { // Actor is in range: attack!
-            source.addAction(new AttackAction(source, this, source.getDmg()));
-        }
+        boolean withinRange = Utils.straightDistanceBetweenObjects(source, this) <= source.getRange();
+        if (withinRange) // Actor is in range: attack!
+            controller.actionIssuer.attack(source, this);
         return withinRange;
     }
 }

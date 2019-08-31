@@ -1,0 +1,30 @@
+INCREMENTS:
+    - FloodFiller inside the MapGenerator (spills Water on Floor Tiles randomly)
+    - RayCasting algo inside the SightSystem
+    - Interrupt MoveActions when a new Actor appears in sight
+
+
+ADDITIONS:
+    - Integrate Animations
+
+
+REFACTORS:
+    - Integrate AssetManager
+    - Set up the TextureAtlas
+
+
+UNCERTAINTIES:
+    - Use a Pool for Actions (in TurnManager or ActionIssuer?)      to prevent using `new` all the time ???
+    - "notify()" on GameObjects so that Actions can know if they should interrupt themselves (a state has changed)
+
+
+
+
+
+
+
+==============IDEAS==============
+CLASSES:
+    - Necro (restores health from consuming corpses, can create weak skeletons from corpses)
+    - Fire elemental (can use Flame to restore energy)
+    - Water elemental (can use Water Tiles to restore energy)

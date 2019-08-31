@@ -26,7 +26,7 @@ task debug(dependsOn: classes, type: JavaExec) {
 
 task dist(type: Jar) {
     manifest {
-        attributes 'Main-Class': project.mainClassName
+        attributes ('Main-Class': project.mainClassName, 'SplashScreen-Image' : 'splash_screen.png')
     }
     from {
         configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) }

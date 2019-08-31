@@ -2,20 +2,20 @@ package com.payne.games.logic;
 
 import com.badlogic.gdx.math.RandomXS128;
 import com.payne.games.gameObjects.actors.Actor;
-import com.payne.games.logic.systems.ActionSystem;
-import com.payne.games.turns.actions.Action;
-import com.payne.games.turns.actions.NoopAction;
-import com.payne.games.turns.actions.WakeUpAction;
+import com.payne.games.actions.ActionController;
+import com.payne.games.actions.Action;
+import com.payne.games.actions.commands.NoopAction;
+import com.payne.games.actions.commands.WakeUpAction;
 
 
 public class DecisionMaking {
     // todo: add personality traits for more random behaviors across same Enemy-type?
-    private ActionSystem actionSystem;
+    private ActionController actionController;
     private RandomXS128 rand;
 
 
-    public DecisionMaking(ActionSystem actionSystem) {
-        this.actionSystem = actionSystem;
+    public DecisionMaking(ActionController actionController) {
+        this.actionController = actionController;
         this.rand = new RandomXS128(GameLogic.RANDOM_DECISIONS ? (int)(Math.random()*1000) : GameLogic.RANDOM_SEED);
     }
 
@@ -38,7 +38,7 @@ public class DecisionMaking {
             else
                 return new NoopAction(src);
         } else {
-            actionSystem.moveToRandomPoint(src);
+            actionController.moveToRandomPoint(src);
             return src.getNextAction();
         }
     }

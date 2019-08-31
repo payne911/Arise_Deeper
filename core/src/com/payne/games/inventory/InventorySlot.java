@@ -44,6 +44,16 @@ public class InventorySlot {
     }
 
     /**
+     * To check whether or not this InventorySlot contains a certain Type of item.
+     *
+     * @param checked The class of the item type to be verified against.
+     * @return 'true' only if the Inventory already contains at least one item of the same type as the input.
+     */
+    boolean contains(Class<? extends IPickable> checked) {
+        return notEmpty() && (peek().getClass() == checked);
+    }
+
+    /**
      * Clears the list of Items contained in this Slot.
      */
     public void reset() {

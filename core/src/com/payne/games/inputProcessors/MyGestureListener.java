@@ -5,7 +5,7 @@ import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.payne.games.logic.GameLogic;
-import com.payne.games.logic.MapController;
+import com.payne.games.logic.Controller;
 
 
 /**
@@ -17,12 +17,12 @@ import com.payne.games.logic.MapController;
  */
 public class MyGestureListener implements GestureDetector.GestureListener {
     private OrthographicCamera camera;
-    private MapController mapController;
+    private Controller controller;
 
 
-    public MyGestureListener(OrthographicCamera camera, MapController mapController) {
+    public MyGestureListener(OrthographicCamera camera, Controller controller) {
         this.camera = camera;
-        this.mapController = mapController;
+        this.controller = controller;
     }
 
 
@@ -33,7 +33,8 @@ public class MyGestureListener implements GestureDetector.GestureListener {
     }
 
     /**
-     * Converts a click's position into a Tile coordinate.
+     * Converts a click's position into a Tile coordinate, and then assigns
+     * the appropriate action according to what is on the Tile that was clicked.
      *
      * @param x screen x-coordinate
      * @param y screen y-coordinate
@@ -58,8 +59,7 @@ public class MyGestureListener implements GestureDetector.GestureListener {
 
         System.out.println("\nTile coordinate: ( x= " + (int)coordX + ", y= " + (int)coordY + " )");
 
-        // todo: be wiser! tap.location: if monster -> AttackAction, if Door -> DoorAction, if Item -> PickUpAction
-        mapController.playerTapped((int)coordX, (int)coordY);
+        controller.playerTapped((int)coordX, (int)coordY);
 
         return true;
     }
@@ -77,7 +77,7 @@ public class MyGestureListener implements GestureDetector.GestureListener {
     }
 
 
-    // todo: spread through "touchDown" and "touchUp" so that clicks don't get registrered in between padding of UI.
+    // todo: spread through "touchDown" and "touchUp" so that clicks don't get registered in between padding of UI.
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
         if(GameLogic.DEBUG_GESTURE_PRINT) System.out.println("pan: " + x + "," + y + " | deltaX: " + deltaX + " | deltaY: " + deltaY);

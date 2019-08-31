@@ -40,7 +40,7 @@ public abstract class Tileset {
     protected GridPoint2[] walls_SW;
     protected GridPoint2[] walls_horiz; // EW
     protected GridPoint2[] walls_vert;  // NS
-    protected GridPoint2[] doors;
+    protected GridPoint2[] doors; // todo: shouldn't be there anymore ?
     protected GridPoint2[] water;
     protected GridPoint2[] empty;
 
@@ -151,9 +151,6 @@ public abstract class Tileset {
 
     public TextureRegion getWaterRandomTexture(int bitmask) {
         return getTextureFromPoint(getRandom(water));
-    }
-    public TextureRegion getDoorRandomTexture(int bitmask) {
-        return getTextureFromPoint(getRandom(doors));
     }
     public TextureRegion getEmptyRandomTexture(int bitmask) {
         return getTextureFromPoint(getRandom(empty));

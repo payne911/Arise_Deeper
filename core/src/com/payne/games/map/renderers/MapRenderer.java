@@ -14,7 +14,7 @@ import com.payne.games.map.tilesets.Tileset;
 
 
 public class MapRenderer {
-    // Temporary HP bars    todo: remove this and implement with SpriteSheet
+    // Temporary HP bars    todo: remove this and implement with SpriteSheet ?
     private final int HP_WIDTH  = (int)(GameLogic.TILE_WIDTH*.75);
     private final int HP_HEIGHT = GameLogic.TILE_HEIGHT/6;
     private final Texture HP_BACKGROUND = createProceduralTexture(1, 0, 0, .7f);

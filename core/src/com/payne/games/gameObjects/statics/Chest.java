@@ -1,19 +1,29 @@
 package com.payne.games.gameObjects.statics;
 
-
+import com.payne.games.actions.ActionController;
 import com.payne.games.gameObjects.actors.Actor;
+import com.payne.games.logic.Utils;
 
+
+/**
+ * Chests contain a random Item, to be spawned when they are opened.
+ */
 public class Chest extends Static {
+    boolean isLocked = false;
 
 
-    public Chest(int x, int y) {
-        super(x, y);
+    public Chest(ActionController actionController, int x, int y) {
+        super(actionController, x, y);
     }
 
 
     @Override
     public boolean tryInteractionFrom(Actor source) {
-        // todo: open me
-        return false;
+        boolean inRange = Utils.straightDistanceBetweenObjects(source, this) == 1;
+        if(!inRange)
+            return false;
+
+        controller.actionIssuer.openChest(source, this);
+        return true;
     }
 }

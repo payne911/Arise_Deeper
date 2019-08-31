@@ -1,16 +1,16 @@
 package com.payne.games.gameObjects.actors;
 
+import com.payne.games.actions.ActionController;
 import com.payne.games.logic.Utils;
-import com.payne.games.turns.actions.Action;
-import com.payne.games.turns.actions.AttackAction;
+import com.payne.games.actions.Action;
 
 
 public class Hero extends Actor {
     private int xp = 0;
 
 
-    public Hero(int x, int y, int maxHp, int staminaRegen, int range) {
-        super(x, y, maxHp, staminaRegen, range);
+    public Hero(ActionController actionController, int x, int y, int maxHp, int staminaRegen, int range) {
+        super(actionController, x, y, maxHp, staminaRegen, range);
         setPriority(1);
     }
 
@@ -27,6 +27,8 @@ public class Hero extends Actor {
 
     @Override
     public void die(Actor killer) {
+        super.die(killer);
+
         System.out.println("You have died.");
     }
 
@@ -46,9 +48,9 @@ public class Hero extends Actor {
 
     @Override
     public boolean tryInteractionFrom(Actor source) {
-        boolean withinRange = Utils.straightDistanceBetweenObjects(source, this) < source.getRange();
+        boolean withinRange = Utils.straightDistanceBetweenObjects(source, this) <= source.getRange();
         if (withinRange) // Actor is in range: attack!
-            source.addAction(new AttackAction(source, this, source.getDmg()));
+            controller.actionIssuer.attack(source, this);
         return withinRange;
     }
 }

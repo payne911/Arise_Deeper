@@ -12,6 +12,9 @@ public class DesktopLauncher {
 		config.title  = GameLogic.GAME_NAME;
 		config.width  = GameLogic.GAME_WIDTH;
 		config.height = GameLogic.GAME_HEIGHT;
-		new LwjglApplication(new AriseDeeper(), config);
+
+		AriseDeeper core = new AriseDeeper();
+		core.setSplashWorker(new DesktopSplashWorker());
+		new LwjglApplication(core, config);
 	}
 }
