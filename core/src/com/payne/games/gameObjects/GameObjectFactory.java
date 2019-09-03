@@ -4,8 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.RandomXS128;
-import com.badlogic.gdx.utils.Array;
-import com.payne.games.gameObjects.actors.Actor;
 import com.payne.games.gameObjects.actors.Enemy;
 import com.payne.games.gameObjects.actors.Hero;
 import com.payne.games.gameObjects.statics.*;
@@ -33,10 +31,10 @@ public class GameObjectFactory {
         this.rand = new RandomXS128(GameLogic.RANDOM_ENEMIES ? (int)(Math.random()*1000) : GameLogic.RANDOM_SEED);
 
         objects_20p = new Texture(Gdx.files.internal("spriteSheets/game_objects_20p.png"));
-        split_20p = TextureRegion.split(objects_20p, GameLogic.TILE_BIG_WIDTH, GameLogic.TILE_BIG_HEIGHT);
+        split_20p = TextureRegion.split(objects_20p, GameLogic.TILE_BIG_SIZE, GameLogic.TILE_BIG_SIZE);
 
         objects_16p = new Texture(Gdx.files.internal("spriteSheets/game_objects_16p.png"));
-        split_16p = TextureRegion.split(objects_16p, GameLogic.TILE_WIDTH, GameLogic.TILE_HEIGHT);
+        split_16p = TextureRegion.split(objects_16p, GameLogic.TILE_SIZE, GameLogic.TILE_SIZE);
     }
 
 

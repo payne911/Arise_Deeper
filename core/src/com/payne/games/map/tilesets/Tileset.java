@@ -57,7 +57,7 @@ public abstract class Tileset {
     protected void setRenderingTileset(String tileset) {
         dispose();
         tiles = new Texture(Gdx.files.internal(tileset));
-        splitTiles = TextureRegion.split(tiles, GameLogic.TILE_WIDTH, GameLogic.TILE_HEIGHT);
+        splitTiles = TextureRegion.split(tiles, GameLogic.TILE_SIZE, GameLogic.TILE_SIZE);
     }
 
     /**

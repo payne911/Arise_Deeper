@@ -25,9 +25,9 @@ public class GameScreen implements Screen {
     private OrthographicCamera camera;
 
     // ui
-    private Stage stage;
-    private Skin skin;
-    private Table ui;
+    private Stage uiStage = new Stage(); // todo: add `new ScreenViewport()` parameter?
+    private Table ui      = new Table();
+    private Skin skin     = new Skin(Gdx.files.internal(GameLogic.SKIN_FILE));
     private Array<ImageTextButton> inventorySlots = new Array<>();
 
     // controllers
@@ -51,29 +51,25 @@ public class GameScreen implements Screen {
     private void setUpGameScreen() {
         setUpUi(); // ui
         setUpCamera(); // create the camera and the SpriteBatch
-        this.controller = new Controller(game, assets, camera, inventorySlots); // controller
+        controller = new Controller(game, assets, camera, inventorySlots); // controller
         setUpMap(); // generate the initial level and place the GameObjects (hero, etc.)
         setUpInputProcessors(); // input processors
     }
 
     private void setUpUi() {
-        this.stage = new Stage(); // todo: add `new ScreenViewport()` parameter?
-        this.skin = new Skin(Gdx.files.internal(GameLogic.SKIN_FILE));
-
-        this.ui = new Table();
 //        ui.debugTable();
         ui.setFillParent(true);
 
         setUpInventoryUi();
 
-        stage.addActor(ui);
+        uiStage.addActor(ui);
     }
 
     private void setUpInventoryUi() {
         ui.bottom();
         ui.setTouchable(Touchable.childrenOnly);
 
-        final int SIZE = 3 * GameLogic.TILE_HEIGHT;
+        final int SIZE = 3 * GameLogic.TILE_SIZE;
         Table container = new Table();
         container.setTouchable(Touchable.enabled);
         container.defaults().prefSize(SIZE).minSize(SIZE);
@@ -106,7 +102,7 @@ public class GameScreen implements Screen {
         MyInputProcessor inputProcessor1  = new MyInputProcessor(camera, controller);
         MyGestureListener inputProcessor2 = new MyGestureListener(camera, controller);
         Gdx.input.setInputProcessor(new MyInputMultiplexer(
-                stage,
+                uiStage,
                 inputProcessor1,
                 new GestureDetector(inputProcessor2)));
     }
@@ -176,8 +172,8 @@ public class GameScreen implements Screen {
 
 
         /* Drawing the UI over the map. */
-        stage.act(delta);
-        stage.draw();
+        uiStage.act(delta);
+        uiStage.draw();
     }
 
     @Override
@@ -196,7 +192,7 @@ public class GameScreen implements Screen {
 //        camera.viewportHeight = camera.viewportWidth * height/width;
 //        camera.update();
 
-        stage.getViewport().update(width, height, true); // todo: no idea if necessary
+        uiStage.getViewport().update(width, height, true); // todo: no idea if necessary
     }
 
     /**
@@ -220,7 +216,7 @@ public class GameScreen implements Screen {
     @Override
     public void hide() {
         System.out.println("game hide");
-        stage.dispose();
+        uiStage.dispose();
         skin.dispose();
         controller.dispose();
     }

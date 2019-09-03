@@ -30,12 +30,10 @@ public final class GameLogic { /* Can't be inherited. */
     public static final int GAME_HEIGHT = 480;
 
     // tiles
-    public static final int TILE_WIDTH  = 16;
-    public static final int TILE_HEIGHT = 16;
-    public static final int TILE_BIG_WIDTH  = 20;
-    public static final int TILE_BIG_HEIGHT = 20;
+    public static final int TILE_SIZE = 16;
+    public static final int TILE_BIG_SIZE = 20;
 
-    // tile bitmasks
+    // tile wall-connection bitmasks
     public static final int NORTH = 1;  // 0001
     public static final int EAST  = 2;  // 0010
     public static final int WEST  = 4;  // 0100

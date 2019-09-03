@@ -2,15 +2,26 @@ package com.payne.games.logic;
 
 import com.badlogic.gdx.math.GridPoint2;
 import com.payne.games.gameObjects.GameObject;
-import com.payne.games.gameObjects.actors.Actor;
 import com.payne.games.map.tiles.Tile;
 
 
 /**
- * Purely static class.
+ * Purely static class of Utilities.
  */
-public class Utils {
+public final class Utils { /* Can't be inherited. */
 
+    private Utils() { } /* Can't be instantiated. (Can't touch this!) */
+
+
+    /**
+     * To obtain the Pixel coordinate equivalent of a Tile coordinate.
+     *
+     * @param inputCoord A Tile coordinate.
+     * @return Its corresponding World-Pixel coordinate.
+     */
+    public static int tileToPixels(int inputCoord) {
+        return GameLogic.AESTHETIC_OFFSET + inputCoord*GameLogic.TILE_SIZE;
+    }
 
     /**
      * To obtain the difference between two tiles, when moving from the first to the second Tile.

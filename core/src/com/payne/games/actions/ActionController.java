@@ -11,7 +11,7 @@ import com.payne.games.pathfinding.MyIndexedGraph;
 
 
 /**
- * Acts as a general controller for the Actions and GameObjects.
+ * Acts as a general controller for the Actions and GameObjects (this class is accessible in both of those).
  */
 public class ActionController {
     public ActionIssuer actionIssuer = new ActionIssuer();

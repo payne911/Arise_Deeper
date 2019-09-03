@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.payne.games.gameObjects.actors.Actor;
 import com.payne.games.gameObjects.statics.Static;
 import com.payne.games.logic.GameLogic;
+import com.payne.games.logic.Utils;
 import com.payne.games.logic.systems.SightSystem;
 import com.payne.games.map.BaseMapLayer;
 import com.payne.games.map.SecondaryMapLayer;
@@ -15,8 +16,8 @@ import com.payne.games.map.tilesets.Tileset;
 
 public class MapRenderer {
     // Temporary HP bars    todo: remove this and implement with SpriteSheet ?
-    private final int HP_WIDTH  = (int)(GameLogic.TILE_WIDTH*.75);
-    private final int HP_HEIGHT = GameLogic.TILE_HEIGHT/6;
+    private final int HP_WIDTH  = (int)(GameLogic.TILE_SIZE *.75);
+    private final int HP_HEIGHT = GameLogic.TILE_SIZE/6;
     private final Texture HP_BACKGROUND = createProceduralTexture(1, 0, 0, .7f);
     private final Texture HP_PROGRESS   = createProceduralTexture(0, 1, 0, .7f);
 
@@ -108,7 +109,7 @@ public class MapRenderer {
 
             /* HP Bars. */
             drawAtOffsetCoordinate(batch, gameObject, HP_BACKGROUND, HP_WIDTH);
-            drawAtOffsetCoordinate(batch, gameObject, HP_PROGRESS, (float)gameObject.getCurrHp()/gameObject.getMaxHp()* HP_WIDTH);
+            drawAtOffsetCoordinate(batch, gameObject, HP_PROGRESS, (float)gameObject.getCurrHp()/gameObject.getMaxHp()*HP_WIDTH);
         }
 
 
@@ -127,8 +128,8 @@ public class MapRenderer {
 
         if(shouldDraw)
             batch.draw(toRender.getTexture(),
-                    GameLogic.AESTHETIC_OFFSET + toRender.getX()*GameLogic.TILE_WIDTH,
-                    GameLogic.AESTHETIC_OFFSET + toRender.getY()*GameLogic.TILE_HEIGHT);
+                    Utils.tileToPixels(toRender.getX()),
+                    Utils.tileToPixels(toRender.getY()));
     }
 
     /**
@@ -162,8 +163,8 @@ public class MapRenderer {
 
         if(shouldDraw)
             batch.draw(toRender,
-                    GameLogic.AESTHETIC_OFFSET + (int)(GameLogic.TILE_WIDTH*.125) + owner.getX()*GameLogic.TILE_WIDTH,
-                    GameLogic.AESTHETIC_OFFSET - (int)(GameLogic.TILE_HEIGHT*.1) + owner.getY()*GameLogic.TILE_HEIGHT,
+                    GameLogic.AESTHETIC_OFFSET + (int)(GameLogic.TILE_SIZE*.125) + owner.getX()*GameLogic.TILE_SIZE,
+                    GameLogic.AESTHETIC_OFFSET - (int)(GameLogic.TILE_SIZE*.1)   + owner.getY()*GameLogic.TILE_SIZE,
                     x_stretch,
                     HP_HEIGHT);
     }

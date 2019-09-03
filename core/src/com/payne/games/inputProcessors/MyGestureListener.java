@@ -52,10 +52,10 @@ public class MyGestureListener implements GestureDetector.GestureListener {
 //        double coordX = (camera.position.x + x*ZOOM - OFFSET - ((double)camera.viewportWidth/2)*ZOOM)  / GameLogic.TILE_WIDTH;
 //        double coordY = (camera.position.y - y*ZOOM - OFFSET + ((double)camera.viewportHeight/2)*ZOOM) / GameLogic.TILE_HEIGHT;
 
-        final double OFFSET = GameLogic.AESTHETIC_OFFSET / GameLogic.TILE_WIDTH;
+        final double OFFSET = GameLogic.AESTHETIC_OFFSET / GameLogic.TILE_SIZE;
         Vector3 vec = camera.unproject(new Vector3(x, y, 1));
-        double coordX = ((double)vec.x / GameLogic.TILE_WIDTH) - OFFSET;
-        double coordY = ((double)vec.y / GameLogic.TILE_HEIGHT) - OFFSET;
+        double coordX = ((double)vec.x / GameLogic.TILE_SIZE) - OFFSET;
+        double coordY = ((double)vec.y / GameLogic.TILE_SIZE) - OFFSET;
 
         System.out.println("\nTile coordinate: ( x= " + (int)coordX + ", y= " + (int)coordY + " )");
 

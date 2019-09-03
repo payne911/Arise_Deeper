@@ -4,7 +4,6 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Array;
 import com.payne.games.AriseDeeper;
 import com.payne.games.gameObjects.GameObjectFactory;
@@ -58,15 +57,15 @@ public class Controller {
         this.camera = camera;
         this.inventorySlots = inventorySlots;
 
-        this.mapGenerator = new MapGenerator();
-        this.actionController = new ActionController();
-        this.gameObjectFactory = new GameObjectFactory(actionController);
+        mapGenerator      = new MapGenerator();
+        actionController  = new ActionController();
+        gameObjectFactory = new GameObjectFactory(actionController);
         createHero(); // todo: this will change at some point!
-        this.secondaryMapLayer = new SecondaryMapLayer(gameObjectFactory);
+        secondaryMapLayer = new SecondaryMapLayer(gameObjectFactory);
         actionController.setSecondaryMapLayer(secondaryMapLayer);
-        this.sightSystem = new SightSystem(player);
-        this.mapRenderer = new MapRenderer(secondaryMapLayer, sightSystem);
-        this.turnManager = new TurnManager(secondaryMapLayer, sightSystem);
+        sightSystem       = new SightSystem(player);
+        mapRenderer       = new MapRenderer(secondaryMapLayer, sightSystem);
+        turnManager       = new TurnManager(secondaryMapLayer, sightSystem);
     }
 
 
@@ -110,8 +109,8 @@ public class Controller {
      */
     public void centerOnHero() {
         if(player != null) {
-            camera.position.set(GameLogic.AESTHETIC_OFFSET + player.getX()*GameLogic.TILE_WIDTH,
-                    GameLogic.AESTHETIC_OFFSET + player.getY()*GameLogic.TILE_HEIGHT,
+            camera.position.set(Utils.tileToPixels(player.getX()),
+                    Utils.tileToPixels(player.getY()),
                     0f);
         }
     }
