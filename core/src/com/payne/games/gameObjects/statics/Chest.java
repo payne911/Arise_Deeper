@@ -9,7 +9,6 @@ import com.payne.games.logic.Utils;
  * Chests contain a random Item, to be spawned when they are opened.
  */
 public class Chest extends Static {
-    boolean isLocked = false;
 
 
     public Chest(ActionController actionController, int x, int y) {

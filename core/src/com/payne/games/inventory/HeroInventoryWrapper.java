@@ -6,7 +6,7 @@ import com.payne.games.gameObjects.GameObject;
 
 
 /**
- * Links the general Inventory model with its UI representation. Acts as a Controller.
+ * Links the general Inventory model with its UI representation.
  */
 public class HeroInventoryWrapper {
     private Array<ImageTextButton> inventorySlots;
@@ -20,24 +20,27 @@ public class HeroInventoryWrapper {
 
 
     /**
-     * Used to update the way the Inventory UI is displayed.
+     * Updates the way the Inventory UI is displayed.
      */
     public void render() {
         String amount;
         IPickable item;
         int stackAmount;
-        for(int i=0; i<inventorySlots.size; i++) {
+        ImageTextButton slot;
 
+        for(int i=0; i<inventorySlots.size; i++) {
             item = inventory.getItem(i);
+            slot = inventorySlots.get(i);
+
             if(item == null) {
                 amount = "";
-                inventorySlots.get(i).getStyle().imageUp = null; // draw nothing
+                slot.getStyle().imageUp = null; // draw nothing
             } else {
                 stackAmount = inventory.getSlot(i).getAmount();
                 amount = stackAmount > 1  ? stackAmount+"" : ""; // only show a stack amount if more than 1 item
-                inventorySlots.get(i).getStyle().imageUp = ((GameObject)item).getDrawable();
+                slot.getStyle().imageUp = ((GameObject)item).getDrawable();
             }
-            inventorySlots.get(i).getLabel().setText(amount);
+            slot.getLabel().setText(amount);
         }
     }
 }

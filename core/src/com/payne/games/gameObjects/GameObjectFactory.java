@@ -64,12 +64,11 @@ public class GameObjectFactory {
     public Door createDoor(int x, int y, boolean isLocked) {
         Door door = new Door(actionController, x, y, isLocked);
 
-        if(isLocked) // todo: adjust (proper image, but also locked vs unlocked, closed vs open)
-            door.setTexture(split_16p[0][6]);
-        else
-            door.setTexture(split_16p[0][4]);
+        /* Assigns the Assets to be able to swap between them according to the Door's state. */
+        door.getStates().addAll(split_16p[0][5], split_16p[0][4], split_16p[0][6]);
+        door.getStates().shrink();
 
-        actionController.baseMapLayer.getTile(x,y).setAllowingMove(false);
+        actionController.baseMapLayer.getTile(x,y).setAllowingMove(false); // all Doors are created as Closed
         actionController.secondaryMapLayer.getStaticLayer().add(door);
         return door;
     }

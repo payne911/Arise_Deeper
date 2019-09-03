@@ -1,13 +1,16 @@
 package com.payne.games.gameObjects.statics;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Array;
 import com.payne.games.actions.ActionController;
 import com.payne.games.gameObjects.actors.Actor;
 import com.payne.games.logic.Utils;
 
 
 public class Door extends Static {
-    boolean isClosed = true;
-    boolean isLocked;
+    private Array<TextureRegion> states = new Array<>();
+    private boolean isClosed = true;
+    private boolean isLocked;
 
 
     public Door(ActionController actionController, int x, int y, boolean isLocked) {
@@ -55,6 +58,29 @@ public class Door extends Static {
     public void setLocked(boolean locked) {
         isLocked = locked;
     }
+
+    /**
+     * @return The list used to contain all the possible graphical representations of a Door.<br>
+     * index 0 = 'OPEN', 1 = 'CLOSED', 2 = 'LOCKED'.
+     */
+    public Array<TextureRegion> getStates() {
+        return states;
+    }
+
+
+    /**
+     * @return The appropriate Texture according to the state of the Door.
+     */
+    @Override
+    public TextureRegion getTexture() {
+        if(isLocked)
+            return states.get(2);
+        if(isClosed)
+            return states.get(1);
+        else
+            return states.get(0);
+    }
+
 
 
     @Override

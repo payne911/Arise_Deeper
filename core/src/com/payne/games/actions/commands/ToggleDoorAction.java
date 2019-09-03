@@ -5,6 +5,9 @@ import com.payne.games.gameObjects.actors.Actor;
 import com.payne.games.gameObjects.statics.Door;
 
 
+/**
+ * Opens or closes a Door.
+ */
 public class ToggleDoorAction extends Action {
     protected Door target;
 
@@ -22,12 +25,11 @@ public class ToggleDoorAction extends Action {
 
     @Override
     public boolean executeAction() {
-        boolean nowClosed = target.toggle(); // todo: should check if there is another Actor standing there when the Door is Open
-        if(nowClosed) {
-
-        } else {
-
-        }
+        boolean nowClosed = target.toggle();
+        if(nowClosed)
+            controller.baseMapLayer.getTile(target.getX(), target.getY()).setAllowingMove(false);
+        else
+            controller.baseMapLayer.getTile(target.getX(), target.getY()).setAllowingMove(true);
         return true;
     }
 

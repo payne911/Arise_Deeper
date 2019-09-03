@@ -6,6 +6,9 @@ import com.payne.games.gameObjects.statics.Key;
 import com.payne.games.inventory.IPickable;
 
 
+/**
+ * Unlocks a Door.
+ */
 public class UnlockDoorAction extends ToggleDoorAction {
 
 
@@ -26,7 +29,6 @@ public class UnlockDoorAction extends ToggleDoorAction {
             return false;
         } else {
             target.setLocked(false);
-            boolean nowClosed = target.toggle();
             return true;
         }
     }
