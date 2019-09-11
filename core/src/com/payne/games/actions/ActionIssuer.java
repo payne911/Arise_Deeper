@@ -6,9 +6,7 @@ import com.payne.games.gameObjects.actors.Actor;
 import com.payne.games.gameObjects.statics.Chest;
 import com.payne.games.gameObjects.statics.Door;
 import com.payne.games.inventory.IPickable;
-import com.payne.games.map.BaseMapLayer;
 import com.payne.games.map.tiles.Tile;
-import com.payne.games.pathfinding.MyIndexedGraph;
 
 
 /**
@@ -23,13 +21,12 @@ public class ActionIssuer {
 
 
 
-    public void interactiveMove(Actor source, GameObject recipient, BaseMapLayer baseMapLayer,
-                                MyIndexedGraph graph, Tile from, Tile next, Tile to) {
-        source.addAction(new InteractiveMoveAction(source, recipient, baseMapLayer, graph, from, next, to));
+    public void interactiveMove(Actor source, GameObject recipient, Tile from, Tile next, Tile to) {
+        source.addAction(new InteractiveMoveAction(source, recipient, from, next, to));
     }
 
-    public void move(Actor source, MyIndexedGraph graph, Tile from, Tile next, Tile to) {
-        source.addAction(new MoveAction(source, graph, from, next, to));
+    public void move(Actor source, Tile from, Tile next, Tile to) {
+        source.addAction(new MoveAction(source, from, next, to));
     }
 
     public void attack(Actor source, Actor target) {
