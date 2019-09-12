@@ -7,7 +7,8 @@ import java.util.HashSet;
 
 
 /**
- * The (mostly) immutable layer of the map.
+ * The (mostly) immutable layer of the map.<br>
+ * Corresponds to a 2D array of all the Tiles constituting a level.
  */
 public class BaseMapLayer {
 
@@ -164,12 +165,10 @@ public class BaseMapLayer {
         for(int i=0; i<getMapHeight(); i++) {
             for(int j=0; j<getMapWidth(); j++) {
                 Tile currTile = getTile(j, i);
-                currTile.getNeighbors().addAll(
-                        getNorth(currTile),
+                currTile.addNeighbors(getNorth(currTile),
                         getSouth(currTile),
                         getEast(currTile),
-                        getWest(currTile)
-                );
+                        getWest(currTile));
                 if(currTile.isAllowingMove())
                     walkableTiles.add(currTile);
             }

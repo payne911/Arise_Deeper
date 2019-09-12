@@ -36,6 +36,10 @@ public abstract class Tile implements IRenderable {
         return neighbors;
     }
 
+    public void addNeighbors(Tile... tiles) {
+        neighbors.addAll(tiles);
+    }
+
     /**
      * Whether or not to render the Tile when it has been explored, but is now not being seen (aka "in the fog of war").
      *
