@@ -7,7 +7,6 @@ import com.payne.games.gameObjects.actors.Actor;
 import com.payne.games.gameObjects.statics.Static;
 import com.payne.games.logic.GameLogic;
 import com.payne.games.logic.Utils;
-import com.payne.games.logic.systems.SightSystem;
 import com.payne.games.map.BaseMapLayer;
 import com.payne.games.map.SecondaryMapLayer;
 import com.payne.games.map.tiles.Tile;
@@ -29,14 +28,10 @@ public class MapRenderer {
     // Secondary layer
     private SecondaryMapLayer secondaryMapLayer;
 
-    // Fog of War
-    private SightSystem sightSystem;
 
-
-    public MapRenderer(SecondaryMapLayer secondaryMapLayer, SightSystem sightSystem) {
+    public MapRenderer(SecondaryMapLayer secondaryMapLayer) {
         this.secondaryMapLayer = secondaryMapLayer;
         this.subclassTileAssigner = new SubclassTileAssigner();
-        this.sightSystem = sightSystem;
     }
 
 
@@ -90,14 +85,12 @@ public class MapRenderer {
      */
     public void renderLevel(SpriteBatch batch) {
 
-        /* Drawing the static map (base layer). Disabling blending improves performance. */
-        batch.disableBlending();
+        /* Drawing the static map (base layer). */
         for (int i = 0; i < level.getMapHeight(); i++) {
             for (int j = 0; j < level.getMapWidth(); j++) {
                 drawAtMapCoordinate(batch, level.getTile(j, i));
             }
         }
-        batch.enableBlending();
 
 
         /* Drawing the secondary layer. */
@@ -178,16 +171,16 @@ public class MapRenderer {
      * @return 'false' only if the SpriteBatch should not attempt to draw the IRenderable object.
      */
     private boolean determineFogOfWarOverlay(SpriteBatch batch, IRenderable renderable) {
-        if(GameLogic.DEBUG_NO_FOG) {
+        if(GameLogic.DEBUG_NO_FOG) { // render everything
             batch.setColor(1,1,1,1);
             return true;
         }
 
         Tile tile = level.getTile(renderable.getX(), renderable.getY());
         if (tile.isInSight())
-            batch.setColor(1,1,1,1); // in plain sight
+            batch.setColor(1,1,1,(renderable instanceof Tile) ? tile.getFogAlpha() : 1); // in plain sight
         else if (tile.isExplored() && renderable.renderInFog())
-            batch.setColor(0.65f,0.2f,0.65f,0.5f); // in the fog of war
+            batch.setColor(0.65f,0.2f,0.65f,GameLogic.FOG_ALPHA); // in the fog of war
         else {
             batch.setColor(0, 0, 0, 0); // in the darkness
             return false; // do not draw!

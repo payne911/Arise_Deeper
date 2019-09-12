@@ -13,7 +13,7 @@ public abstract class Actor extends GameObject {
 
     // states
     private boolean sleeping = false;
-    private int rangeOfSight = 6; // how far the Actor can see in a straight line
+    private int rangeOfSight = 6; // how far the Actor can see in a straight line (1 means only its own cell)
     private boolean invincible = false;
     private int maxHp;
     private int currHp;
@@ -183,6 +183,12 @@ public abstract class Actor extends GameObject {
         this.currFatigue = currFatigue;
     }
 
+    /**
+     * Range of sight includes the source's position. This means that if the value
+     * is 1, that the source will only see the Tile it is standing on.
+     *
+     * @return Amount of tiles, in straight line, that the Actor can see.
+     */
     public int getRangeOfSight() {
         return rangeOfSight;
     }

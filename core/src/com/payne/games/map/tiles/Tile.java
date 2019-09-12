@@ -17,9 +17,16 @@ public abstract class Tile implements IRenderable {
 
     // pathfinding
     private int graphIndex = -1;
-    private boolean inSight = false;
     private boolean explored = false;
 
+    // fog of war overlay
+    private float fogAlpha = 0;
+    public float getFogAlpha() {
+        return fogAlpha;
+    }
+    public void setFogAlpha(float fogAlpha) {
+        this.fogAlpha = fogAlpha;
+    }
 
     public Tile(int x, int y) {
         this.x = x;
@@ -147,10 +154,7 @@ public abstract class Tile implements IRenderable {
      * @return 'true' if the tile is within sight.
      */
     public boolean isInSight() {
-        return inSight;
-    }
-    public void setInSight(boolean inSight) {
-        this.inSight = inSight;
+        return fogAlpha>GameLogic.LOS_MIN_ALPHA;
     }
 
     public int getGraphIndex() {
@@ -194,7 +198,8 @@ public abstract class Tile implements IRenderable {
                 ", y=" + y +
                 ", allowingMove=" + allowingMove +
                 ", graphIndex=" + graphIndex +
-                ", inSight=" + inSight +
+                ", explored=" + explored +
+                ", fogAlpha=" + fogAlpha +
                 '}';
     }
 }

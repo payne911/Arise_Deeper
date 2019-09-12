@@ -49,4 +49,7 @@ public final class GameLogic { /* Can't be inherited. */
     // inventory
     public static final int INV_SLOTS = 4;
 
+    // lighting system (Line of Sight / Fog of War)
+    public static final float LOS_MIN_ALPHA = 0.4f; // [0,1] range
+    public static final float FOG_ALPHA = 0.65f; // [0,1] range
 }
