@@ -5,6 +5,7 @@ import com.payne.games.gameObjects.actors.Actor;
 import com.payne.games.gameObjects.actors.Hero;
 import com.payne.games.gameObjects.statics.Static;
 import com.payne.games.logic.Controller;
+import com.payne.games.logic.GameLogic;
 import com.payne.games.map.BaseMapLayer;
 import com.payne.games.map.SecondaryMapLayer;
 import com.payne.games.map.tiles.Tile;
@@ -78,7 +79,7 @@ public class ActionController {
         if (clickedSelf(player, x, y)) // the player clicked his hero
             return;
 
-        if (!baseMapLayer.tileWasExplored(x,y)) // tile wasn't explored : abort
+        if (!GameLogic.DEBUG_NO_FOG && !baseMapLayer.tileWasExplored(x,y)) // tile wasn't explored : abort
             return;
 
         if (baseMapLayer.tileIsInSight(x,y)) {
@@ -238,6 +239,12 @@ public class ActionController {
         return false;
     }
 
+    /**
+     * Gives access to the main Controller.
+     * Mostly used only to declare the death of the Hero.
+     *
+     * @return The main Controller of the game.
+     */
     public Controller getMainController() {
         return controller;
     }

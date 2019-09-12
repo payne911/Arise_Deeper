@@ -4,7 +4,6 @@ import com.badlogic.gdx.utils.BinaryHeap;
 import com.payne.games.gameObjects.actors.Actor;
 import com.payne.games.gameObjects.actors.Hero;
 import com.payne.games.logic.GameLogic;
-import com.payne.games.logic.systems.SightSystem;
 import com.payne.games.map.SecondaryMapLayer;
 import com.payne.games.actions.Action;
 import com.payne.games.actions.commands.AttackAction;
@@ -20,13 +19,11 @@ public class TurnManager {
     private BinaryHeap<ActorNode> actorsHeap = new BinaryHeap<>(); // minHeap
     private Action actionToExecute;
     private SecondaryMapLayer secondaryMapLayer;
-    private SightSystem sightSystem;
     private boolean waitingOnPlayerInput;
 
 
-    public TurnManager(SecondaryMapLayer secondaryMapLayer, SightSystem sightSystem) {
+    public TurnManager(SecondaryMapLayer secondaryMapLayer) {
         this.secondaryMapLayer = secondaryMapLayer;
-        this.sightSystem = sightSystem;
     }
 
 

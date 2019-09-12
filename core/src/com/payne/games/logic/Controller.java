@@ -11,7 +11,7 @@ import com.payne.games.gameObjects.actors.Hero;
 import com.payne.games.inventory.Inventory;
 import com.payne.games.actions.ActionController;
 import com.payne.games.inventory.HeroInventoryWrapper;
-import com.payne.games.logic.systems.SightSystem;
+import com.payne.games.lightingSystem.SightSystem;
 import com.payne.games.map.BaseMapLayer;
 import com.payne.games.map.SecondaryMapLayer;
 import com.payne.games.map.generators.MapGenerator;
@@ -65,9 +65,9 @@ public class Controller {
         createHero(); // todo: this will change at some point!
         secondaryMapLayer = new SecondaryMapLayer(gameObjectFactory);
         actionController.setSecondaryMapLayer(secondaryMapLayer);
-        sightSystem       = new SightSystem(player);
-        mapRenderer       = new MapRenderer(secondaryMapLayer, sightSystem);
-        turnManager       = new TurnManager(secondaryMapLayer, sightSystem);
+        sightSystem       = new SightSystem();
+        mapRenderer       = new MapRenderer(secondaryMapLayer);
+        turnManager       = new TurnManager(secondaryMapLayer);
     }
 
 
@@ -140,7 +140,7 @@ public class Controller {
         mapRenderer.setUpBaseLayer(currentLevel, tileset); // assign the graphical representations to base layer's Tiles
         actionController.setUpIndexedGraph(currentLevel); // set up the graph for pathfinding
         secondaryMapLayer.setUpSecondaryLayer(player, currentLevel); // place secondary layer (Hero, Chests, Keys, etc.)
-        sightSystem.setUpLightingOverlay(currentLevel);
+        sightSystem.prepareLightingOverlay(currentLevel);
         centerOnHero();
     }
 
@@ -167,7 +167,7 @@ public class Controller {
      * todo: this might change to being called within `mapRenderer.renderLevel()` if some spells change the lighting.
      */
     public void updateLighting() {
-        sightSystem.updateLighting();
+        sightSystem.updateLighting(currentLevel, player.getX(), player.getY(), player.getRangeOfSight());
     }
 
     /**

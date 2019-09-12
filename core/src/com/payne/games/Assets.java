@@ -31,7 +31,7 @@ public class Assets {
      * Texture Atlas.
      */
     public static final AssetDescriptor<TextureAtlas>
-            ATLAS = new AssetDescriptor<>("wip/test.atlas", TextureAtlas.class);
+            ATLAS = new AssetDescriptor<>("wip/master_asset_manager/assets.atlas", TextureAtlas.class);
 
 
 //    /**
