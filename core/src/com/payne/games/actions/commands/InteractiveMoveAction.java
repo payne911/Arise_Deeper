@@ -2,9 +2,7 @@ package com.payne.games.actions.commands;
 
 import com.payne.games.gameObjects.GameObject;
 import com.payne.games.gameObjects.actors.Actor;
-import com.payne.games.map.BaseMapLayer;
 import com.payne.games.map.tiles.Tile;
-import com.payne.games.pathfinding.MyIndexedGraph;
 
 
 /**
@@ -12,14 +10,11 @@ import com.payne.games.pathfinding.MyIndexedGraph;
  */
 public class InteractiveMoveAction extends MoveAction {
     private GameObject recipient;
-    private BaseMapLayer baseMapLayer;
 
 
-    public InteractiveMoveAction(Actor source, GameObject recipient, BaseMapLayer baseMapLayer,
-                                 MyIndexedGraph graph, Tile from, Tile next, Tile to) {
-        super(source, graph, from, next, to);
+    public InteractiveMoveAction(Actor source, GameObject recipient, Tile from, Tile next, Tile to) {
+        super(source, from, next, to);
 
-        this.baseMapLayer = baseMapLayer;
         this.recipient = recipient;
     }
 
@@ -44,8 +39,7 @@ public class InteractiveMoveAction extends MoveAction {
         } else { // the pre-calculated path isn't valid anymore
 
             /* Rerun the pathfinding algorithm because the pre-calculated Tile is now occupied (does not allow movement). */
-            next = graph.extractFirstMove(from, to); // todo: "to", in case of ranged weapons, isn't necessarily the position of the target... it's any Tile within range
-
+            next = controller.findNextTile(from, to); // todo: "to", in case of ranged weapons, isn't necessarily the position of the target... it's any Tile within range
 
             if (next != null) { // new path was found!
                 move();
@@ -64,16 +58,14 @@ public class InteractiveMoveAction extends MoveAction {
         // todo: activate Traps if stepped on one (and don't issue another MoveAction)
 
         /* Since the Actor might have moved, we recompute where the "to" Tile is. */
-        to = baseMapLayer.getTile(recipient.getX(), recipient.getY());
+        to = controller.baseMapLayer.getTile(recipient.getX(), recipient.getY());
 
         /* Extract next move. */
-        Tile again = findNextMove();
+        Tile again = controller.findNextMove(next, to);
 
         /* Assign next Action accordingly. */
         if (again != null) { // not there yet? keep moving!
-            InteractiveMoveAction interactiveMoveAction =
-                    new InteractiveMoveAction(source, recipient, baseMapLayer, graph, next, again, to);
-            source.addAction(interactiveMoveAction);
+            controller.actionIssuer.interactiveMove(source, recipient, next, again, to);
         } else if (next == to) { // right at the desired destination? try to interact
             recipient.tryInteractionFrom(source);
         }

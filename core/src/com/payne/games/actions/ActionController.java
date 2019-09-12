@@ -7,7 +7,7 @@ import com.payne.games.gameObjects.statics.Static;
 import com.payne.games.map.BaseMapLayer;
 import com.payne.games.map.SecondaryMapLayer;
 import com.payne.games.map.tiles.Tile;
-import com.payne.games.pathfinding.MyIndexedGraph;
+import com.payne.games.map.pathfinding.MyIndexedGraph;
 
 
 /**
@@ -140,22 +140,34 @@ public class ActionController {
 
         Tile from = baseMapLayer.getTile(player.getX(), player.getY());
         Tile to   = baseMapLayer.getTile(x, y);
-
-        /* Adapting the "to" Tile in case an Actor might be standing there. */
-        Tile next;
-        if(to.isAllowingMove()) {
-            next = findNextTile(from, to);
-        } else {
-            to.setAllowingMove(true);
-            next = findNextTile(from, to);
-            to.setAllowingMove(false);
-        }
+        Tile next = findNextMove(from, to);
         if(next != null) { // there is a path that leads to the GameObject
-            actionIssuer.interactiveMove(player, objAt, baseMapLayer, indexedGraph, from, next, to);
+            actionIssuer.interactiveMove(player, objAt, from, next, to);
             return true; // we're done handling the tap
         }
 
         return true; // found a GameObject, but nothing could be done : we're done handling the tap
+    }
+
+
+    /**
+     * Non-blocking graph exploration with the pathfinding.
+     * Adapts the "to" Tile in case an Actor might be standing there.
+     *
+     * @param from the initial Tile.
+     * @param to the desired destination Tile.
+     * @return 'null' only if no path that leads to the desired destination exists OR if already standing at the destination.
+     */
+    public Tile findNextMove(Tile from, Tile to) {
+        Tile next;
+        if(to.isAllowingMove()) {
+            next = findNextTile(from, to);
+        } else { // an Actor is currently standing on the 'to' Tile
+            to.setAllowingMove(true);
+            next = findNextTile(from, to);
+            to.setAllowingMove(false);
+        }
+        return next;
     }
 
 
@@ -166,7 +178,7 @@ public class ActionController {
      * @param to Desired destination.
      * @return 'null' only if no path can be found. Otherwise, returns the next Tile to move to.
      */
-    private Tile findNextTile(Tile from, Tile to) {
+    public Tile findNextTile(Tile from, Tile to) {
         return indexedGraph.extractFirstMove(from, to);
     }
 
@@ -185,7 +197,7 @@ public class ActionController {
         /* Assigning MoveActions accordingly. */
         Tile next = findNextTile(from, to);
         if(next != null)
-            actionIssuer.move(actor, indexedGraph, from, next, to);
+            actionIssuer.move(actor, from, next, to);
     }
 
     /**

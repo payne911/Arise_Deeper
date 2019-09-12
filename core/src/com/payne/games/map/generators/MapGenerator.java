@@ -8,7 +8,6 @@ import com.payne.games.map.tiles.Floor;
 import com.payne.games.map.tiles.Wall;
 
 
-
 public class MapGenerator {
     private RandomXS128 rand;
 

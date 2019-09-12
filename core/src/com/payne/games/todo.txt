@@ -28,3 +28,4 @@ CLASSES:
     - Necro (restores health from consuming corpses, can create weak skeletons from corpses)
     - Fire elemental (can use Flame to restore energy)
     - Water elemental (can use Water Tiles to restore energy)
+    - Rock elemental (can pick up the rocks on the ground Tiles)
