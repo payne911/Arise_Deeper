@@ -4,6 +4,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.payne.games.logic.Controller;
+import com.payne.games.logic.GameLogic;
 
 
 /**
@@ -27,7 +28,8 @@ public class MyInputProcessor extends InputAdapter {
 
         switch (keycode) {
             case Input.Keys.SPACE: // todo: should TOGGLE a centerView option?
-                controller.centerOnHero();
+//                controller.centerOnHero();
+                GameLogic.DEBUG_NO_FOG = !GameLogic.DEBUG_NO_FOG;
                 break;
             case Input.Keys.ESCAPE:
                 controller.saveAndReturnToMainMenu();

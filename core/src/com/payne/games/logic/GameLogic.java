@@ -8,7 +8,7 @@ public final class GameLogic { /* Can't be inherited. */
 
 
     /*  DEBUG and Randomizers */
-    public static final boolean DEBUG_NO_FOG = false;
+    public static boolean DEBUG_NO_FOG = false;
     public static final boolean DEBUG_SUBCLASSED_TILES = false;
     public static final boolean DEBUG_GESTURE_PRINT = false;
     public static final boolean DEBUG_ACTION_PRINT = true;
