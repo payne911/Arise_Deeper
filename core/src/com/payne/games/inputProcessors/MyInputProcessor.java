@@ -30,7 +30,7 @@ public class MyInputProcessor extends InputAdapter {
                 controller.centerOnHero();
                 break;
             case Input.Keys.ESCAPE:
-                controller.returnToMainMenu();
+                controller.saveAndReturnToMainMenu();
                 break;
             case Input.Keys.S:
                 controller.DEBUG_spawn_enemies();

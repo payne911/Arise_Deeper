@@ -39,7 +39,6 @@ public class GameScreen implements Screen {
         System.out.println("game constructor");
         this.game = game;
         this.assets = assets;
-        Gdx.gl.glClearColor(0, 0, 0, 1); // black background
 
         setUpGameScreen();
     }
@@ -51,9 +50,8 @@ public class GameScreen implements Screen {
     private void setUpGameScreen() {
         setUpUi(); // ui
         setUpCamera(); // create the camera and the SpriteBatch
-        controller = new Controller(game, assets, camera, inventorySlots); // controller
+        controller = new Controller(game, this, assets, camera, inventorySlots); // controller
         setUpMap(); // generate the initial level and place the GameObjects (hero, etc.)
-        setUpInputProcessors(); // input processors
     }
 
     private void setUpUi() {
@@ -107,9 +105,20 @@ public class GameScreen implements Screen {
                 new GestureDetector(inputProcessor2)));
     }
 
+    /**
+     * Called when the player dies.
+     */
+    public void playerDied() {
+        // todo: stuff
+        dispose();
+        game.setScreen(new MainMenuScreen(game, assets));
+    }
+
     @Override
     public void show() {
         System.out.println("game show");
+        Gdx.gl.glClearColor(0, 0, 0, 1); // black background
+        setUpInputProcessors();
     }
 
     /**
@@ -216,9 +225,6 @@ public class GameScreen implements Screen {
     @Override
     public void hide() {
         System.out.println("game hide");
-        uiStage.dispose();
-        skin.dispose();
-        controller.dispose();
     }
 
     /**
@@ -228,5 +234,8 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         System.out.println("game dispose");
+        uiStage.dispose();
+        skin.dispose();
+        controller.dispose();
     }
 }

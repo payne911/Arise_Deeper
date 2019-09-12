@@ -4,6 +4,7 @@ import com.payne.games.gameObjects.GameObject;
 import com.payne.games.gameObjects.actors.Actor;
 import com.payne.games.gameObjects.actors.Hero;
 import com.payne.games.gameObjects.statics.Static;
+import com.payne.games.logic.Controller;
 import com.payne.games.map.BaseMapLayer;
 import com.payne.games.map.SecondaryMapLayer;
 import com.payne.games.map.tiles.Tile;
@@ -17,10 +18,12 @@ public class ActionController {
     public ActionIssuer actionIssuer = new ActionIssuer();
     public BaseMapLayer baseMapLayer;
     public SecondaryMapLayer secondaryMapLayer;
+    private Controller controller;
     private MyIndexedGraph indexedGraph;
 
 
-    public ActionController() {
+    public ActionController(Controller controller) {
+        this.controller = controller;
     }
 
 
@@ -233,5 +236,9 @@ public class ActionController {
             return true;
         }
         return false;
+    }
+
+    public Controller getMainController() {
+        return controller;
     }
 }

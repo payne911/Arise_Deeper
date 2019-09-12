@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -24,46 +25,65 @@ public class MainMenuScreen implements Screen {
     private final AssetManager assets;
 
     private Stage stage; // to handle the ui
-    private Skin skin; // json style
+    private Skin skin;   // json style
 
     // ui elements
     private Table table;
     private TextButton newGameButton;
-    private TextButton loadGameButton;
+    private TextButton resumeGameButton;
     private TextButton settingsButton;
     private TextButton quitButton;
 
 
     public MainMenuScreen(final AriseDeeper game, final AssetManager assets) {
         System.out.println("menu constructor");
-        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
-        this.game = game;
+        this.game   = game;
         this.assets = assets;
 
         skin = new Skin(Gdx.files.internal(GameLogic.SKIN_FILE));
         stage = new Stage(new ScreenViewport());
         table = new Table();
         initButtons();
+        checkConditionsOnButtons();
         setUpButtonsClickListeners();
         setUpTableLayout();
         stage.addActor(table);
-
-        Gdx.input.setInputProcessor(stage);
     }
 
     private void initButtons() {
         newGameButton = new TextButton("New Game", skin);
-        loadGameButton = new TextButton("Load Game", skin);
+        resumeGameButton = new TextButton("Resume Game", skin);
         settingsButton = new TextButton("Settings", skin);
         quitButton = new TextButton("Quit", skin);
+    }
+
+    /**
+     * Makes sure the "Resume Game" button is only available when it should.
+     */
+    private void checkConditionsOnButtons() {
+        if(game.getPreviousScreen() == null) {
+            resumeGameButton.setTouchable(Touchable.disabled);
+            resumeGameButton.setDisabled(true); // todo: should be GREYED OUT
+        } else {
+            resumeGameButton.setTouchable(Touchable.enabled);
+            resumeGameButton.setDisabled(false);
+        }
     }
 
     private void setUpButtonsClickListeners() {
         newGameButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                game.setScreen(new GameScreen(game, assets));
-                dispose();
+                if(game.getPreviousScreen() instanceof GameScreen)
+                    game.getPreviousScreen().dispose();
+                game.setNewScreen(new GameScreen(game, assets));
+            }
+        });
+
+        resumeGameButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.returnToPreviousScreen();
             }
         });
     }
@@ -76,7 +96,7 @@ public class MainMenuScreen implements Screen {
 
         table.add(newGameButton);
         table.row();
-        table.add(loadGameButton);
+        table.add(resumeGameButton);
         table.row();
         table.add(settingsButton);
         table.row();
@@ -86,6 +106,9 @@ public class MainMenuScreen implements Screen {
     @Override
     public void show() {
         System.out.println("menu show");
+        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+        Gdx.input.setInputProcessor(stage);
+        checkConditionsOnButtons();
     }
 
     @Override
@@ -115,12 +138,12 @@ public class MainMenuScreen implements Screen {
     @Override
     public void hide() {
         System.out.println("menu hide");
-        stage.dispose();
-        skin.dispose();
     }
 
     @Override
     public void dispose() {
         System.out.println("menu dispose");
+        stage.dispose();
+        skin.dispose();
     }
 }

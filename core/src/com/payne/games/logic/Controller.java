@@ -18,13 +18,14 @@ import com.payne.games.map.generators.MapGenerator;
 import com.payne.games.map.renderers.MapRenderer;
 import com.payne.games.map.tiles.Tile;
 import com.payne.games.map.tilesets.Tileset;
-import com.payne.games.screens.MainMenuScreen;
+import com.payne.games.screens.GameScreen;
 import com.payne.games.turns.TurnManager;
 
 
 public class Controller {
-    private final AssetManager assets;
     private final AriseDeeper game;
+    private final AssetManager assets;
+    private GameScreen gameScreen;
     private MapRenderer mapRenderer;
     private OrthographicCamera camera;
 
@@ -50,15 +51,16 @@ public class Controller {
 
 
 
-    public Controller(final AriseDeeper game, final AssetManager assets,
+    public Controller(final AriseDeeper game, GameScreen gameScreen, final AssetManager assets,
                       OrthographicCamera camera, Array<ImageTextButton> inventorySlots) {
-        this.game = game;
-        this.assets = assets;
-        this.camera = camera;
+        this.game           = game;
+        this.assets         = assets;
+        this.camera         = camera;
+        this.gameScreen     = gameScreen;
         this.inventorySlots = inventorySlots;
 
         mapGenerator      = new MapGenerator();
-        actionController  = new ActionController();
+        actionController  = new ActionController(this);
         gameObjectFactory = new GameObjectFactory(actionController);
         createHero(); // todo: this will change at some point!
         secondaryMapLayer = new SecondaryMapLayer(gameObjectFactory);
@@ -170,10 +172,17 @@ public class Controller {
 
     /**
      * Returns to the MainScreenMenu.
-     * todo: should save state, etc.!
      */
-    public void returnToMainMenu() {
-        game.setScreen(new MainMenuScreen(game, assets));
+    public void saveAndReturnToMainMenu() {
+        // todo: should save state, etc.!
+        game.returnToPreviousScreen();
+    }
+
+    /**
+     * Called when the player dies.
+     */
+    public void playerDied() {
+        gameScreen.playerDied();
     }
 
     /**

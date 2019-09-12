@@ -1,9 +1,11 @@
 package com.payne.games;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.payne.games.screens.GameScreen;
+import com.payne.games.screens.MainMenuScreen;
 import com.payne.games.splashScreen.ISplashWorker;
 
 
@@ -39,12 +41,33 @@ public class AriseDeeper extends Game {
 
 	/* Loading. */
 	private ISplashWorker splashWorker;
-	public Assets assets;
+	private Assets assets;
 
 	/* Display. */
 	public SpriteBatch batch;
 	public BitmapFont font;
 
+	/* Flow management. */
+	private Screen previousScreen;
+
+
+	/**
+	 * Allows swapping between Screens while retaining a reference to the previous Screen.<br>
+	 * This eventually allows the player to return to the previous Screen without losing its state.
+	 *
+	 * @param newScreen the Screen to show to the player.
+	 */
+	public void setNewScreen(Screen newScreen) {
+		previousScreen = getScreen();
+		setScreen(newScreen); // automatically calls "show()" on the newScreen
+	}
+
+	/**
+	 * Returns to the Screen that was presented to the player before the one that is currently displayed.
+	 */
+	public void returnToPreviousScreen() {
+		setNewScreen(previousScreen);
+	}
 
 	@Override
 	public void create () {
@@ -58,6 +81,14 @@ public class AriseDeeper extends Game {
 		assets.loadLoadingScreen();
 		assets.loadGameAssets();
 
+		setInitialScreen();
+	}
+
+	private void setInitialScreen() {
+//		setScreen(new MainMenuScreen(this, assets.manager));
+
+		/* Purely for debugging: skips the MainMenuScreen. */
+		previousScreen = new MainMenuScreen(this, assets.manager);
 		setScreen(new GameScreen(this, assets.manager));
 	}
 
@@ -70,8 +101,7 @@ public class AriseDeeper extends Game {
 
 		/* Waits for all the assets to be loaded before moving on. */
 		if (assets.manager.update()) {
-//			setScreen(new MainMenuScreen(this, assets.manager));
-			setScreen(new GameScreen(this, assets.manager));
+			setScreen(new MainMenuScreen(this, assets.manager));
 		}
 
 
@@ -96,6 +126,11 @@ public class AriseDeeper extends Game {
 		batch.dispose();
 		font.dispose();
 		assets.dispose();
+
+		/* Cleaning the Screens as well. */
+		getScreen().dispose();
+		if(previousScreen != null)
+			previousScreen.dispose();
 	}
 
 //	@Override
@@ -118,5 +153,8 @@ public class AriseDeeper extends Game {
 	}
 	public void setSplashWorker(ISplashWorker splashWorker) {
 		this.splashWorker = splashWorker;
+	}
+	public Screen getPreviousScreen() {
+		return previousScreen;
 	}
 }

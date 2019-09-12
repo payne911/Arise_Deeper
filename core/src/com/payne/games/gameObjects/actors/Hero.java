@@ -28,8 +28,8 @@ public class Hero extends Actor {
     @Override
     public void die(Actor killer) {
         super.die(killer);
-
         System.out.println("You have died.");
+        controller.getMainController().playerDied();
     }
 
 
