@@ -63,7 +63,7 @@ public class MainMenuScreen implements Screen {
     private void checkConditionsOnButtons() {
         if(game.getPreviousScreen() == null) {
             resumeGameButton.setTouchable(Touchable.disabled);
-            resumeGameButton.setDisabled(true); // todo: should be GREYED OUT
+            resumeGameButton.setDisabled(true);
         } else {
             resumeGameButton.setTouchable(Touchable.enabled);
             resumeGameButton.setDisabled(false);

@@ -5,25 +5,26 @@
     white: { a: 1, b: 1, g: 1, r: 1 },
     red: { a: 1, b: 0, g: 0, r: 1 },
     black: { a: 1, b: 0, g: 0, r: 0 },
+    gray: { a: 0.7, b: 0, g: 0, r: 0 },
   },
   TintedDrawable: {
     dialogDim: { name: white, color: { r: 0, g: 0, b: 0, a: 0.45 } },
   },
   ButtonStyle: {
-    default: { down: default-round-down, up: default-round },
+    default: { down: default-round-down, up: default-round, disabled: default-round-down },
     toggle: { parent: default, checked: default-round-down }
   },
   ImageButtonStyle: {
     default: { parent: default },
-    toggle: { parent: default, checked: default-round-down }
+    toggle: { parent: default }
   },
   ImageTextButtonStyle: {
     default: { parent: default, font: default-font, fontColor: white },
-    toggle: { parent: default, checked: default-round-down, downFontColor: red }
+    toggle: { parent: default, downFontColor: red }
   },
   TextButtonStyle: {
-    default: { parent: default, font: default-font, fontColor: white },
-    toggle: { parent: default, checked: default-round-down, downFontColor: red }
+    default: { parent: default, font: default-font, fontColor: white, disabledFontColor: gray },
+    toggle: { parent: default, downFontColor: red }
   },
   ScrollPaneStyle: {
     default: { vScroll: default-scroll, hScrollKnob: default-round-large, background: default-rect, hScroll: default-scroll, vScrollKnob: default-round-large }
