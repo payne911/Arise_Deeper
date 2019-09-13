@@ -9,6 +9,7 @@ import com.payne.games.map.tiles.Tile;
 /**
  * todo:  see  https://www.redblobgames.com/articles/visibility/
  * todo: coupling/dependency could be reduced to the "Tile" class instead
+ * todo: possibly do  https://stackoverflow.com/questions/45948732/2d-tile-based-smooth-lighting/45949202#45949202
  */
 public class SightSystem {
 
@@ -57,7 +58,7 @@ public class SightSystem {
      */
     public void updateLighting(BaseMapLayer currLevel, int player_X, int player_Y, int sightRangeRadius) {
         updateResistanceMap(currLevel);
-        FieldOfView.reuseFOV(resistance, visible,player_X, player_Y, sightRangeRadius);
+        FieldOfView.reuseFOV(resistance, visible, player_X, player_Y, sightRangeRadius);
         Tile currTile;
         for(int i=0; i < height; i++) {          // height
             for(int j = 0; j < width; j++) {     // width
