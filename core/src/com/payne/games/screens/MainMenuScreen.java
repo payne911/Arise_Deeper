@@ -86,6 +86,13 @@ public class MainMenuScreen implements Screen {
                 game.returnToPreviousScreen();
             }
         });
+
+        quitButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Gdx.app.exit();
+            }
+        });
     }
 
     private void setUpTableLayout() {
