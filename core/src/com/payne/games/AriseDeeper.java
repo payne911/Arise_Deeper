@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.payne.games.assets.Assets;
 import com.payne.games.screens.GameScreen;
 import com.payne.games.screens.MainMenuScreen;
 import com.payne.games.splashScreen.ISplashWorker;
@@ -41,7 +42,8 @@ public class AriseDeeper extends Game {
 
 	/* Loading. */
 	private ISplashWorker splashWorker;
-	private Assets assets;
+	private boolean finishedLoading = false;
+	public Assets assets;
 
 	/* Display. */
 	public SpriteBatch batch;
@@ -80,44 +82,48 @@ public class AriseDeeper extends Game {
 
 		assets.loadLoadingScreen();
 		assets.loadGameAssets();
-
-		setInitialScreen();
 	}
 
 	private void setInitialScreen() {
 //		setScreen(new MainMenuScreen(this, assets.manager));
 
 		/* Purely for debugging: skips the MainMenuScreen. */
-		previousScreen = new MainMenuScreen(this, assets.manager);
-		setScreen(new GameScreen(this, assets.manager));
+		previousScreen = new MainMenuScreen(this);
+		setScreen(new GameScreen(this));
 	}
 
 
 	/**
-	 * todo: figure out how to do this
 	 * Asynchronous loading of the game assets. Showing progression within the Loading Screen.
 	 */
 	private void loadingScreen() {
 
-		/* Waits for all the assets to be loaded before moving on. */
-		if (assets.manager.update()) {
-			setScreen(new MainMenuScreen(this, assets.manager));
-		}
-
+		/* Updates the progress until it has finished. */
+		if (assets.manager.update())
+			finishedLoading = true;
 
 		/* Display loading information. */
 		float progress = assets.manager.getProgress();
 		System.out.println("Progress: " + (int)(progress*100) + "%");
-		batch.draw(assets.manager.get(Assets.LOADING_IMAGE), 0, 0);
+		batch.draw(assets.manager.get(Assets.LOADING_IMAGE), 135, 0);
 		// todo: ProgressBar
 	}
 
 	@Override
 	public void render () {
 		super.render();
-//		batch.begin();
-//		loadingScreen();
-//		batch.end();
+
+		/* Loading screen. */
+		if(!finishedLoading) {
+			batch.begin();
+			loadingScreen(); // updates "finishedLoading" boolean accordingly
+			batch.end();
+
+			if(finishedLoading) {
+			    assets.setUpImageFactory();
+                setInitialScreen();
+            }
+		}
 	}
 	
 	@Override

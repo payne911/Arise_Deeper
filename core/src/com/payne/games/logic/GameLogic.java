@@ -19,7 +19,6 @@ public final class GameLogic { /* Can't be inherited. */
     // Strings
     public static final String GAME_NAME = "Arise Deeper";
     public static final String BASIC_TILESET = "spriteSheets/dungeon_tileset.png";
-    public static final String SKIN_FILE = "skin/uiskin.json";
 
     // seeded "random" generators
     public static final int RANDOM_SEED = 1337;

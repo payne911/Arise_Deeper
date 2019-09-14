@@ -1,9 +1,10 @@
-package com.payne.games;
+package com.payne.games.assets;
 
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 
 /**
@@ -14,60 +15,51 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
  */
 public class Assets {
     public AssetManager manager = new AssetManager();
+    public ImageFactory factory;
 
 
 
     /**
-     * Textures (images).
+     * The image displayed while loading the assets.
      */
-    public static final AssetDescriptor<Texture>
-            LOADING_IMAGE = new AssetDescriptor<>("unrelated/click_diagram.png", Texture.class),
-            DUNGEON_TILESET = new AssetDescriptor<>("spriteSheets/dungeon_tileset.png", Texture.class),
-            IMG_16p = new AssetDescriptor<>("spriteSheets/game_objects_16p.png", Texture.class),
-            IMG_20p = new AssetDescriptor<>("spriteSheets/game_objects_20p.png", Texture.class);
+    public static final AssetDescriptor<Texture> LOADING_IMAGE =
+            new AssetDescriptor<>("splash_screen.png", Texture.class);
 
 
     /**
-     * Texture Atlas.
+     * Texture Atlas: contains all the game's assets.
      */
-    public static final AssetDescriptor<TextureAtlas>
-            ATLAS = new AssetDescriptor<>("wip/master_asset_manager/assets.atlas", TextureAtlas.class);
+    public static final AssetDescriptor<TextureAtlas> ATLAS =
+            new AssetDescriptor<>("wip/master_asset_manager/assets.atlas", TextureAtlas.class);
 
 
-//    /**
-//     * Skin (UI).
-//     */
-//    public static final AssetDescriptor<Skin>
-//            UI_SKIN = new AssetDescriptor<>("uiskin.json", Skin.class,
-//            new SkinLoader.SkinParameter("uiskin.pack"));
+    /**
+     * Skin (UI).
+     */
+    public static final AssetDescriptor<Skin> UI_SKIN =
+            new AssetDescriptor<>("skin/uiskin.json", Skin.class);
 
 
-
-
-//    public static final AssetDescriptor<TextureAtlas> uiAtlas =
-//            new AssetDescriptor<>("ui/uiskin.pack", TextureAtlas.class);
-//
-//    public static final AssetDescriptor<Skin> uiSkin =
-//            new AssetDescriptor<>("ui/uiskin.json", Skin.class,
-//                    new SkinLoader.SkinParameter("ui/uiskin.pack"));
-
-
-
+    /**
+     * Asynchronous loading of all the rest of the assets.
+     */
     public void loadGameAssets() {
-//        manager.load(DUNGEON_TILESET);
-//        manager.load(IMG_16p);
-//        manager.load(IMG_20p);
-//        manager.load(ATLAS);
-
-//        manager.load(uiAtlas);
-//        manager.load(uiSkin);
+        manager.load(ATLAS);
+        manager.load(UI_SKIN);
     }
 
 
-
+    /**
+     * Synchronous loading to obtain the initial image to
+     * display while loading the rest of the assets.
+     */
     public void loadLoadingScreen() {
         manager.load(LOADING_IMAGE);
         manager.finishLoading();
+    }
+
+    public void setUpImageFactory() {
+        factory = new ImageFactory(manager.get(ATLAS));
     }
 
 

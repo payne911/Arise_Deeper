@@ -2,7 +2,6 @@ package com.payne.games.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
@@ -11,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Array;
 import com.payne.games.AriseDeeper;
+import com.payne.games.assets.Assets;
+import com.payne.games.assets.ImageFactory;
 import com.payne.games.logic.GameLogic;
 import com.payne.games.logic.Controller;
 import com.payne.games.map.tilesets.BasicTileset;
@@ -21,13 +22,12 @@ import com.payne.games.inputProcessors.MyInputProcessor;
 
 public class GameScreen implements Screen {
     private final AriseDeeper game;
-    private final AssetManager assets;
     private OrthographicCamera camera;
 
     // ui
+    private Skin skin;
     private Stage uiStage = new Stage(); // todo: add `new ScreenViewport()` parameter?
     private Table ui      = new Table();
-    private Skin skin     = new Skin(Gdx.files.internal(GameLogic.SKIN_FILE));
     private Array<ImageTextButton> inventorySlots = new Array<>();
 
     // controllers
@@ -35,10 +35,10 @@ public class GameScreen implements Screen {
     private float currTime = 0f; // turn system
 
 
-    public GameScreen(final AriseDeeper game, final AssetManager assets) {
+    public GameScreen(final AriseDeeper game) {
         System.out.println("game constructor");
-        this.game = game;
-        this.assets = assets;
+        this.game   = game;
+        this.skin   = game.assets.manager.get(Assets.UI_SKIN);
 
         setUpGameScreen();
     }
@@ -50,7 +50,7 @@ public class GameScreen implements Screen {
     private void setUpGameScreen() {
         setUpUi(); // ui
         setUpCamera(); // create the camera and the SpriteBatch
-        controller = new Controller(game, this, assets, camera, inventorySlots); // controller
+        controller = new Controller(this, camera, inventorySlots); // controller
         setUpMap(); // generate the initial level and place the GameObjects (hero, etc.)
     }
 
@@ -111,7 +111,19 @@ public class GameScreen implements Screen {
     public void playerDied() {
         // todo: stuff
         dispose();
-        game.setScreen(new MainMenuScreen(game, assets));
+        game.setScreen(new MainMenuScreen(game));
+    }
+
+    /**
+     * Returns to the MainScreenMenu.
+     */
+    public void saveAndReturnToMainMenu() {
+        // todo: should save state, etc.!
+        game.returnToPreviousScreen();
+    }
+
+    public ImageFactory getImageFactory() {
+        return game.assets.factory;
     }
 
     @Override

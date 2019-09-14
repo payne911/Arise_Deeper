@@ -8,9 +8,6 @@ import com.badlogic.gdx.math.RandomXS128;
 import com.payne.games.logic.GameLogic;
 
 
-/**
- * todo: see TexturePacker  https://github.com/crashinvaders/gdx-texture-packer-gui
- */
 public abstract class Tileset {
     private RandomXS128 rand;
 

@@ -2,7 +2,6 @@ package com.payne.games.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -13,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.payne.games.AriseDeeper;
-import com.payne.games.logic.GameLogic;
+import com.payne.games.assets.Assets;
 
 
 /**
@@ -22,7 +21,6 @@ import com.payne.games.logic.GameLogic;
  */
 public class MainMenuScreen implements Screen {
     private final AriseDeeper game;
-    private final AssetManager assets;
 
     private Stage stage; // to handle the ui
     private Skin skin;   // json style
@@ -35,12 +33,11 @@ public class MainMenuScreen implements Screen {
     private TextButton quitButton;
 
 
-    public MainMenuScreen(final AriseDeeper game, final AssetManager assets) {
+    public MainMenuScreen(final AriseDeeper game) {
         System.out.println("menu constructor");
         this.game   = game;
-        this.assets = assets;
 
-        skin = new Skin(Gdx.files.internal(GameLogic.SKIN_FILE));
+        skin  = game.assets.manager.get(Assets.UI_SKIN);
         stage = new Stage(new ScreenViewport());
         table = new Table();
         initButtons();
@@ -51,10 +48,10 @@ public class MainMenuScreen implements Screen {
     }
 
     private void initButtons() {
-        newGameButton = new TextButton("New Game", skin);
+        newGameButton    = new TextButton("New Game", skin);
         resumeGameButton = new TextButton("Resume Game", skin);
-        settingsButton = new TextButton("Settings", skin);
-        quitButton = new TextButton("Quit", skin);
+        settingsButton   = new TextButton("Settings", skin);
+        quitButton       = new TextButton("Quit", skin);
     }
 
     /**
@@ -76,7 +73,7 @@ public class MainMenuScreen implements Screen {
             public void changed(ChangeEvent event, Actor actor) {
                 if(game.getPreviousScreen() instanceof GameScreen)
                     game.getPreviousScreen().dispose();
-                game.setNewScreen(new GameScreen(game, assets));
+                game.setNewScreen(new GameScreen(game));
             }
         });
 

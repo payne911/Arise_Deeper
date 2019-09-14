@@ -1,11 +1,10 @@
 package com.payne.games.logic;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.utils.Array;
-import com.payne.games.AriseDeeper;
+import com.payne.games.assets.ImageFactory;
 import com.payne.games.gameObjects.GameObjectFactory;
 import com.payne.games.gameObjects.actors.Hero;
 import com.payne.games.inventory.Inventory;
@@ -23,8 +22,7 @@ import com.payne.games.turns.TurnManager;
 
 
 public class Controller {
-    private final AriseDeeper game;
-    private final AssetManager assets;
+    private ImageFactory imageFactory;
     private GameScreen gameScreen;
     private MapRenderer mapRenderer;
     private OrthographicCamera camera;
@@ -51,17 +49,15 @@ public class Controller {
 
 
 
-    public Controller(final AriseDeeper game, GameScreen gameScreen, final AssetManager assets,
-                      OrthographicCamera camera, Array<ImageTextButton> inventorySlots) {
-        this.game           = game;
-        this.assets         = assets;
+    public Controller(GameScreen gameScreen, OrthographicCamera camera, Array<ImageTextButton> inventorySlots) {
         this.camera         = camera;
         this.gameScreen     = gameScreen;
+        this.imageFactory   = gameScreen.getImageFactory();
         this.inventorySlots = inventorySlots;
 
         mapGenerator      = new MapGenerator();
         actionController  = new ActionController(this);
-        gameObjectFactory = new GameObjectFactory(actionController);
+        gameObjectFactory = new GameObjectFactory(actionController, imageFactory);
         createHero(); // todo: this will change at some point!
         secondaryMapLayer = new SecondaryMapLayer(gameObjectFactory);
         actionController.setSecondaryMapLayer(secondaryMapLayer);
@@ -174,8 +170,7 @@ public class Controller {
      * Returns to the MainScreenMenu.
      */
     public void saveAndReturnToMainMenu() {
-        // todo: should save state, etc.!
-        game.returnToPreviousScreen();
+        gameScreen.saveAndReturnToMainMenu();
     }
 
     /**

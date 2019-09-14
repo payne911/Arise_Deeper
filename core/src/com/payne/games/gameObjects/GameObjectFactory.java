@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.RandomXS128;
+import com.payne.games.assets.ImageFactory;
 import com.payne.games.gameObjects.actors.Enemy;
 import com.payne.games.gameObjects.actors.Hero;
 import com.payne.games.gameObjects.statics.*;
@@ -20,21 +21,19 @@ public class GameObjectFactory {
     private RandomXS128 rand;
     private ActionController actionController;
 
+    private ImageFactory factory;
     private Texture objects_20p;
-    private Texture objects_16p;
     private TextureRegion[][] split_20p;
-    private TextureRegion[][] split_16p;
 
 
-    public GameObjectFactory(ActionController actionController) {
+    public GameObjectFactory(ActionController actionController, ImageFactory factory) {
         this.actionController = actionController;
+        this.factory = factory;
         this.rand = new RandomXS128(GameLogic.RANDOM_ENEMIES ? (int)(Math.random()*1000) : GameLogic.RANDOM_SEED);
 
+        // todo: must eventually be removed (once Animations are integrated)
         objects_20p = new Texture(Gdx.files.internal("spriteSheets/game_objects_20p.png"));
         split_20p = TextureRegion.split(objects_20p, GameLogic.TILE_BIG_SIZE, GameLogic.TILE_BIG_SIZE);
-
-        objects_16p = new Texture(Gdx.files.internal("spriteSheets/game_objects_16p.png"));
-        split_16p = TextureRegion.split(objects_16p, GameLogic.TILE_SIZE, GameLogic.TILE_SIZE);
     }
 
 
@@ -63,7 +62,7 @@ public class GameObjectFactory {
         Door door = new Door(actionController, x, y, isLocked);
 
         /* Assigns the Assets to be able to swap between them according to the Door's state. */
-        door.getStates().addAll(split_16p[0][5], split_16p[0][4], split_16p[0][6]);
+        door.getStates().addAll(factory.door_open, factory.door_closed, factory.door_locked);
         door.getStates().shrink();
 
         actionController.baseMapLayer.getTile(x,y).setAllowingMove(false); // all Doors are created as Closed
@@ -73,7 +72,7 @@ public class GameObjectFactory {
 
     public HealthPotion createHealthPotion(int x, int y) {
         HealthPotion hp = new HealthPotion(actionController, x, y);
-        hp.setTexture(split_16p[0][7]);
+        hp.setTexture(factory.potion_health);
         actionController.secondaryMapLayer.getStaticLayer().add(hp);
         return hp;
     }
@@ -88,14 +87,14 @@ public class GameObjectFactory {
 
     public Key createKey(int x, int y) {
         Key key = new Key(actionController, x, y);
-        key.setTexture(split_16p[0][3]);
+        key.setTexture(factory.key);
         actionController.secondaryMapLayer.getStaticLayer().add(key);
         return key;
     }
 
     public Chest createChest(int x, int y) {
         Chest chest = new Chest(actionController, x, y);
-        chest.setTexture(split_16p[0][2]);
+        chest.setTexture(factory.chest_16p);
         actionController.baseMapLayer.getTile(x,y).setAllowingMove(false);
         actionController.secondaryMapLayer.getStaticLayer().add(chest);
         return chest;
@@ -104,7 +103,7 @@ public class GameObjectFactory {
     public Enemy createEnemy(int x, int y) {
         DecisionMaking ai = new DecisionMaking(actionController);
         Enemy enemy = new Enemy(actionController, x, y, 50, 2, 5, 50, rand.nextBoolean(), ai);
-        enemy.setTexture(split_20p[0][7]);
+        enemy.setTexture(factory.knight);
         actionController.baseMapLayer.getTile(x,y).setAllowingMove(false);
         actionController.secondaryMapLayer.getActorLayer().add(enemy);
         return enemy;
@@ -123,7 +122,6 @@ public class GameObjectFactory {
      */
     public void dispose() {
         objects_20p.dispose();
-        objects_16p.dispose();
     }
 
 }
