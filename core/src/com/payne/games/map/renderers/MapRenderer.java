@@ -92,6 +92,12 @@ public class MapRenderer {
             }
         }
 
+        /*
+        todo: possible surround the Tile rendering with "disableBlending" and then add the stretched
+        lightMap with GaussianBlur over-top?
+        https://github.com/crashinvaders/gdx-vfx
+         */
+
 
         /* Drawing the secondary layer. */
         for (Static gameObject : secondaryMapLayer.getStaticLayer()) {
