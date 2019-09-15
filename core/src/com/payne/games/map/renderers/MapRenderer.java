@@ -151,6 +151,7 @@ public class MapRenderer {
 
     /**
      * Used temporarily to help draw HP bars. todo: actually integrate it properly through SpriteSheet and TextureRegion
+     * todo: or look into  https://github.com/earlygrey/shapedrawer  to integrate between batch 'being' and 'end'.
      *
      * @param batch the SpriteBatch to draw with.
      * @param owner the Actor which will be used to draw relative to its position.
