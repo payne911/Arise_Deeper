@@ -1,21 +1,25 @@
 INCREMENTS:
     - FloodFiller inside the MapGenerator (spills Water on Floor Tiles randomly)
-    - RayCasting algo inside the SightSystem
     - Interrupt MoveActions when a new Actor appears in sight
+    - More level-generating algorithms
 
 
 ADDITIONS:
     - Integrate Animations
+    - Lerp for the MoveActions
+    - Dynamic placement of objects in SecondaryLayer (including Enter/Exit doors)
 
 
 REFACTORS:
-    - Integrate AssetManager
-    - Set up the TextureAtlas
+    - Tileset should stop using the "TextureRegion.split()" and use ImageFactory instead
 
 
 UNCERTAINTIES:
     - Use a Pool for Actions (in TurnManager or ActionIssuer?)      to prevent using `new` all the time ???
     - "notify()" on GameObjects so that Actions can know if they should interrupt themselves (a state has changed)
+    - Builder pattern for the Settings in MainMenuScreen
+    - Observer pattern for the animations's callback
+    - Complete MVC by creating "Layer" classes for each map layer?
 
 
 
@@ -31,6 +35,6 @@ CLASSES:
     - Rock elemental (can pick up the rocks on the ground Tiles)
 
 
-==============IDEAS==============
+=============CREDITS=============
 Thanks:
     - TEttinger#4280: assets (Dawnlike + divided Dungeon tileset) and FOV
