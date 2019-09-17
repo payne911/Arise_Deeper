@@ -5,7 +5,7 @@ INCREMENTS:
 
 
 ADDITIONS:
-    - Integrate Animations
+    - Integrate Animations and a Particle system
     - Lerp for the MoveActions
     - Dynamic placement of objects in SecondaryLayer (including Enter/Exit doors)
 
