@@ -103,16 +103,10 @@ public class ActionController {
         if (!GameLogic.DEBUG_NO_FOG && !baseMapLayer.tileWasExplored(x,y)) // tile wasn't explored : abort
             return;
 
-        if (baseMapLayer.tileIsInSight(x,y)) {
+        if (findGameObject(player, x, y, baseMapLayer.tileIsInSight(x,y))) // finding if a GameObject was clicked for an interaction
+            return;
 
-            if (findGameObject(player, x, y)) // finding if a GameObject was clicked for an interaction
-                return;
-
-            moveTo(player, x, y); // clicked on a tile with no GameObjects on it : just walk there
-
-        } else { // clicked on an explored (but not in sight) tile : just walk there
-            moveTo(player, x, y);
-        }
+        moveTo(player, x, y); // in any case : try to walk there
     }
 
     /**
@@ -147,9 +141,10 @@ public class ActionController {
      * @param player The player's Hero.
      * @param x x-coordinate of the player's tap.
      * @param y y-coordinate of the player's tap.
+     * @param isInSight 'true' if the click happened on a tile that is in sight.
      * @return 'true' if the tap was handled.
      */
-    private boolean findGameObject(Actor player, int x, int y) {
+    private boolean findGameObject(Actor player, int x, int y, boolean isInSight) {
 
         /* Actors take priority over Static objects. */
         GameObject objAt = secondaryMapLayer.findActorAt(x, y);
@@ -163,15 +158,17 @@ public class ActionController {
         if (successfulInteraction)
             return true; // an interaction happened: we're done handling the tap
 
-        Tile from = baseMapLayer.getTile(player.getX(), player.getY());
-        Tile to   = baseMapLayer.getTile(x, y);
-        Tile next = findNextMove(from, to);
-        if(next != null) { // there is a path that leads to the GameObject
-            actionIssuer.interactiveMove(player, objAt, from, next, to);
-            return true; // we're done handling the tap
+        if(isInSight || objAt.renderInFog()) { // if player can "see" the object, try to move there
+            Tile from = baseMapLayer.getTile(player.getX(), player.getY());
+            Tile to = baseMapLayer.getTile(x, y);
+            Tile next = findNextMove(from, to);
+            if (next != null) { // there is a path that leads to the GameObject
+                actionIssuer.interactiveMove(player, objAt, from, next, to);
+                return true; // we're done handling the tap
+            }
         }
 
-        return true; // found a GameObject, but nothing could be done : we're done handling the tap
+        return false; // found a GameObject, but player can't see it
     }
 
 
