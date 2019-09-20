@@ -8,7 +8,12 @@ public class Wall extends Tile {
 
     public Wall(int x, int y) {
         super(x, y);
-        setAllowingMove(false);
+        super.setAllowingMove(false);
+    }
+
+    @Override
+    public void setAllowingMove(boolean allowingMove) {
+        // we do not allow for Walls to be moved through
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.payne.games.actions.commands;
 
 import com.payne.games.actions.Action;
 import com.payne.games.gameObjects.actors.Actor;
+import com.payne.games.gameObjects.actors.ActorState;
 
 
 public class AttackAction extends Action {
@@ -19,6 +20,7 @@ public class AttackAction extends Action {
 
     @Override
     public boolean executeAction() {
+        source.setState(ActorState.ATTACKING);
         target.takeHit(source, dmg);
         return true;
     }

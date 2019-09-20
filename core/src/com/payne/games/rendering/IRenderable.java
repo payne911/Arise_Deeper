@@ -1,4 +1,4 @@
-package com.payne.games.map.renderers;
+package com.payne.games.rendering;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
@@ -24,6 +24,18 @@ public interface IRenderable {
     int getY();
 
     /**
+     * @param x The current "logical" position of the unit (ignores intermediary positions
+     *          that occur while the entity is moving). Given in tile-coordinates.
+     */
+    void setX(int x);
+
+    /**
+     * @param y The current "logical" position of the unit (ignores intermediary positions
+     *          that occur while the entity is moving). Given in tile-coordinates.
+     */
+    void setY(int y);
+
+    /**
      * @return The image that will be used to draw this object at its current location.
      */
     TextureRegion getTexture();
@@ -34,4 +46,12 @@ public interface IRenderable {
      * @param texture An image which can be used to draw the object at its current location.
      */
     void setTexture(TextureRegion texture);
+
+    /**
+     * Non-zero when the TextureRegion exceeds a Tile's size.
+     *
+     * @return The offset, in pixels, compared to a Tile's origin.
+     */
+    int getPermanentOriginOffset();
+
 }

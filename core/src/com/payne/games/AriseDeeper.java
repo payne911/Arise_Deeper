@@ -120,7 +120,7 @@ public class AriseDeeper extends Game {
 			batch.end();
 
 			if(finishedLoading) {
-			    assets.setUpImageFactory();
+			    assets.setUpAssetsPool();
                 setInitialScreen();
             }
 		}

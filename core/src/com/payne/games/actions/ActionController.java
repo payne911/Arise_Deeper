@@ -2,7 +2,7 @@ package com.payne.games.actions;
 
 import com.payne.games.gameObjects.GameObject;
 import com.payne.games.gameObjects.actors.Actor;
-import com.payne.games.gameObjects.actors.Hero;
+import com.payne.games.gameObjects.actors.entities.Hero;
 import com.payne.games.gameObjects.statics.Static;
 import com.payne.games.logic.Controller;
 import com.payne.games.logic.GameLogic;
@@ -10,21 +10,30 @@ import com.payne.games.map.BaseMapLayer;
 import com.payne.games.map.SecondaryMapLayer;
 import com.payne.games.map.tiles.Tile;
 import com.payne.games.map.pathfinding.MyIndexedGraph;
+import com.payne.games.rendering.InterpolationModule;
+import com.payne.games.rendering.animations.AnimationManager;
+import com.payne.games.rendering.animations.IAnimated;
+import com.payne.games.rendering.animations.IObservable;
 
 
 /**
  * Acts as a general controller for the Actions and GameObjects (this class is accessible in both of those).
  */
 public class ActionController {
-    public ActionIssuer actionIssuer = new ActionIssuer();
+    public InterpolationModule interpolationModule;
+    public AnimationManager animationManager;
+    public ActionIssuer actionIssuer;
     public BaseMapLayer baseMapLayer;
     public SecondaryMapLayer secondaryMapLayer;
     private Controller controller;
     private MyIndexedGraph indexedGraph;
 
 
-    public ActionController(Controller controller) {
+    public ActionController(Controller controller, AnimationManager animationManager, InterpolationModule interpolationModule) {
         this.controller = controller;
+        this.animationManager = animationManager;
+        this.interpolationModule = interpolationModule;
+        this.actionIssuer = new ActionIssuer();
     }
 
 
@@ -57,6 +66,18 @@ public class ActionController {
         Actor actorAt = secondaryMapLayer.findActorAt(object.getX(), object.getY());
         if(actorAt == null)
             baseMapLayer.getTile(object.getX(), object.getY()).setAllowingMove(true);
+    }
+
+    /**
+     * Sets up the Observer pattern for a new subject.
+     *
+     * @param newSubject a newly created GameObject that should be observed.
+     */
+    public void initObservers(IObservable newSubject) {
+        if (newSubject instanceof IAnimated) {
+            newSubject.registerObserver(animationManager);
+            animationManager.add((IAnimated)newSubject);
+        }
     }
 
     /**
@@ -199,7 +220,7 @@ public class ActionController {
         Tile to   = baseMapLayer.getTile(x, y);
 
         /* Assigning MoveActions accordingly. */
-        Tile next = findNextTile(from, to);
+        Tile next = findNextMove(from, to);
         if(next != null)
             actionIssuer.move(actor, from, next, to);
     }

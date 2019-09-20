@@ -1,8 +1,9 @@
-package com.payne.games.map.renderers;
+package com.payne.games.rendering;
 
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.payne.games.map.tilesets.SubclassTileAssigner;
 import com.payne.games.gameObjects.actors.Actor;
 import com.payne.games.gameObjects.statics.Static;
 import com.payne.games.logic.GameLogic;
@@ -14,6 +15,7 @@ import com.payne.games.map.tilesets.Tileset;
 
 
 public class MapRenderer {
+
     // Temporary HP bars    todo: remove this and implement with SpriteSheet ?
     private final int HP_WIDTH  = (int)(GameLogic.TILE_SIZE *.75);
     private final int HP_HEIGHT = GameLogic.TILE_SIZE/6;
@@ -107,8 +109,8 @@ public class MapRenderer {
             drawAtMapCoordinate(batch, gameObject);
 
             /* HP Bars. */
-            drawAtOffsetCoordinate(batch, gameObject, HP_BACKGROUND, HP_WIDTH);
-            drawAtOffsetCoordinate(batch, gameObject, HP_PROGRESS, (float)gameObject.getCurrHp()/gameObject.getMaxHp()*HP_WIDTH);
+            drawStretched(batch, gameObject, HP_BACKGROUND, HP_WIDTH);
+            drawStretched(batch, gameObject, HP_PROGRESS, (float)gameObject.getCurrHp()/gameObject.getMaxHp()*HP_WIDTH);
         }
 
 
@@ -127,8 +129,23 @@ public class MapRenderer {
 
         if(shouldDraw)
             batch.draw(toRender.getTexture(),
-                    Utils.tileToPixels(toRender.getX()),
-                    Utils.tileToPixels(toRender.getY()));
+                    Utils.tileToPixels(toRender.getX()) - toRender.getPermanentOriginOffset(),
+                    Utils.tileToPixels(toRender.getY()) - toRender.getPermanentOriginOffset());
+    }
+
+    /**
+     * Draws the TextureRegion using the map's coordinate system (tile coordinates, not pixel coordinates).
+     *
+     * @param batch Used to draw.
+     * @param toRender A renderable object.
+     */
+    private void drawAtMapCoordinate(SpriteBatch batch, IInterpolatable toRender) {
+        boolean shouldDraw = determineFogOfWarOverlay(batch, toRender);
+
+        if(shouldDraw)
+            batch.draw(toRender.getTexture(),
+                    toRender.getCurrentX(),
+                    toRender.getCurrentY());
     }
 
     /**
@@ -158,13 +175,13 @@ public class MapRenderer {
      * @param toRender the Texture to be drawn.
      * @param x_stretch stretch along the x axis, in pixels.
      */
-    private void drawAtOffsetCoordinate(SpriteBatch batch, Actor owner, Texture toRender, float x_stretch) {
+    private void drawStretched(SpriteBatch batch, Actor owner, Texture toRender, float x_stretch) {
         boolean shouldDraw = determineFogOfWarOverlay(batch, owner);
 
         if(shouldDraw)
             batch.draw(toRender,
-                    GameLogic.AESTHETIC_OFFSET + (int)(GameLogic.TILE_SIZE*.125) + owner.getX()*GameLogic.TILE_SIZE,
-                    GameLogic.AESTHETIC_OFFSET - (int)(GameLogic.TILE_SIZE*.1)   + owner.getY()*GameLogic.TILE_SIZE,
+                    owner.getCurrentX() + owner.getPermanentOriginOffset() + (int)(GameLogic.TILE_SIZE*.125),
+                    owner.getCurrentY() - (int)(GameLogic.TILE_SIZE*.1),
                     x_stretch,
                     HP_HEIGHT);
     }

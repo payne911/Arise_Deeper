@@ -2,6 +2,7 @@ package com.payne.games.actions.commands;
 
 import com.payne.games.actions.Action;
 import com.payne.games.gameObjects.actors.Actor;
+import com.payne.games.gameObjects.actors.ActorState;
 
 
 /**
@@ -18,6 +19,7 @@ public class WakeUpAction extends Action {
     @Override
     public boolean executeAction() {
         System.out.println("Awakened: " + getSource().toString());
+        source.setState(ActorState.IDLE);
         return true;
     }
 

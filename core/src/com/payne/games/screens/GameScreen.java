@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Array;
 import com.payne.games.AriseDeeper;
 import com.payne.games.assets.Assets;
-import com.payne.games.assets.ImageFactory;
+import com.payne.games.assets.AssetsPool;
 import com.payne.games.logic.GameLogic;
 import com.payne.games.logic.Controller;
 import com.payne.games.map.tilesets.BasicTileset;
@@ -122,8 +122,8 @@ public class GameScreen implements Screen {
         game.returnToPreviousScreen();
     }
 
-    public ImageFactory getImageFactory() {
-        return game.assets.factory;
+    public AssetsPool getAssetsPool() {
+        return game.assets.pool;
     }
 
     @Override
@@ -166,8 +166,8 @@ public class GameScreen implements Screen {
         /* Turn system. */
         if(currTime >= GameLogic.TURN_TIME) {
             currTime = 0f;
+            controller.updateLighting(); // lighting before because of interpolated movement
             controller.processTurn();
-            controller.updateLighting();
             controller.updateUi();
         } else {
             currTime += delta;
@@ -181,7 +181,7 @@ public class GameScreen implements Screen {
 
         /* Actual map rendering. */
         game.batch.begin();
-        controller.renderLevel(game.batch);
+        controller.renderLevel(game.batch, delta);
 
         /* Debugging text. */
         game.font.draw(game.batch,

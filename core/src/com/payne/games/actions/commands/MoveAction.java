@@ -2,6 +2,7 @@ package com.payne.games.actions.commands;
 
 import com.payne.games.actions.Action;
 import com.payne.games.gameObjects.actors.Actor;
+import com.payne.games.gameObjects.actors.ActorState;
 import com.payne.games.map.tiles.Tile;
 
 
@@ -68,9 +69,15 @@ public class MoveAction extends Action {
      * Takes care of modifying the walkability-state of the associated Tiles as well.
      */
     protected void move() {
+
+        /* Setting up the interpolated movement. */
+        controller.interpolationModule.add(source);
+        source.setState(ActorState.MOVING);
+        source.setMovingToX(next.getX());
+        source.setMovingToY(next.getY());
+
+        /* Adjusting the tiles' values for the pathfinding. */
         from.setAllowingMove(true);
-        source.setX(next.getX());
-        source.setY(next.getY());
         next.setAllowingMove(false);
     }
 

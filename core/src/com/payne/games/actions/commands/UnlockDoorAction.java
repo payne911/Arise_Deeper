@@ -1,8 +1,8 @@
 package com.payne.games.actions.commands;
 
 import com.payne.games.gameObjects.actors.Actor;
-import com.payne.games.gameObjects.statics.Door;
-import com.payne.games.gameObjects.statics.Key;
+import com.payne.games.gameObjects.statics.entities.Door;
+import com.payne.games.gameObjects.statics.entities.Key;
 import com.payne.games.inventory.IPickable;
 
 

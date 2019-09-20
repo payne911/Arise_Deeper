@@ -18,7 +18,10 @@ public final class GameLogic { /* Can't be inherited. */
 
     // Strings
     public static final String GAME_NAME = "Arise Deeper";
-    public static final String BASIC_TILESET = "spriteSheets/dungeon_tileset.png";
+    public static final String SKIN_PATH = "skin/uiskin.json";
+    public static final String ATLAS_PATH = "atlas/assets.atlas";
+    public static final String LOADING_PATH = "splash_screen.png";
+    @Deprecated  public static final String BASIC_TILESET = "spriteSheets/dungeon_tileset.png";
 
     // seeded "random" generators
     public static final int RANDOM_SEED = 1337;
@@ -31,6 +34,7 @@ public final class GameLogic { /* Can't be inherited. */
     // tiles
     public static final int TILE_SIZE = 16;
     public static final int TILE_BIG_SIZE = 20;
+    public static final int TILE_OFFSET = (TILE_BIG_SIZE - TILE_SIZE)/2;
 
     // tile wall-connection bitmasks
     public static final int NORTH = 1;  // 0001
@@ -40,15 +44,17 @@ public final class GameLogic { /* Can't be inherited. */
 
     // camera
     public static final float CAM_ZOOM = 0.5f;
+    public static final float CAM_OFFSET = TILE_BIG_SIZE/2f; // TILE_OFFSET + (TILE_SIZE/2f)
 
     // turn
     public static final float TURN_TIME = 0.07f;
     public static final int TURN_GENERAL_COST = 50;
+    public static final float MOVE_SPEED = TILE_SIZE/TURN_TIME;
 
     // inventory
     public static final int INV_SLOTS = 4;
 
     // lighting system (Line of Sight / Fog of War)
     public static final float LOS_MIN_ALPHA = 0.4f; // [0,1] range
-    public static final float FOG_ALPHA = 0.65f; // [0,1] range
+    public static final float FOG_ALPHA = 0.7f; // [0,1] range
 }

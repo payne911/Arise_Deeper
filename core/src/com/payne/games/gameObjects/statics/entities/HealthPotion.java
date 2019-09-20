@@ -1,6 +1,7 @@
-package com.payne.games.gameObjects.statics;
+package com.payne.games.gameObjects.statics.entities;
 
 import com.payne.games.actions.ActionController;
+import com.payne.games.gameObjects.statics.Potion;
 
 
 public class HealthPotion extends Potion {

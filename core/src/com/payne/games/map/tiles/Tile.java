@@ -4,16 +4,18 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.payne.games.gameObjects.GameObject;
 import com.payne.games.logic.GameLogic;
-import com.payne.games.map.renderers.IRenderable;
+import com.payne.games.rendering.IRenderable;
 import com.payne.games.map.tilesets.Tileset;
 
 
 public abstract class Tile implements IRenderable {
     private int bitmask = 0; // wall connections
     private int x, y;
-    private TextureRegion texture;
     private boolean allowingMove;
     private Array<Tile> neighbors = new Array<>();
+
+    // view
+    private TextureRegion texture;
 
     // pathfinding
     private int graphIndex = -1;
@@ -26,6 +28,11 @@ public abstract class Tile implements IRenderable {
     }
     public void setFogAlpha(float fogAlpha) {
         this.fogAlpha = fogAlpha;
+    }
+
+    @Override
+    public int getPermanentOriginOffset() {
+        return 0;
     }
 
     public Tile(int x, int y) {
@@ -171,9 +178,19 @@ public abstract class Tile implements IRenderable {
         this.allowingMove = allowingMove;
     }
 
+    @Override
+    public void setX(int x) {
+        this.x = x;
+    }
+    @Override
+    public void setY(int y) {
+        this.y = y;
+    }
+    @Override
     public int getX() {
         return x;
     }
+    @Override
     public int getY() {
         return y;
     }

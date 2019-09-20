@@ -5,6 +5,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.payne.games.logic.GameLogic;
 
 
 /**
@@ -15,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
  */
 public class Assets {
     public AssetManager manager = new AssetManager();
-    public ImageFactory factory;
+    public AssetsPool pool;
 
 
 
@@ -23,21 +24,21 @@ public class Assets {
      * The image displayed while loading the assets.
      */
     public static final AssetDescriptor<Texture> LOADING_IMAGE =
-            new AssetDescriptor<>("splash_screen.png", Texture.class);
+            new AssetDescriptor<>(GameLogic.LOADING_PATH, Texture.class);
 
 
     /**
      * Texture Atlas: contains all the game's assets.
      */
     public static final AssetDescriptor<TextureAtlas> ATLAS =
-            new AssetDescriptor<>("wip/master_asset_manager/assets.atlas", TextureAtlas.class);
+            new AssetDescriptor<>(GameLogic.ATLAS_PATH, TextureAtlas.class);
 
 
     /**
      * Skin (UI).
      */
     public static final AssetDescriptor<Skin> UI_SKIN =
-            new AssetDescriptor<>("skin/uiskin.json", Skin.class);
+            new AssetDescriptor<>(GameLogic.SKIN_PATH, Skin.class);
 
 
     /**
@@ -58,8 +59,8 @@ public class Assets {
         manager.finishLoading();
     }
 
-    public void setUpImageFactory() {
-        factory = new ImageFactory(manager.get(ATLAS));
+    public void setUpAssetsPool() {
+        pool = new AssetsPool(manager.get(ATLAS));
     }
 
 

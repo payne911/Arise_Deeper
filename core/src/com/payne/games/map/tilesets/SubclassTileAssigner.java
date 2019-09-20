@@ -1,5 +1,4 @@
-package com.payne.games.map.renderers;
-
+package com.payne.games.map.tilesets;
 
 import com.payne.games.map.BaseMapLayer;
 import com.payne.games.map.tiles.Floor;

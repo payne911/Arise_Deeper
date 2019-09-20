@@ -5,14 +5,15 @@ import com.payne.games.actions.ActionController;
 import com.payne.games.gameObjects.GameObject;
 import com.payne.games.inventory.Inventory;
 import com.payne.games.actions.Action;
+import com.payne.games.rendering.animations.IAnimatedStates;
 
 
-public abstract class Actor extends GameObject {
+public abstract class Actor extends GameObject implements IAnimatedStates<ActorState> {
     protected Queue<Action> actions = new Queue<>(); // all the Actions the Actor wants to see executed
     private int priority = 2; // used by the MinHeap of the TurnManager to determine who goes first in case of equality
 
     // states
-    private boolean sleeping = false;
+    private ActorState currentState;
     private int rangeOfSight = 6; // how far the Actor can see in a straight line (1 means only its own cell)
     private boolean invincible = false;
     private int maxHp;
@@ -36,6 +37,21 @@ public abstract class Actor extends GameObject {
     }
 
 
+    @Override
+    public void setState(ActorState state) {
+        if(currentState != state) {
+            currentState = state;
+            setAnimation(animationMap.get(currentState));
+            resetDelta();
+
+            notifyObservers();
+        }
+    }
+
+    @Override
+    public boolean canBeWalkedThrough() {
+        return false; // by default, an Actor takes space on a tile
+    }
 
     /**
      * Method used to deal damage to an Actor.
@@ -59,6 +75,7 @@ public abstract class Actor extends GameObject {
      */
     public void die(Actor killer) {
         clearActionsQueue();
+        setState(ActorState.DYING);
         // todo: clear all actions (of other Actors) that related to this now-dead Actor
     }
 
@@ -204,20 +221,19 @@ public abstract class Actor extends GameObject {
     }
 
     public boolean isSleeping() {
-        return sleeping;
+        return currentState == ActorState.SLEEPING;
     }
-    public void setSleeping(boolean sleeping) {
-        this.sleeping = sleeping;
+    public boolean isMoving() {
+        return currentState == ActorState.MOVING;
     }
-
-
 
 
     @Override
     public String toString() {
         return "Actor{" +
-                "position= (" + getX() + "," + getY() + ") " +
+                "position=(" + getX() + "," + getY() + ") " +
                 ", texture=" + getTexture().toString() +
+                ", currentState=" + currentState +
                 '}';
     }
 }

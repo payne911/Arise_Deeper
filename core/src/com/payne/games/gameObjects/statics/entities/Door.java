@@ -1,9 +1,10 @@
-package com.payne.games.gameObjects.statics;
+package com.payne.games.gameObjects.statics.entities;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.payne.games.actions.ActionController;
 import com.payne.games.gameObjects.actors.Actor;
+import com.payne.games.gameObjects.statics.Static;
 import com.payne.games.logic.Utils;
 
 
@@ -18,6 +19,10 @@ public class Door extends Static {
         this.isLocked = isLocked;
     }
 
+    @Override
+    public boolean renderInFog() {
+        return true;
+    }
 
     @Override
     public boolean tryInteractionFrom(Actor source) {
@@ -41,8 +46,12 @@ public class Door extends Static {
      */
     public boolean toggle() {
         isClosed = !isClosed;
-        System.out.println("Door was toggled. Now closed? " + isClosed);
         return isClosed;
+    }
+
+    @Override
+    public boolean canBeWalkedThrough() {
+        return !isClosed;
     }
 
     public boolean isClosed() {

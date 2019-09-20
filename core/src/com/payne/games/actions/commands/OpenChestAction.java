@@ -2,7 +2,7 @@ package com.payne.games.actions.commands;
 
 import com.payne.games.actions.Action;
 import com.payne.games.gameObjects.actors.Actor;
-import com.payne.games.gameObjects.statics.Chest;
+import com.payne.games.gameObjects.statics.entities.Chest;
 
 
 /**

@@ -1,6 +1,7 @@
-package com.payne.games.gameObjects.actors;
+package com.payne.games.gameObjects.actors.entities;
 
 import com.payne.games.actions.ActionController;
+import com.payne.games.gameObjects.actors.Actor;
 import com.payne.games.logic.Utils;
 import com.payne.games.actions.Action;
 

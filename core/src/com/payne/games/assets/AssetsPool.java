@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 
-public class ImageFactory {
+public class AssetsPool {
 
     /* Actors */
     public final TextureRegion knight;
@@ -52,15 +52,15 @@ public class ImageFactory {
     public final TextureRegion full_b;
     public final TextureRegion full_c;
 
-    public ImageFactory(TextureAtlas atlas) {
+    public AssetsPool(TextureAtlas atlas) {
 
         /* Actors */
         knight = atlas.findRegion("knight");
-        hero_red_attack = new Animation<TextureRegion>(0.033f, atlas.findRegions("hero_red_attack"), PlayMode.LOOP);
-        hero_red_death = new Animation<TextureRegion>(0.033f, atlas.findRegions("hero_red_death"), PlayMode.LOOP);
-        hero_red_idle = new Animation<TextureRegion>(0.033f, atlas.findRegions("hero_red_idle"), PlayMode.LOOP);
-        hero_red_interact = new Animation<TextureRegion>(0.033f, atlas.findRegions("hero_red_interact"), PlayMode.LOOP);
-        hero_red_walk = new Animation<TextureRegion>(0.033f, atlas.findRegions("hero_red_walk"), PlayMode.LOOP);
+        hero_red_attack = new Animation<TextureRegion>(0.03f, atlas.findRegions("hero_red_attack"), PlayMode.NORMAL);
+        hero_red_death = new Animation<TextureRegion>(0.18f, atlas.findRegions("hero_red_death"), PlayMode.NORMAL);
+        hero_red_idle = new Animation<TextureRegion>(0.2f, atlas.findRegions("hero_red_idle"), PlayMode.LOOP_PINGPONG);
+        hero_red_interact = new Animation<TextureRegion>(0.15f, atlas.findRegions("hero_red_interact"), PlayMode.NORMAL);
+        hero_red_walk = new Animation<TextureRegion>(0.05f, atlas.findRegions("hero_red_walk"), PlayMode.LOOP);
 
         /* Statics */
         key = atlas.findRegion("key");
@@ -74,7 +74,7 @@ public class ImageFactory {
         /* Props */
         barrel = atlas.findRegion("barrel");
         box_small = atlas.findRegion("box_small");
-        flame = new Animation<TextureRegion>(0.033f, atlas.findRegions("flame"), PlayMode.LOOP);
+        flame = new Animation<TextureRegion>(0.075f, atlas.findRegions("flame"), PlayMode.LOOP);
 
         /* Alpha */
         pixel_full_alpha = atlas.findRegion("pixel_full_alpha");

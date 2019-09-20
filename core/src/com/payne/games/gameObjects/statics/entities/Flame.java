@@ -1,14 +1,15 @@
-package com.payne.games.gameObjects.statics;
+package com.payne.games.gameObjects.statics.entities;
 
 import com.payne.games.actions.ActionController;
 import com.payne.games.gameObjects.actors.Actor;
+import com.payne.games.gameObjects.statics.Static;
+import com.payne.games.rendering.animations.IAnimated;
 
 
 /**
  * Just a decoration sprite. The Tile becomes non-walkable.
- * todo: animate
  */
-public class Flame extends Static {
+public class Flame extends Static implements IAnimated {
 
 
     public Flame(ActionController actionController, int x, int y) {
@@ -17,6 +18,11 @@ public class Flame extends Static {
 
     @Override
     public boolean tryInteractionFrom(Actor source) {
+        return false;
+    }
+
+    @Override
+    public boolean canBeWalkedThrough() {
         return false;
     }
 }

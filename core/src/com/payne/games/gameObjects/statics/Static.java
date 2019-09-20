@@ -14,5 +14,8 @@ public abstract class Static extends GameObject {
         super(actionController, x, y);
     }
 
-
+    @Override
+    public boolean canBeWalkedThrough() {
+        return true; // by default, a Static can be walked through
+    }
 }

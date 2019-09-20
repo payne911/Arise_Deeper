@@ -6,6 +6,7 @@ import com.payne.games.actions.ActionController;
 import com.payne.games.actions.Action;
 import com.payne.games.actions.commands.NoopAction;
 import com.payne.games.actions.commands.WakeUpAction;
+import com.payne.games.gameObjects.actors.ActorState;
 
 
 public class DecisionMaking {
@@ -32,8 +33,8 @@ public class DecisionMaking {
             return src.getNextAction();
 
         if(src.isSleeping()) {
-            boolean awakened = wakeUp(src);
-            if(awakened)
+            boolean shouldWakeUp = rand.nextBoolean();
+            if(shouldWakeUp)
                 return new WakeUpAction(src);
             else
                 return new NoopAction(src);
@@ -41,20 +42,5 @@ public class DecisionMaking {
             actionController.moveToRandomPoint(src);
             return src.getNextAction();
         }
-    }
-
-
-    /**
-     * Decides whether or not to wake up this enemy.
-     *
-     * @param src the Actor.
-     * @return 'true' if the Actor was awakened.
-     */
-    private boolean wakeUp(Actor src) {
-        boolean isWakingUp = rand.nextBoolean();
-        if(isWakingUp) {
-            src.setSleeping(false);
-        }
-        return isWakingUp;
     }
 }

@@ -2,7 +2,7 @@ package com.payne.games.turns;
 
 import com.badlogic.gdx.utils.BinaryHeap;
 import com.payne.games.gameObjects.actors.Actor;
-import com.payne.games.gameObjects.actors.Hero;
+import com.payne.games.gameObjects.actors.entities.Hero;
 import com.payne.games.logic.GameLogic;
 import com.payne.games.map.SecondaryMapLayer;
 import com.payne.games.actions.Action;
@@ -44,7 +44,7 @@ public class TurnManager {
             shouldRunAgain = checkIfShouldRunAnotherTurn();
         } while(shouldRunAgain);
 
-        /* If waiting on input, we want to allow the player to freely explore the map with drag. */
+        /* If waiting on input, the hero returns to its "IDLE" state. */
         return waitingOnPlayerInput;
     }
 

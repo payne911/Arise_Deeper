@@ -4,9 +4,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.utils.Array;
-import com.payne.games.assets.ImageFactory;
+import com.payne.games.assets.AssetsPool;
 import com.payne.games.gameObjects.GameObjectFactory;
-import com.payne.games.gameObjects.actors.Hero;
+import com.payne.games.gameObjects.actors.ActorState;
+import com.payne.games.gameObjects.actors.entities.Hero;
 import com.payne.games.inventory.Inventory;
 import com.payne.games.actions.ActionController;
 import com.payne.games.inventory.HeroInventoryWrapper;
@@ -14,18 +15,24 @@ import com.payne.games.lightingSystem.SightSystem;
 import com.payne.games.map.BaseMapLayer;
 import com.payne.games.map.SecondaryMapLayer;
 import com.payne.games.map.generators.MapGenerator;
-import com.payne.games.map.renderers.MapRenderer;
+import com.payne.games.rendering.InterpolationModule;
+import com.payne.games.rendering.MapRenderer;
 import com.payne.games.map.tiles.Tile;
 import com.payne.games.map.tilesets.Tileset;
+import com.payne.games.rendering.animations.AnimationManager;
 import com.payne.games.screens.GameScreen;
 import com.payne.games.turns.TurnManager;
 
 
 public class Controller {
-    private ImageFactory imageFactory;
+    private final AssetsPool assetsPool;
     private GameScreen gameScreen;
     private MapRenderer mapRenderer;
     private OrthographicCamera camera;
+
+    // animations
+    private AnimationManager animationManager;
+    private InterpolationModule interpolationModule;
 
     // map's primary layer
     private BaseMapLayer currentLevel;
@@ -52,18 +59,20 @@ public class Controller {
     public Controller(GameScreen gameScreen, OrthographicCamera camera, Array<ImageTextButton> inventorySlots) {
         this.camera         = camera;
         this.gameScreen     = gameScreen;
-        this.imageFactory   = gameScreen.getImageFactory();
+        this.assetsPool     = gameScreen.getAssetsPool();
         this.inventorySlots = inventorySlots;
 
-        mapGenerator      = new MapGenerator();
-        actionController  = new ActionController(this);
-        gameObjectFactory = new GameObjectFactory(actionController, imageFactory);
+        mapGenerator        = new MapGenerator();
+        animationManager    = new AnimationManager();
+        interpolationModule = new InterpolationModule();
+        actionController    = new ActionController(this, animationManager, interpolationModule);
+        gameObjectFactory   = new GameObjectFactory(actionController, assetsPool);
         createHero(); // todo: this will change at some point!
-        secondaryMapLayer = new SecondaryMapLayer(gameObjectFactory);
+        secondaryMapLayer   = new SecondaryMapLayer(gameObjectFactory);
         actionController.setSecondaryMapLayer(secondaryMapLayer);
-        sightSystem       = new SightSystem();
-        mapRenderer       = new MapRenderer(secondaryMapLayer);
-        turnManager       = new TurnManager(secondaryMapLayer);
+        sightSystem         = new SightSystem();
+        mapRenderer         = new MapRenderer(secondaryMapLayer);
+        turnManager         = new TurnManager(secondaryMapLayer);
     }
 
 
@@ -75,10 +84,8 @@ public class Controller {
      */
     public void processTurn() {
         boolean waitingOnPlayer = turnManager.executeTurn();
-        if (!waitingOnPlayer) {
-            centerOnHero();
-        } else {
-            // todo: save game state
+        if (waitingOnPlayer) {
+            player.setState(ActorState.IDLE);
         }
     }
 
@@ -107,8 +114,8 @@ public class Controller {
      */
     public void centerOnHero() {
         if(player != null) {
-            camera.position.set(Utils.tileToPixels(player.getX()),
-                    Utils.tileToPixels(player.getY()),
+            camera.position.set(player.getCurrentX() + GameLogic.CAM_OFFSET,
+                    player.getCurrentY() + GameLogic.CAM_OFFSET,
                     0f);
         }
     }
@@ -145,9 +152,15 @@ public class Controller {
      * Each layer of the Level are to be rendered.
      *
      * @param batch the instance of "game.batch" on which was called the ".begin()" beforehand.
+     * @param delta amount of time since last render.
      */
-    public void renderLevel(SpriteBatch batch) {
+    public void renderLevel(SpriteBatch batch, float delta) {
+        animationManager.updateAnimations(delta);
+        interpolationModule.moveAllObjects(delta);
         mapRenderer.renderLevel(batch);
+
+        if(player.isMoving())
+            centerOnHero();
     }
 
     /**
@@ -185,7 +198,6 @@ public class Controller {
      */
     public void dispose() {
         mapRenderer.dispose();
-        gameObjectFactory.dispose();
     }
 
 

@@ -3,8 +3,8 @@ package com.payne.games.actions;
 import com.payne.games.actions.commands.*;
 import com.payne.games.gameObjects.GameObject;
 import com.payne.games.gameObjects.actors.Actor;
-import com.payne.games.gameObjects.statics.Chest;
-import com.payne.games.gameObjects.statics.Door;
+import com.payne.games.gameObjects.statics.entities.Chest;
+import com.payne.games.gameObjects.statics.entities.Door;
 import com.payne.games.inventory.IPickable;
 import com.payne.games.map.tiles.Tile;
 
@@ -14,7 +14,6 @@ import com.payne.games.map.tiles.Tile;
  * Decouples the GameObjects from the Actions themselves.
  */
 public class ActionIssuer {
-
 
     public ActionIssuer() {
     }

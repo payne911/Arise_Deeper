@@ -1,7 +1,8 @@
-package com.payne.games.gameObjects.statics;
+package com.payne.games.gameObjects.statics.entities;
 
 import com.payne.games.actions.ActionController;
 import com.payne.games.gameObjects.actors.Actor;
+import com.payne.games.gameObjects.statics.Static;
 import com.payne.games.logic.Utils;
 
 
@@ -15,6 +16,10 @@ public class Chest extends Static {
         super(actionController, x, y);
     }
 
+    @Override
+    public boolean canBeWalkedThrough() {
+        return false;
+    }
 
     @Override
     public boolean tryInteractionFrom(Actor source) {

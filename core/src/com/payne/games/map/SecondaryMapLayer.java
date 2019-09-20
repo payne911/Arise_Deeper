@@ -3,7 +3,7 @@ package com.payne.games.map;
 import com.badlogic.gdx.utils.Array;
 import com.payne.games.gameObjects.*;
 import com.payne.games.gameObjects.statics.Static;
-import com.payne.games.gameObjects.actors.Hero;
+import com.payne.games.gameObjects.actors.entities.Hero;
 import com.payne.games.gameObjects.actors.Actor;
 
 

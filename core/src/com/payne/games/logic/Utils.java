@@ -79,13 +79,14 @@ public final class Utils { /* Can't be inherited. */
     }
 
     /**
-     * To know if two GameObjects occupy the same Tile.
+     * To know if two GameObjects occupy the same Tile.<br>
+     * Uses the "movingTo()" variable to get the source's position.
      *
      * @param from the From object.
      * @param to the To object.
      * @return 'true' only if they are on the same Tile.
      */
     public static boolean occupySameTile(GameObject from, GameObject to) {
-        return (from.getX() == to.getX()) && (from.getY() == to.getY());
+        return (from.getMovingToX() == to.getX()) && (from.getMovingToY() == to.getY());
     }
 }
