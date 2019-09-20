@@ -2,22 +2,18 @@ package com.payne.games.actions.commands;
 
 import com.payne.games.actions.Action;
 import com.payne.games.gameObjects.GameObject;
-import com.payne.games.inventory.IPickable;
 import com.payne.games.gameObjects.actors.Actor;
+import com.payne.games.inventory.IPickable;
 
 
-/**
- * Picks up an item.
- */
-public class PickUpAction extends Action {
+public class DropAction extends Action {
     private IPickable object;
 
 
-    public PickUpAction(Actor source, IPickable object) {
+    public DropAction(Actor source, IPickable object) {
         super(source);
         this.object = object;
     }
-
 
     @Override
     public float getFatigueCostMultiplier() {
@@ -26,12 +22,11 @@ public class PickUpAction extends Action {
 
     @Override
     public boolean executeAction() {
-        boolean success = source.getInventory().addItem(object);
-        System.out.println("Pick up success: " + success);
+        IPickable dropping = source.getInventory().takeItem(object.getClass());
 
-        if(success){
-            ((GameObject)object).placeOutsideOfMap();
-        }
+        /* Placing the dropped item below the Source. */
+        ((GameObject) dropping).setX(source.getX());
+        ((GameObject) dropping).setY(source.getY());
 
         return true;
     }
@@ -39,7 +34,7 @@ public class PickUpAction extends Action {
 
     @Override
     public String toString() {
-        return "PickUpAction{" +
+        return "DropAction{" +
                 "object=" + object +
                 ", source=" + source +
                 '}';

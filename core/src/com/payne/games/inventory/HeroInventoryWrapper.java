@@ -1,8 +1,12 @@
 package com.payne.games.inventory;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
+import com.payne.games.actions.ActionController;
 import com.payne.games.gameObjects.GameObject;
+import com.payne.games.gameObjects.actors.entities.Hero;
 
 
 /**
@@ -11,13 +15,36 @@ import com.payne.games.gameObjects.GameObject;
 public class HeroInventoryWrapper {
     private Array<ImageTextButton> inventorySlots;
     private Inventory inventory;
+    private ActionController actionController;
+    private Hero hero;
 
 
-    public HeroInventoryWrapper(Array<ImageTextButton> inventorySlots, Inventory inventory) {
+    public HeroInventoryWrapper(Array<ImageTextButton> inventorySlots, Hero hero, ActionController actionController) {
         this.inventorySlots = inventorySlots;
-        this.inventory = inventory;
+        this.inventory = hero.getInventory();
+        this.actionController = actionController;
+        this.hero = hero;
+
+        setUpClickListeners();
     }
 
+
+    /**
+     * Setting up the "DropAction" when clicking a slot containing an item.
+     */
+    private void setUpClickListeners() {
+        for(int i=0; i < inventory.getCapacity(); i++) {
+            final int index = i;
+            inventorySlots.get(i).addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    IPickable item = inventory.getSlot(index).peek();
+                    if(item != null) // if slot isn't empty
+                        actionController.actionIssuer.dropItem(hero, item);
+                }
+            });
+        }
+    }
 
     /**
      * Updates the way the Inventory UI is displayed.

@@ -95,7 +95,7 @@ public class Controller {
      */
     public void createHero() {
         player = gameObjectFactory.createHero(0, 0, new Inventory(4));
-        heroInventoryWrapper = new HeroInventoryWrapper(inventorySlots, player.getInventory());
+        heroInventoryWrapper = new HeroInventoryWrapper(inventorySlots, player, actionController);
     }
 
 

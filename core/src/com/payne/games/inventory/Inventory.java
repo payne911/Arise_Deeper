@@ -83,7 +83,9 @@ public class Inventory {
     }
 
     /**
-     * Removes and returns the first item of the specified type. Uses the class name.
+     * Removes and returns the item of the specified type from the slot which
+     * contains the least amount of that item.<br>
+     * Uses the class name.
      *
      * @param item The researched item.
      * @return 'null' if no item of that type was found, else the item that was removed is returned.
@@ -97,19 +99,30 @@ public class Inventory {
     }
 
     /**
-     * To find the first index of a specified item. Uses the class name.
+     * To find the index of a specified item. Uses the class name.<br>
+     * Looks through the Inventory to find the Slot which contains the least
+     * amount of that item.<br>
+     * In other words, if two stackable slots of the same item exist,
+     * the smallest one is returned.
      *
      * @param item The researched item.
-     * @return The index where the item is. Could be "-1" if it isn't found.
+     * @return The index that designates which InventorySlots contains the specified item.
+     *         Returns "-1" if the Inventory doesn't contain such item.
      */
     private int findIndex(Class<? extends IPickable> item) {
-        // todo: if two stackable slots available, return the smallest stack's index
+        int min   = Integer.MAX_VALUE;
+        int index = -1;
 
+        InventorySlot currSlot;
         for (int i = 0; i < capacity; i++) {
-            if (getSlot(i).contains(item))
-                return i;
+            currSlot = getSlot(i);
+            if (currSlot.contains(item) && currSlot.getAmount() < min) {
+                index = i;
+                min = currSlot.getAmount();
+            }
         }
-        return -1;
+
+        return index;
     }
 
     /**

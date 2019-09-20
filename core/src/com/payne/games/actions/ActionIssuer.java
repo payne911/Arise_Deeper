@@ -48,6 +48,10 @@ public class ActionIssuer {
         source.addAction(new PickUpAction(source, object));
     }
 
+    public void dropItem(Actor source, IPickable object) {
+        source.addAction(new DropAction(source, object));
+    }
+
     public void skipTurn(Actor actor) {
         actor.addAction(new NoopAction(actor));
     }
