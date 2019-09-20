@@ -38,10 +38,19 @@ public class GameScreen implements Screen {
     public GameScreen(final AriseDeeper game) {
         System.out.println("game constructor");
         this.game   = game;
-        this.skin   = game.assets.manager.get(Assets.UI_SKIN);
-
-        setUpGameScreen();
     }
+    
+
+    @Override
+    public void show() {
+        System.out.println("game show");
+        this.skin   = game.assets.manager.get(Assets.UI_SKIN);
+        setUpGameScreen();
+        
+        Gdx.gl.glClearColor(0, 0, 0, 1); // black background
+        setUpInputProcessors();
+    }
+
 
 
     /**
@@ -125,14 +134,7 @@ public class GameScreen implements Screen {
     public AssetsPool getAssetsPool() {
         return game.assets.pool;
     }
-
-    @Override
-    public void show() {
-        System.out.println("game show");
-        Gdx.gl.glClearColor(0, 0, 0, 1); // black background
-        setUpInputProcessors();
-    }
-
+    
     /**
      * Performance tuning:<br>
      *

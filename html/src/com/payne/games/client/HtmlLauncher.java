@@ -5,6 +5,7 @@ import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
 import com.payne.games.AriseDeeper;
 import com.payne.games.logic.GameLogic;
+import com.payne.games.splashScreen.ISplashWorker;
 
 
 public class HtmlLauncher extends GwtApplication {
@@ -48,6 +49,13 @@ public class HtmlLauncher extends GwtApplication {
 
         @Override
         public ApplicationListener createApplicationListener () {
-                return new AriseDeeper();
+                AriseDeeper core = new AriseDeeper();
+                core.setSplashWorker(new ISplashWorker() {
+                        @Override
+                        public void closeSplashScreen() {
+                                
+                        }
+                });
+                return core;
         }
 }

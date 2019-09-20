@@ -187,9 +187,9 @@ i:atlas/statics/key.png:2944:image/png
 i:atlas/statics/potion_fatigue.png:2971:image/png
 i:atlas/statics/potion_health.png:2956:image/png
 d:skin:0:application/unknown
-t:skin/default.fnt:11530:application/unknown
-t:skin/uiskin.atlas:3122:application/unknown
-t:skin/uiskin.json:2906:application/unknown
+t:skin/default.fnt:11430:application/unknown
+t:skin/uiskin.atlas:2923:application/unknown
+t:skin/uiskin.json:2828:application/unknown
 i:skin/uiskin.png:28299:image/png
 i:splash_screen.png:71609:image/png
 d:spriteSheets:0:application/unknown
@@ -210,10 +210,10 @@ i:unrelated/early_demo4.gif:2431014:image/gif
 i:unrelated/early_demo5.gif:1235958:image/gif
 i:unrelated/early_demo6.gif:2539224:image/gif
 i:unrelated/early_demo7.gif:1801516:image/gif
-t:unrelated/source.txt:173:text/plain
+t:unrelated/source.txt:171:text/plain
 d:wip:0:application/unknown
 d:wip/from_TEttinger:0:application/unknown
-t:wip/from_TEttinger/Dungeon.txt:1611:text/plain
+t:wip/from_TEttinger/Dungeon.txt:1606:text/plain
 d:wip/from_TEttinger/DungeonTileset:0:application/unknown
 i:wip/from_TEttinger/DungeonTileset/barred door a.png:196:image/png
 i:wip/from_TEttinger/DungeonTileset/barred tunnel a.png:212:image/png
@@ -415,29 +415,29 @@ i:wip/from_TEttinger/DungeonTileset_noSpace/DungeonTileset/wall-up-b.png:151:ima
 i:wip/from_TEttinger/DungeonTileset_noSpace/DungeonTileset/wall-up-c.png:153:image/png
 d:wip/kenney_assets:0:application/unknown
 d:wip/kenney_assets/1bitpack_kenney:0:application/unknown
-b:wip/kenney_assets/1bitpack_kenney/Kenney.url:45:application/unknown
+b:wip/kenney_assets/1bitpack_kenney/Kenney.url:44:application/unknown
 t:wip/kenney_assets/1bitpack_kenney/License.txt:599:text/plain
-b:wip/kenney_assets/1bitpack_kenney/Patreon.url:55:application/unknown
+b:wip/kenney_assets/1bitpack_kenney/Patreon.url:54:application/unknown
 i:wip/kenney_assets/1bitpack_kenney/Preview.png:114172:image/png
 i:wip/kenney_assets/1bitpack_kenney/Sample_fantasy.png:151463:image/png
 i:wip/kenney_assets/1bitpack_kenney/Sample_interior.png:58609:image/png
 i:wip/kenney_assets/1bitpack_kenney/Sample_platformer.png:15553:image/png
 i:wip/kenney_assets/1bitpack_kenney/Sample_urban.png:145465:image/png
 d:wip/kenney_assets/1bitpack_kenney/Tilemap:0:application/unknown
-b:wip/kenney_assets/1bitpack_kenney/Tilemap/sample_fantasy.tmx:4241:application/unknown
-b:wip/kenney_assets/1bitpack_kenney/Tilemap/sample_interior.tmx:2995:application/unknown
-b:wip/kenney_assets/1bitpack_kenney/Tilemap/sample_platformer.tmx:2965:application/unknown
-b:wip/kenney_assets/1bitpack_kenney/Tilemap/sample_urban.tmx:7412:application/unknown
-b:wip/kenney_assets/1bitpack_kenney/Tilemap/tileset_colored.tsx:261:application/unknown
+b:wip/kenney_assets/1bitpack_kenney/Tilemap/sample_fantasy.tmx:4209:application/unknown
+b:wip/kenney_assets/1bitpack_kenney/Tilemap/sample_interior.tmx:2963:application/unknown
+b:wip/kenney_assets/1bitpack_kenney/Tilemap/sample_platformer.tmx:2933:application/unknown
+b:wip/kenney_assets/1bitpack_kenney/Tilemap/sample_urban.tmx:7380:application/unknown
+b:wip/kenney_assets/1bitpack_kenney/Tilemap/tileset_colored.tsx:257:application/unknown
 d:wip/kenney_assets/1bitpack_kenney/Tilesheet:0:application/unknown
 i:wip/kenney_assets/1bitpack_kenney/Tilesheet/colored.png:26124:image/png
 i:wip/kenney_assets/1bitpack_kenney/Tilesheet/colored_transparent.png:23741:image/png
 i:wip/kenney_assets/1bitpack_kenney/Tilesheet/monochrome.png:21456:image/png
 i:wip/kenney_assets/1bitpack_kenney/Tilesheet/monochrome_transparent.png:18503:image/png
 d:wip/kenney_assets/kenney_particlePack:0:application/unknown
-b:wip/kenney_assets/kenney_particlePack/Kenney.url:45:application/unknown
-t:wip/kenney_assets/kenney_particlePack/License.txt:645:text/plain
-b:wip/kenney_assets/kenney_particlePack/Patreon.url:55:application/unknown
+b:wip/kenney_assets/kenney_particlePack/Kenney.url:44:application/unknown
+t:wip/kenney_assets/kenney_particlePack/License.txt:623:text/plain
+b:wip/kenney_assets/kenney_particlePack/Patreon.url:54:application/unknown
 d:wip/kenney_assets/kenney_particlePack/PNG:0:application/unknown
 i:wip/kenney_assets/kenney_particlePack/PNG/circle_01.png:35915:image/png
 i:wip/kenney_assets/kenney_particlePack/PNG/circle_02.png:30403:image/png
@@ -540,17 +540,17 @@ i:wip/kenney_assets/kenney_particlePack/Preview.png:185885:image/png
 d:wip/kenney_assets/kenney_particlePack/Unity samples:0:application/unknown
 b:wip/kenney_assets/kenney_particlePack/Unity samples/particlePack_samples.unitypackage:5518291:application/unknown
 d:wip/kenney_assets/roguelike-characters-pack:0:application/unknown
-b:wip/kenney_assets/roguelike-characters-pack/Donate.url:48:application/unknown
-b:wip/kenney_assets/roguelike-characters-pack/Facebook.url:57:application/unknown
-t:wip/kenney_assets/roguelike-characters-pack/License.txt:629:text/plain
+b:wip/kenney_assets/roguelike-characters-pack/Donate.url:47:application/unknown
+b:wip/kenney_assets/roguelike-characters-pack/Facebook.url:56:application/unknown
+t:wip/kenney_assets/roguelike-characters-pack/License.txt:608:text/plain
 i:wip/kenney_assets/roguelike-characters-pack/Preview.png:39927:image/png
 i:wip/kenney_assets/roguelike-characters-pack/Sample.png:51085:image/png
 d:wip/kenney_assets/roguelike-characters-pack/Spritesheet:0:application/unknown
 i:wip/kenney_assets/roguelike-characters-pack/Spritesheet/roguelikeChar_magenta.png:28030:image/png
 i:wip/kenney_assets/roguelike-characters-pack/Spritesheet/roguelikeChar_transparent.png:28966:image/png
-t:wip/kenney_assets/roguelike-characters-pack/Spritesheet/spritesheetInfo.txt:102:text/plain
+t:wip/kenney_assets/roguelike-characters-pack/Spritesheet/spritesheetInfo.txt:97:text/plain
 d:wip/kenney_assets/smokeparticleassets:0:application/unknown
-t:wip/kenney_assets/smokeparticleassets/license.txt:486:text/plain
+t:wip/kenney_assets/smokeparticleassets/license.txt:473:text/plain
 d:wip/kenney_assets/smokeparticleassets/PNG:0:application/unknown
 d:wip/kenney_assets/smokeparticleassets/PNG/Black smoke:0:application/unknown
 i:wip/kenney_assets/smokeparticleassets/PNG/Black smoke/blackSmoke00.png:109505:image/png
@@ -637,10 +637,10 @@ i:wip/kenney_assets/smokeparticleassets/PNG/White puff/whitePuff24.png:114846:im
 i:wip/kenney_assets/smokeparticleassets/preview.png:262453:image/png
 i:wip/kenney_assets/smokeparticleassets/sample.png:157837:image/png
 d:wip/kenney_assets/voxel-pack:0:application/unknown
-b:wip/kenney_assets/voxel-pack/Donate on Itch.io.url:48:application/unknown
-b:wip/kenney_assets/voxel-pack/Donate on Steam.url:64:application/unknown
-b:wip/kenney_assets/voxel-pack/Facebook.url:57:application/unknown
-t:wip/kenney_assets/voxel-pack/License.txt:621:text/plain
+b:wip/kenney_assets/voxel-pack/Donate on Itch.io.url:47:application/unknown
+b:wip/kenney_assets/voxel-pack/Donate on Steam.url:63:application/unknown
+b:wip/kenney_assets/voxel-pack/Facebook.url:56:application/unknown
+t:wip/kenney_assets/voxel-pack/License.txt:600:text/plain
 d:wip/kenney_assets/voxel-pack/PNG:0:application/unknown
 d:wip/kenney_assets/voxel-pack/PNG/Characters:0:application/unknown
 d:wip/kenney_assets/voxel-pack/PNG/Characters/Alien:0:application/unknown
@@ -859,15 +859,15 @@ t:wip/kenney_assets/voxel-pack/Spritesheets/spritesheet_particles.xml:651:applic
 i:wip/kenney_assets/voxel-pack/Spritesheets/spritesheet_tiles.png:279265:image/png
 t:wip/kenney_assets/voxel-pack/Spritesheets/spritesheet_tiles.xml:6740:application/xml
 d:wip/kenney_assets/voxel-pack/Vector:0:application/unknown
-b:wip/kenney_assets/voxel-pack/Vector/vector_characters.svg:16101:image/svg+xml
+b:wip/kenney_assets/voxel-pack/Vector/vector_characters.svg:16101:application/unknown
 b:wip/kenney_assets/voxel-pack/Vector/vector_characters.swf:3304:application/unknown
-b:wip/kenney_assets/voxel-pack/Vector/vector_other.svg:9507:image/svg+xml
+b:wip/kenney_assets/voxel-pack/Vector/vector_other.svg:9507:application/unknown
 b:wip/kenney_assets/voxel-pack/Vector/vector_other.swf:1958:application/unknown
-b:wip/kenney_assets/voxel-pack/Vector/vector_tiles_items.svg:404008:image/svg+xml
+b:wip/kenney_assets/voxel-pack/Vector/vector_tiles_items.svg:404008:application/unknown
 b:wip/kenney_assets/voxel-pack/Vector/vector_tiles_items.swf:52399:application/unknown
-t:wip/test.atlas:490:application/unknown
+t:wip/test.atlas:456:application/unknown
 i:wip/test.png:342410:image/png
-b:wip/texture_packer_project.tpproj:916:application/unknown
+b:wip/texture_packer_project.tpproj:873:application/unknown
 t:com/badlogic/gdx/graphics/g3d/particles/particles.fragment.glsl:859:application/unknown
 t:com/badlogic/gdx/graphics/g3d/particles/particles.vertex.glsl:2996:application/unknown
 t:com/badlogic/gdx/graphics/g3d/shaders/default.fragment.glsl:6084:application/unknown
