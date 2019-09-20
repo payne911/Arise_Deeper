@@ -17,6 +17,11 @@ public class Flame extends Static implements IAnimated {
     }
 
     @Override
+    public boolean renderInFog() {
+        return true;
+    }
+
+    @Override
     public boolean tryInteractionFrom(Actor source) {
         return false;
     }

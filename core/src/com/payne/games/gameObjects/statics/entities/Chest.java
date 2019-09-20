@@ -22,6 +22,11 @@ public class Chest extends Static {
     }
 
     @Override
+    public boolean renderInFog() {
+        return true;
+    }
+
+    @Override
     public boolean tryInteractionFrom(Actor source) {
         boolean inRange = Utils.straightDistanceBetweenObjects(source, this) == 1;
         if(!inRange)

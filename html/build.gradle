@@ -48,6 +48,10 @@ task superDev (type: GwtSuperDev) {
     }
 }
 
+// we want the custom "docs" folder to be cleaned too when `dist` is run
+clean.doFirst {
+    delete fileTree(dir:'../docs/html/', include: '**.cache.js')
+}
 
 task dist(dependsOn: [clean, compileGwt]) {
     doLast {
