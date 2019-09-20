@@ -3,15 +3,20 @@ A 2D roguelike game, with top-down view. Developed using the LibGDX framework.
 
 
 # Demo
+An [early demo is available online](https://payne911.github.io/Arise_Deeper/). Don't expect too much from it.
+
+Yes, it is long to load.
+
+#### Demo GIF
 ![early_demo](https://raw.githubusercontent.com/payne911/Arise_Deeper/master/core/assets/unrelated/early_demo7.gif)
 
 
 # Importing the project
+Of course, you could also decide to `fork` the repo and send some *Pull Requests* my way.
+
 #### Firstly
 Use the following command in your terminal, from within the location where you want the project to be:
 > `git clone https://github.com/payne911/Arise_Deeper.git`
-
-Of course, you could also decide to `fork` the repo and send some *Pull Requests* my way.
 
 #### Secondly
 In the root folder of the project, add a `local.properties` file with the following content:
