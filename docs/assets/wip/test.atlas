@@ -1,0 +1,34 @@
+
+test.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+go16p
+  rotate: false
+  xy: 340, 88
+  size: 300, 16
+  orig: 300, 16
+  offset: 0, 0
+  index: -1
+go20p
+  rotate: false
+  xy: 2, 2
+  size: 300, 20
+  orig: 300, 20
+  offset: 0, 0
+  index: -1
+pd
+  rotate: false
+  xy: 2, 106
+  size: 768, 748
+  orig: 768, 748
+  offset: 0, 0
+  index: -1
+tileset1
+  rotate: false
+  xy: 2, 24
+  size: 336, 80
+  orig: 336, 80
+  offset: 0, 0
+  index: -1

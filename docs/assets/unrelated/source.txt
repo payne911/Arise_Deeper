@@ -1,0 +1,3 @@
+Tileset source: https://opengameart.org/content/dungeon-tileset
+Dawnlike atlas: https://github.com/tommyettinger/DawnLikeAtlas
+Some assets:    https://www.kenney.nl/assets
