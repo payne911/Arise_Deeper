@@ -16,11 +16,11 @@ public abstract class Static extends GameObject {
 
     @Override
     public boolean canBeWalkedThrough() {
-        return true; // by default, a Static can be walked through
+        return true;
     }
 
     @Override
     public boolean canBeSeenThrough() {
-        return true; // by default, a Static can be seen through
+        return true;
     }
 }
