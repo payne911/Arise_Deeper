@@ -55,7 +55,7 @@ public abstract class Actor extends GameObject implements IAnimatedStates<ActorS
 
     @Override
     public boolean canBeSeenThrough() {
-        return true;
+        return false;
     }
 
     /**

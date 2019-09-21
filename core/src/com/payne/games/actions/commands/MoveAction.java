@@ -79,6 +79,8 @@ public class MoveAction extends Action {
         /* Adjusting the tiles' values for the pathfinding. */
         from.setAllowingMove(true);
         next.setAllowingMove(false);
+        from.setSeeThrough(true);
+        next.setSeeThrough(source.canBeSeenThrough());
     }
 
 

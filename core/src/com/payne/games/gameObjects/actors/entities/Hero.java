@@ -54,4 +54,9 @@ public class Hero extends Actor {
             controller.actionIssuer.attack(source, this);
         return withinRange;
     }
+
+    @Override
+    public boolean canBeSeenThrough() {
+        return true;
+    }
 }
