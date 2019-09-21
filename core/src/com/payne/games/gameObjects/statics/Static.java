@@ -21,6 +21,6 @@ public abstract class Static extends GameObject {
 
     @Override
     public boolean canBeSeenThrough() {
-        return true;
+        return true; // by default, a Static can be seen through
     }
 }
