@@ -13,6 +13,7 @@ import com.payne.games.inventory.Inventory;
 import com.payne.games.logic.DecisionMaking;
 import com.payne.games.logic.GameLogic;
 import com.payne.games.actions.ActionController;
+import com.payne.games.map.tiles.Tile;
 import com.payne.games.rendering.animations.AnimationStateMapPool;
 import com.payne.games.rendering.animations.IAnimatedStates;
 

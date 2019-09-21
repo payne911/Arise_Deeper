@@ -2,6 +2,7 @@ package com.payne.games.actions.commands;
 
 import com.payne.games.actions.Action;
 import com.payne.games.gameObjects.GameObject;
+import com.payne.games.gameObjects.actors.ActorState;
 import com.payne.games.inventory.IPickable;
 import com.payne.games.gameObjects.actors.Actor;
 
@@ -26,6 +27,7 @@ public class PickUpAction extends Action {
 
     @Override
     public boolean executeAction() {
+        source.setState(ActorState.INTERACTING);
         boolean success = source.getInventory().addItem(object);
         System.out.println("Pick up success: " + success);
 

@@ -59,7 +59,7 @@ public class AssetsPool {
         hero_red_attack = new Animation<TextureRegion>(0.03f, atlas.findRegions("hero_red_attack"), PlayMode.NORMAL);
         hero_red_death = new Animation<TextureRegion>(0.18f, atlas.findRegions("hero_red_death"), PlayMode.NORMAL);
         hero_red_idle = new Animation<TextureRegion>(0.2f, atlas.findRegions("hero_red_idle"), PlayMode.LOOP_PINGPONG);
-        hero_red_interact = new Animation<TextureRegion>(0.15f, atlas.findRegions("hero_red_interact"), PlayMode.NORMAL);
+        hero_red_interact = new Animation<TextureRegion>(0.04f, atlas.findRegions("hero_red_interact"), PlayMode.NORMAL);
         hero_red_walk = new Animation<TextureRegion>(0.05f, atlas.findRegions("hero_red_walk"), PlayMode.LOOP);
 
         /* Statics */

@@ -47,7 +47,7 @@ public final class GameLogic { /* Can't be inherited. */
     public static final float CAM_OFFSET = TILE_BIG_SIZE/2f; // TILE_OFFSET + (TILE_SIZE/2f)
 
     // turn
-    public static final float TURN_TIME = 0.07f;
+    public static final float TURN_TIME = 0.13f;
     public static final int TURN_GENERAL_COST = 50;
     public static final float MOVE_SPEED = TILE_SIZE/TURN_TIME;
 

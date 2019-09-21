@@ -3,6 +3,7 @@ package com.payne.games.actions.commands;
 import com.payne.games.actions.Action;
 import com.payne.games.gameObjects.GameObject;
 import com.payne.games.gameObjects.actors.Actor;
+import com.payne.games.gameObjects.actors.ActorState;
 import com.payne.games.inventory.IPickable;
 
 
@@ -22,6 +23,7 @@ public class DropAction extends Action {
 
     @Override
     public boolean executeAction() {
+        source.setState(ActorState.INTERACTING);
         IPickable dropping = source.getInventory().takeItem(object.getClass());
 
         /* Placing the dropped item below the Source. */

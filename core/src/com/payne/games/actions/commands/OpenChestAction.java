@@ -2,6 +2,7 @@ package com.payne.games.actions.commands;
 
 import com.payne.games.actions.Action;
 import com.payne.games.gameObjects.actors.Actor;
+import com.payne.games.gameObjects.actors.ActorState;
 import com.payne.games.gameObjects.statics.entities.Chest;
 
 
@@ -26,6 +27,7 @@ public class OpenChestAction extends Action {
 
     @Override
     public boolean executeAction() {
+        source.setState(ActorState.INTERACTING);
         controller.secondaryMapLayer.spawnRandomItem(target.getX(), target.getY());
         controller.removeStatic(target);
         return true;

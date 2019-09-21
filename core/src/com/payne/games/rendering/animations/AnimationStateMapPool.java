@@ -21,18 +21,18 @@ public class AnimationStateMapPool {
         heroAnimations.put(ActorState.IDLE, assetsPool.hero_red_idle);
         heroAnimations.put(ActorState.MOVING, assetsPool.hero_red_walk);
         heroAnimations.put(ActorState.ATTACKING, assetsPool.hero_red_attack);
-        heroAnimations.put(ActorState.ATTACKED, null); // todo: draw this one ?
+        heroAnimations.put(ActorState.ATTACKED, null); // todo
         heroAnimations.put(ActorState.INTERACTING, assetsPool.hero_red_interact);
         heroAnimations.put(ActorState.DYING, assetsPool.hero_red_death);
-        heroAnimations.put(ActorState.SLEEPING, assetsPool.hero_red_death);
+        heroAnimations.put(ActorState.SLEEPING, null);
 
-        /* Knight */
+        /* todo: Knight */
         knightAnimations = new HashMap<>();
         Animation<TextureRegion> placeHolderAnim = new Animation<>(0.25f, assetsPool.knight);
         knightAnimations.put(ActorState.IDLE, placeHolderAnim);
         knightAnimations.put(ActorState.MOVING, placeHolderAnim);
         knightAnimations.put(ActorState.ATTACKING, placeHolderAnim);
-        knightAnimations.put(ActorState.ATTACKED, null); // todo: draw this one ?
+        knightAnimations.put(ActorState.ATTACKED, null);
         knightAnimations.put(ActorState.INTERACTING, placeHolderAnim);
         knightAnimations.put(ActorState.DYING, placeHolderAnim);
         knightAnimations.put(ActorState.SLEEPING, placeHolderAnim);

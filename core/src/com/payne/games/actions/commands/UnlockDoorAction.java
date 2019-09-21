@@ -1,6 +1,7 @@
 package com.payne.games.actions.commands;
 
 import com.payne.games.gameObjects.actors.Actor;
+import com.payne.games.gameObjects.actors.ActorState;
 import com.payne.games.gameObjects.statics.entities.Door;
 import com.payne.games.gameObjects.statics.entities.Key;
 import com.payne.games.inventory.IPickable;
@@ -28,6 +29,7 @@ public class UnlockDoorAction extends ToggleDoorAction {
         if (key == null) {
             return false;
         } else {
+            source.setState(ActorState.INTERACTING);
             target.setLocked(false);
             return true;
         }
