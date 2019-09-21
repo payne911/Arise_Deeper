@@ -50,7 +50,9 @@ public class GameObjectFactory {
         actionController.baseMapLayer
                 .getTile(gameObject.getX(),gameObject.getY())
                 .setAllowingMove(gameObject.canBeWalkedThrough());
-
+        actionController.baseMapLayer
+                .getTile(gameObject.getX(),gameObject.getY())
+                .setSeeThrough(gameObject.canBeSeenThrough());
         /* Add the GameObject to the proper Layer. */
         if(gameObject instanceof Actor) {
             actionController.secondaryMapLayer

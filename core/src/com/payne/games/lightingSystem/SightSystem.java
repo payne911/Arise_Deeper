@@ -5,6 +5,8 @@ import com.payne.games.logic.GameLogic;
 import com.payne.games.map.BaseMapLayer;
 import com.payne.games.map.tiles.Tile;
 
+import static com.payne.games.logic.GameLogic.SUBDIVISIONS;
+
 
 /**
  * todo:  see  https://www.redblobgames.com/articles/visibility/
@@ -18,11 +20,15 @@ public class SightSystem {
 
     private int width;
     private int height;
-
-
+    private int widthBig;
+    private int heightBig;
+    
     public SightSystem() {
     }
 
+    public double[][] getVisible() {
+        return visible;
+    }
 
     /**
      * Must be called when a new map is generated, before calling the other methods.
@@ -32,8 +38,10 @@ public class SightSystem {
     public void prepareLightingOverlay(BaseMapLayer currLevel) {
         width      = currLevel.getMapWidth();
         height     = currLevel.getMapHeight();
-        visible    = new double[height][width];
-        resistance = new double[height][width];
+        widthBig   = width * SUBDIVISIONS;
+        heightBig  = height * SUBDIVISIONS;
+        visible    = new double[heightBig][widthBig];
+        resistance = new double[heightBig][widthBig];
     }
 
     /**
@@ -42,12 +50,23 @@ public class SightSystem {
      * A value of "0.0" lets the light pass through completely.
      */
     private void updateResistanceMap(BaseMapLayer currLevel) {
-        for(int i=0; i < height; i++) {        // height
-            for(int j=0; j < width; j++) {     // width
-                if(currLevel.getTile(j,i).isAllowingMove())
-                    resistance[i][j] = 0.0;
-                else
-                    resistance[i][j] = 1.0;
+        for (int i = 0; i < height; i++) {        // height
+            for (int j = 0; j < width; j++) {     // width
+                if (currLevel.getTile(j, i).isSeeThrough()) {
+                    // this step may not be necessary; if a cell can change from disallowing moves to allowing moves,
+                    // then this is needed.
+                    for (int y = 0; y < SUBDIVISIONS; y++) {
+                        for (int x = 0; x < SUBDIVISIONS; x++) {
+                            resistance[i * SUBDIVISIONS + y][j * SUBDIVISIONS + x] = 0.0;
+                        }
+                    }
+                } else {
+                    for (int y = 0; y < SUBDIVISIONS; y++) {
+                        for (int x = 0; x < SUBDIVISIONS; x++) {
+                            resistance[i * SUBDIVISIONS + y][j * SUBDIVISIONS + x] = 1.0;
+                        }
+                    }
+                }
             }
         }
     }
@@ -58,17 +77,25 @@ public class SightSystem {
      */
     public void updateLighting(BaseMapLayer currLevel, int player_X, int player_Y, int sightRangeRadius) {
         updateResistanceMap(currLevel);
-        FieldOfView.reuseFOV(resistance, visible, player_X, player_Y, sightRangeRadius);
+        FieldOfView.reuseFOV(resistance, visible, player_X * SUBDIVISIONS + SUBDIVISIONS / 2, player_Y * SUBDIVISIONS + SUBDIVISIONS / 2, sightRangeRadius * SUBDIVISIONS);
         Tile currTile;
         for(int i=0; i < height; i++) {          // height
             for(int j = 0; j < width; j++) {     // width
                 currTile = currLevel.getTile(j,i);
+                float alpha = 0;
+                for (int y = 0; y < SUBDIVISIONS; y++) {
+                    for (int x = 0; x < SUBDIVISIONS; x++) {
+                        if(visible[i* SUBDIVISIONS+y][j* SUBDIVISIONS+x] > 0.0)
+                        {
+                            currTile.setExplored(true);
+                            alpha = Math.max(alpha, (float)visible[i* SUBDIVISIONS+y][j* SUBDIVISIONS+x]);
+                        }
+                    }
+                }
                 currTile.setFogAlpha(
                         MathUtils.map(0f, 1f,
                                 GameLogic.LOS_MIN_ALPHA, 1f,
-                                (float)visible[i][j]));
-                if(currTile.isInSight())
-                    currTile.setExplored(true);
+                                alpha));
             }
         }
     }

@@ -53,6 +53,11 @@ public abstract class Actor extends GameObject implements IAnimatedStates<ActorS
         return false; // by default, an Actor takes space on a tile
     }
 
+    @Override
+    public boolean canBeSeenThrough() {
+        return true;
+    }
+
     /**
      * Method used to deal damage to an Actor.
      *

@@ -71,7 +71,7 @@ public class Controller {
         secondaryMapLayer   = new SecondaryMapLayer(gameObjectFactory);
         actionController.setSecondaryMapLayer(secondaryMapLayer);
         sightSystem         = new SightSystem();
-        mapRenderer         = new MapRenderer(secondaryMapLayer);
+        mapRenderer         = new MapRenderer(secondaryMapLayer, this.assetsPool.halo_medium);
         turnManager         = new TurnManager(secondaryMapLayer);
     }
 
@@ -157,7 +157,7 @@ public class Controller {
     public void renderLevel(SpriteBatch batch, float delta) {
         animationManager.updateAnimations(delta);
         interpolationModule.moveAllObjects(delta);
-        mapRenderer.renderLevel(batch);
+        mapRenderer.renderLevel(batch, sightSystem.getVisible());
 
         if(player.isMoving())
             centerOnHero();

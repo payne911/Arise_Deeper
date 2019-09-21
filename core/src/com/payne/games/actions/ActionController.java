@@ -65,7 +65,10 @@ public class ActionController {
         secondaryMapLayer.removeFromStaticLayer(object);
         Actor actorAt = secondaryMapLayer.findActorAt(object.getX(), object.getY());
         if(actorAt == null)
+        {
             baseMapLayer.getTile(object.getX(), object.getY()).setAllowingMove(true);
+            baseMapLayer.getTile(object.getX(), object.getY()).setSeeThrough(true);
+        }
     }
 
     /**

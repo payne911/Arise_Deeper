@@ -3,6 +3,7 @@ package com.payne.games.rendering;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.payne.games.map.tilesets.SubclassTileAssigner;
 import com.payne.games.gameObjects.actors.Actor;
 import com.payne.games.gameObjects.statics.Static;
@@ -30,10 +31,14 @@ public class MapRenderer {
     // Secondary layer
     private SecondaryMapLayer secondaryMapLayer;
 
+    // Light overlay effect
+    private TextureRegion light;
+    private double[][] visible;
 
-    public MapRenderer(SecondaryMapLayer secondaryMapLayer) {
+    public MapRenderer(SecondaryMapLayer secondaryMapLayer, TextureRegion light) {
         this.secondaryMapLayer = secondaryMapLayer;
         this.subclassTileAssigner = new SubclassTileAssigner();
+        this.light = light;
     }
 
 
@@ -84,9 +89,11 @@ public class MapRenderer {
      * Each layer of the Level are to be rendered.
      *
      * @param batch the instance of "game.batch" on which was called the ".begin()" beforehand
+     * @param visible a 2D double array, larger than the level, that stores 0.0 for unseen subcells and values up to 1.0
+     *                for subcells that are lit
      */
-    public void renderLevel(SpriteBatch batch) {
-
+    public void renderLevel(SpriteBatch batch, double[][] visible) {
+        this.visible = visible;
         /* Drawing the static map (base layer). */
         for (int i = 0; i < level.getMapHeight(); i++) {
             for (int j = 0; j < level.getMapWidth(); j++) {
@@ -94,6 +101,14 @@ public class MapRenderer {
             }
         }
 
+        for (int y = 0; y < visible.length; y++) {
+            for (int x = 0; x < visible[y].length; x++) {
+                if (visible[y][x] > 0.0) {
+                    batch.setColor(1f, 1f, 1f, (float) visible[y][x] * 0.0625f);
+                    batch.draw(light, 8f + 16f / GameLogic.SUBDIVISIONS * x, 8f + 16f / GameLogic.SUBDIVISIONS * y);
+                }
+            }
+        }
         /*
         todo: possible surround the Tile rendering with "disableBlending" and then add the stretched
         lightMap with GaussianBlur over-top?
@@ -199,10 +214,17 @@ public class MapRenderer {
             batch.setColor(1,1,1,1);
             return true;
         }
-
-        Tile tile = level.getTile(renderable.getX(), renderable.getY());
+        int x = renderable.getX(), y = renderable.getY();
+        Tile tile = level.getTile(x, y);
         if (tile.isInSight())
-            batch.setColor(1,1,1,(renderable instanceof Tile) ? tile.getFogAlpha() : 1); // in plain sight
+        {
+//            if(renderable instanceof Tile)
+//                batch.setColor(0.4f, 0.4f, 0.4f, 1f);
+//            else
+//                batch.setColor(1f, 1f, 1f, 1f);
+            batch.setColor(1,1,1,1); // in plain sight
+//            batch.setColor(1,1,1,(renderable instanceof Tile) ? tile.getFogAlpha() : 1); // in plain sight
+        }
         else if (tile.isExplored() && renderable.renderInFog())
             batch.setColor(0.65f,0.2f,0.65f,GameLogic.FOG_ALPHA); // in the fog of war
         else {

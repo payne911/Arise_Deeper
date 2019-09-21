@@ -5,12 +5,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
-import com.payne.games.gameObjects.actors.Actor;
 import com.payne.games.actions.ActionController;
+import com.payne.games.gameObjects.actors.Actor;
 import com.payne.games.gameObjects.actors.ActorState;
 import com.payne.games.logic.Utils;
 import com.payne.games.rendering.IInterpolatable;
-import com.payne.games.rendering.animations.IAnimated;
 import com.payne.games.rendering.animations.IObserver;
 
 import java.util.HashMap;
@@ -90,6 +89,8 @@ public abstract class GameObject implements IInterpolatable {
      * @return 'true' if Actors can pass through a Tile on which this GameObject is.
      */
     public abstract boolean canBeWalkedThrough();
+    
+    public abstract boolean canBeSeenThrough();
 
 
     @Override
