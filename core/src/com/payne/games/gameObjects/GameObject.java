@@ -90,6 +90,12 @@ public abstract class GameObject implements IInterpolatable {
      */
     public abstract boolean canBeWalkedThrough();
     
+    /**
+     * Determines whether or not the GameObject can be seen through. Important for the sight system.
+     *
+     * @return 'true' if the sight system should apply no resistance to its raycasting going through this Actor.<br>
+     *         In other words, 'true' if the object can be seen through...
+     */
     public abstract boolean canBeSeenThrough();
 
 
