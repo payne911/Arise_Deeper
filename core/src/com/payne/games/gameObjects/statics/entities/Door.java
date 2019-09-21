@@ -54,6 +54,11 @@ public class Door extends Static {
         return !isClosed;
     }
 
+    @Override
+    public boolean canBeSeenThrough() {
+        return !isClosed;
+    }
+
     public boolean isClosed() {
         return isClosed;
     }

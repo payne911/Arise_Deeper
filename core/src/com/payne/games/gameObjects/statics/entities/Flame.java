@@ -30,4 +30,9 @@ public class Flame extends Static implements IAnimated {
     public boolean canBeWalkedThrough() {
         return false;
     }
+
+    @Override
+    public boolean canBeSeenThrough() {
+        return true;
+    }
 }

@@ -22,6 +22,11 @@ public class Chest extends Static {
     }
 
     @Override
+    public boolean canBeSeenThrough() {
+        return true; // chests aren't THAT big
+    }
+
+    @Override
     public boolean renderInFog() {
         return true;
     }

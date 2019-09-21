@@ -50,7 +50,12 @@ public abstract class Actor extends GameObject implements IAnimatedStates<ActorS
 
     @Override
     public boolean canBeWalkedThrough() {
-        return false; // by default, an Actor takes space on a tile
+        return false;
+    }
+
+    @Override
+    public boolean canBeSeenThrough() {
+        return false;
     }
 
     /**

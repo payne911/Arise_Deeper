@@ -47,13 +47,16 @@ public class ActionController {
     }
 
     /**
-     * Used to remove an Actor AND reset the Tile it was standing on so that it is walkable again.
+     * Used to remove an Actor AND reset the Tile it was standing on so that it is walkable again.<br>
+     * Assumes Actors don't stack on the same Tile, and that Statics that are walkable don't block vision.
      *
      * @param actor The Actor to be removed.
      */
     public void removeActor(Actor actor) {
         secondaryMapLayer.removeFromActorLayer(actor);
-        baseMapLayer.getTile(actor.getX(), actor.getY()).setAllowingMove(true); // todo: unless the Actor is flying?
+        Tile currTile = baseMapLayer.getTile(actor.getX(), actor.getY());
+        currTile.setAllowingMove(true); // todo: unless the Actor is flying?
+        currTile.setSeeThrough(true);
     }
 
     /**
@@ -64,8 +67,11 @@ public class ActionController {
     public void removeStatic(Static object) {
         secondaryMapLayer.removeFromStaticLayer(object);
         Actor actorAt = secondaryMapLayer.findActorAt(object.getX(), object.getY());
-        if(actorAt == null)
-            baseMapLayer.getTile(object.getX(), object.getY()).setAllowingMove(true);
+        if (actorAt == null) {
+            Tile currTile = baseMapLayer.getTile(object.getX(), object.getY());
+            currTile.setAllowingMove(true);
+            currTile.setSeeThrough(true);
+        }
     }
 
     /**

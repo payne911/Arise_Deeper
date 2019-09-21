@@ -12,6 +12,7 @@ public abstract class Tile implements IRenderable {
     private int bitmask = 0; // wall connections
     private int x, y;
     private boolean allowingMove;
+    private boolean seeThrough;
     private Array<Tile> neighbors = new Array<>();
 
     // view
@@ -176,6 +177,14 @@ public abstract class Tile implements IRenderable {
     }
     public void setAllowingMove(boolean allowingMove) {
         this.allowingMove = allowingMove;
+    }
+
+    public boolean isSeeThrough() {
+        return seeThrough;
+    }
+
+    public void setSeeThrough(boolean seeThrough) {
+        this.seeThrough = seeThrough;
     }
 
     @Override

@@ -76,9 +76,11 @@ public class MoveAction extends Action {
         source.setMovingToX(next.getX());
         source.setMovingToY(next.getY());
 
-        /* Adjusting the tiles' values for the pathfinding. */
+        /* Adjusting the tiles' values for the pathfinding and the sight system. */
         from.setAllowingMove(true);
         next.setAllowingMove(false);
+        from.setSeeThrough(true);
+        next.setSeeThrough(source.canBeSeenThrough());
     }
 
 

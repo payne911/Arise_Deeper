@@ -26,7 +26,9 @@ public class ToggleDoorAction extends Action {
     @Override
     public boolean executeAction() {
         target.toggle();
-        controller.baseMapLayer.getTile(target.getX(), target.getY()).setAllowingMove(target.canBeWalkedThrough());
+        Tile currTile = controller.baseMapLayer.getTile(target.getX(), target.getY());
+        currTile.setAllowingMove(target.canBeWalkedThrough());
+        currTile.setSeeThrough(target.canBeSeenThrough());
         return true;
     }
 
