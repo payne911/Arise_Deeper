@@ -71,7 +71,7 @@ public class Controller {
         secondaryMapLayer   = new SecondaryMapLayer(gameObjectFactory);
         actionController.setSecondaryMapLayer(secondaryMapLayer);
         sightSystem         = new SightSystem();
-        mapRenderer         = new MapRenderer(secondaryMapLayer, this.assetsPool.halo_medium);
+        mapRenderer         = new MapRenderer(secondaryMapLayer, assetsPool.halo_medium);
         turnManager         = new TurnManager(secondaryMapLayer);
     }
 
