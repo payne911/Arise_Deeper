@@ -14,12 +14,14 @@ import com.payne.games.map.SecondaryMapLayer;
 import com.payne.games.map.tiles.Tile;
 import com.payne.games.map.tilesets.Tileset;
 
+import static com.payne.games.logic.GameLogic.TILE_SIZE; // static because used often
+
 
 public class MapRenderer {
 
     // Temporary HP bars    todo: remove this and implement with SpriteSheet ?
-    private final int HP_WIDTH  = (int)(GameLogic.TILE_SIZE *.75);
-    private final int HP_HEIGHT = GameLogic.TILE_SIZE/6;
+    private final int HP_WIDTH  = (int)(TILE_SIZE *.75);
+    private final int HP_HEIGHT = TILE_SIZE/6;
     private final Texture HP_BACKGROUND = createProceduralTexture(1, 0, 0, .7f);
     private final Texture HP_PROGRESS   = createProceduralTexture(0, 1, 0, .7f);
 
@@ -104,8 +106,10 @@ public class MapRenderer {
         for (int y = 0; y < visible.length; y++) {
             for (int x = 0; x < visible[y].length; x++) {
                 if (visible[y][x] > 0.0) {
-                    batch.setColor(1f, 1f, 1f, (float) visible[y][x] * 0.0625f);
-                    batch.draw(light, 8f + 16f / GameLogic.SUBDIVISIONS * x, 8f + 16f / GameLogic.SUBDIVISIONS * y);
+                    batch.setColor(1f, 1f, 1f, (float) visible[y][x] * 0.0625f); // "1/16" because only 8 alpha bits
+                    batch.draw(light,
+                            10f + (float)TILE_SIZE / GameLogic.SUBDIVISIONS * x,
+                            10f + (float)TILE_SIZE / GameLogic.SUBDIVISIONS * y);
                 }
             }
         }
@@ -195,8 +199,8 @@ public class MapRenderer {
 
         if(shouldDraw)
             batch.draw(toRender,
-                    owner.getCurrentX() + owner.getPermanentOriginOffset() + (int)(GameLogic.TILE_SIZE*.125),
-                    owner.getCurrentY() - (int)(GameLogic.TILE_SIZE*.1),
+                    owner.getCurrentX() + owner.getPermanentOriginOffset() + (int)(TILE_SIZE*.125),
+                    owner.getCurrentY() - (int)(TILE_SIZE*.1),
                     x_stretch,
                     HP_HEIGHT);
     }
@@ -217,11 +221,8 @@ public class MapRenderer {
         
         Tile tile = level.getTile(renderable.getX(), renderable.getY());
         if (tile.isInSight()) {
-//            if(renderable instanceof Tile)
-//                batch.setColor(0.4f, 0.4f, 0.4f, 1f);
-//            else
-//                batch.setColor(1f, 1f, 1f, 1f);
-            batch.setColor(1,1,1,1); // in plain sight
+            float ambientLighting = (renderable instanceof Tile) ? GameLogic.AMBIENT_LIGHT : 1;
+            batch.setColor(ambientLighting, ambientLighting, ambientLighting, 1); // in plain sight
         }
         else if (tile.isExplored() && renderable.renderInFog())
             batch.setColor(0.65f,0.2f,0.65f,GameLogic.FOG_ALPHA); // in the fog of war
