@@ -57,5 +57,5 @@ public final class GameLogic { /* Can't be inherited. */
     // lighting system (Line of Sight / Fog of War)
     public static final float LOS_MIN_ALPHA = 0.4f; // [0,1] range
     public static final float FOG_ALPHA = 0.7f; // [0,1] range
-    public static final int SUBDIVISIONS = 5;
+    public static final int SUBDIVISIONS = 5; // an odd number: each Tile is subdivided into (SUB x SUB) cells
 }
