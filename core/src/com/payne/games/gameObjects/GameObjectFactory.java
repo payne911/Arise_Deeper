@@ -46,13 +46,11 @@ public class GameObjectFactory {
      */
     private void commonCreator(GameObject gameObject) {
 
-        /* Update walkability of the Tile on which GameObject was created. */
-        actionController.baseMapLayer
-                .getTile(gameObject.getX(),gameObject.getY())
-                .setAllowingMove(gameObject.canBeWalkedThrough());
-        actionController.baseMapLayer
-                .getTile(gameObject.getX(),gameObject.getY())
-                .setSeeThrough(gameObject.canBeSeenThrough());
+        /* Update walkability and visibility of the Tile on which GameObject was created. */
+        Tile currTile = actionController.baseMapLayer.getTile(gameObject.getX(),gameObject.getY());
+        currTile.setAllowingMove(gameObject.canBeWalkedThrough());
+        currTile.setSeeThrough(gameObject.canBeSeenThrough());
+        
         /* Add the GameObject to the proper Layer. */
         if(gameObject instanceof Actor) {
             actionController.secondaryMapLayer
