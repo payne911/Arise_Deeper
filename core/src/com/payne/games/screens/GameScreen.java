@@ -1,6 +1,7 @@
 package com.payne.games.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -16,7 +17,6 @@ import com.payne.games.logic.GameLogic;
 import com.payne.games.logic.Controller;
 import com.payne.games.map.tilesets.BasicTileset;
 import com.payne.games.inputProcessors.MyGestureListener;
-import com.payne.games.inputProcessors.MyInputMultiplexer;
 import com.payne.games.inputProcessors.MyInputProcessor;
 
 
@@ -107,7 +107,7 @@ public class GameScreen implements Screen {
     private void setUpInputProcessors() {
         MyInputProcessor inputProcessor1  = new MyInputProcessor(camera, controller);
         MyGestureListener inputProcessor2 = new MyGestureListener(camera, controller);
-        Gdx.input.setInputProcessor(new MyInputMultiplexer(
+        Gdx.input.setInputProcessor(new InputMultiplexer(
                 uiStage,
                 inputProcessor1,
                 new GestureDetector(inputProcessor2)));

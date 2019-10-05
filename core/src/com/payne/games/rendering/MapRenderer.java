@@ -19,7 +19,7 @@ import static com.payne.games.logic.GameLogic.TILE_SIZE; // static because used 
 
 public class MapRenderer {
 
-    // Temporary HP bars    todo: remove this and implement with SpriteSheet ?
+    // Temporary HP bars    todo: remove this and implement with SpriteSheet ? or see  https://github.com/earlygrey/shapedrawer#shape-drawer
     private final int HP_WIDTH  = (int)(TILE_SIZE *.75);
     private final int HP_HEIGHT = TILE_SIZE/6;
     private final Texture HP_BACKGROUND = createProceduralTexture(1, 0, 0, .7f);
@@ -114,7 +114,7 @@ public class MapRenderer {
             }
         }
         /*
-        todo: possible surround the Tile rendering with "disableBlending" and then add the stretched
+        todo: possibly surround the Tile rendering with "disableBlending" and then add the stretched
         lightMap with GaussianBlur over-top?
         https://github.com/crashinvaders/gdx-vfx
          */
